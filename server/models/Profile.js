@@ -8,19 +8,15 @@ const profileSchema = new mongoose.Schema({
     dateOfBirth: {
         type: String
     },
-    about: {
-        type: String,
-        trim: true
-    },
     contactNumber: {
         type: Number,
         trim: true,
     },
-    address: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "Address"
-    }
+    // addressDetails: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     ref: "Address"
+    // }
 });
 
 module.exports = mongoose.model("Profile", profileSchema);
