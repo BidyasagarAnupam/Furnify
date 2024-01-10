@@ -7,25 +7,35 @@ const addressSchema = new mongoose.Schema({
         ref: "User"
     },
     address: {
-        type: Number,
-        require: true
+        type: String,
+        // require: true
     },
     city: {
         type: String,
-        required: true
+        // required: true
     },
     state: {
         type: String,
-        required: true
+        // required: true
     },
     country: {
         type: String,
-        required: true
+        // required: true
     },
     zipCode: {
         type: Number,
-        required: true
+        // required: true
     },
+    name: {
+        type: String,
+    },
+    contactNumber: {
+        type: Number,
+    },
+    addressType: {
+        type: String,
+        enum: ["Home", "Work"]
+    }
     
 });
 

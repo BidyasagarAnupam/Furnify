@@ -6,6 +6,7 @@ const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const Profile = require("../models/Profile");
+const Address = require("../models/Address");
 require("dotenv").config();
 
 // Signup Controller for Registering USers
@@ -75,6 +76,28 @@ exports.signup = async (req, res) => {
 		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, 10);
 
+		// Create Address function
+		const createAddress = async (user) => {
+			const addressDetails = await Address.create({
+				user: user._id,
+				address: null,
+				city: null,
+				state: null,
+				country: null,
+				zipCode: null,
+				name: null,
+				contactNumber: null,
+				addressType : "Home"
+			});
+
+			// Update the profile to reference the newly created address
+			await Profile.findByIdAndUpdate(user.additionalDetails, {
+				addressDetails: addressDetails._id,
+			});
+
+			return addressDetails;
+		};
+
 		// Create the Additional Profile For User
 		const profileDetails = await Profile.create({
 			gender: null,
@@ -91,9 +114,19 @@ exports.signup = async (req, res) => {
 			image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
 		});
 
+		// Create the Address for the User
+		const address = await createAddress(user);
+
+		const data = await User.findById(user._id).populate({
+			path: "additionalDetails",
+			populate: {
+				path:"addressDetails", 
+			}
+		}).exec();
+
 		return res.status(200).json({
 			success: true,
-			user,
+			data,
 			message: "User registered successfully",
 		});
 	} catch (error) {

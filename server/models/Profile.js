@@ -12,11 +12,11 @@ const profileSchema = new mongoose.Schema({
         type: Number,
         trim: true,
     },
-    // addressDetails: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: true,
-    //     ref: "Address"
-    // }
+    addressDetails: [{
+        type: mongoose.Schema.Types.ObjectId,
+        // required: true,
+        ref: "Address"
+    }]
 });
 
 module.exports = mongoose.model("Profile", profileSchema);
