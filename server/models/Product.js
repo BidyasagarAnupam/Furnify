@@ -28,7 +28,6 @@ const productSchema = new mongoose.Schema({
     },
     ratingAndReviews: [{
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: "RatingAndReview",
     }],
     category: {
@@ -45,6 +44,10 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Brand",
+    },
+    status:{
+        type: String,
+        enum: ["Draft", "Published"],
     },
 
 });
