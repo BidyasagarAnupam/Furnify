@@ -9,6 +9,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    discount: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Discount",
+    },
     merchant: {
         type: mongoose.Schema.Types.ObjectId,
         require: true,
