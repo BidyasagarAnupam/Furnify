@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const discountSchema = new mongoose.Schema({
+    percentOff: {
+        type: Number,
+        default:0
+    },
     products: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",

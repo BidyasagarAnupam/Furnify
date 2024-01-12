@@ -3,7 +3,12 @@ const Category = require("../models/Category");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 require("dotenv").config();
 const Product = require("../models/Product");
+const SubCategory = require('../models/SubCategory');
+const Brand = require('../models/Brand');
+const Discount = require('../models/Discount');
 
+
+// TODO: DISCOUNT PART
 exports.createProduct = async (req, res) => {
     try {
         //fetch userID
@@ -232,13 +237,141 @@ exports.editProduct = async (req, res) => {
             })
         }
 
+        // If Thumbnail Image is found, update it
+        if (req.files) {
+            console.log("thumbnail update")
+            const thumbnail = req.files.thumbnailImage
+            const thumbnailImage = await uploadImageToCloudinary(
+                thumbnail,
+                process.env.FOLDER_NAME
+            )
+            product.image = thumbnailImage.secure_url
+        }
 
+        // Update only the fields that are present in the request body
+        for (const key in updates) {
+            if (updates.hasOwnProperty(key)) {
+                product[key] = updates[key]
+            }
+        }
 
+        product.save();
+
+        const getProductDetails = await Product.find({ _id: productId })
+            .populate(
+                {
+                    path: "merchant",
+                    populate: {
+                        path: "additionalDetails"
+                    },
+                }
+            )
+            .populate("category")
+            .populate("subCategory")
+            .populate("ratingAndReviews")
+            .populate("brand")
+            .populate("discount")
+            .exec();
+
+        return res.status(200).json({
+            success: true,
+            message: "Course updated successfullyy",
+            data: getProductDetails,
+        });
     }
     catch (error) {
-
+        console.error(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            error: error.message,
+        })
     }
+}
+
+// Get a list of Course for a given Instructor
+exports.getMerchantProducts = async (req, res) => {
+    try {
+        // Get the instructor ID from the authenticated user or request body
+        const merchantId = req.user.id
+
+        // Find all courses belonging to the instructor
+        const merchantProducts = await Product.find({
+            merchant: merchantId,
+        }).sort({ createdAt: -1 })
+
+        // Return the instructor's courses
+        res.status(200).json({
+            success: true,
+            message: "All products of Merchant for instructor",
+            data: merchantProducts,
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            success: false,
+            message: "Failed to retrieve instructor courses",
+            error: error.message,
+        })
+    }
+}
+
+// Delete the Course
+exports.deleteProduct = async (req, res) => {
+    try {
+        const { productId } = req.body
+
+        // Find the Product
+        const product = await Product.findById(productId)
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" })
+        }
+
+        // Delete product from Merchant product array
+        const merchantId = product.merchant
+        await User.findByIdAndUpdate(merchantId, {
+            $pull: { products: productId },
+        });
 
 
+        // Delete from category
+        const categoryId = product.category
+        await Category.findByIdAndUpdate(categoryId, {
+            $pull: { products: productId }
+        })
+        // Delete from subcategory
+        const subCategoryId = product.subCategory
+        await SubCategory.findByIdAndUpdate(subCategoryId, {
+            $pull: { products: productId }
+        })
 
+        // Delete from Brand
+        const brandId = product.brand
+        await Brand.findByIdAndUpdate(brandId, {
+            $pull: { products: productId }
+        })
+
+        // Delete from Discount
+        const discountId = product?.discount
+        if (discountId) {
+            await Discount.findByIdAndUpdate(discountId, {
+                $pull: { products: productId }
+            })
+        }
+        
+        // Delete the course
+        await Product.findByIdAndDelete(productId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Product deleted successfully",
+        })
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message,
+        })
+    }
 }
