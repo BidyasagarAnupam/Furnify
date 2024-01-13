@@ -12,7 +12,11 @@ const subcategorySchema = new mongoose.Schema({
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref: "Category"
-    }
+    },
+    brands: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Brand"
+    }]
 });
 
 module.exports = mongoose.model("subCategory", subcategorySchema);

@@ -6,9 +6,11 @@ const Product = require("../models/Product");
 const SubCategory = require('../models/SubCategory');
 const Brand = require('../models/Brand');
 const Discount = require('../models/Discount');
+const { getFiltered } = require('../utils/getFilterProducts');
 
 
 // TODO: DISCOUNT PART
+//Only for merchant pov
 exports.createProduct = async (req, res) => {
     try {
         //fetch userID
@@ -151,10 +153,14 @@ exports.createProduct = async (req, res) => {
 }
 
 
-// get all Products
+// get all Products(Only for Customers)
 exports.getAllProducts = async (req, res) => {
     try {
-        const allProducts = await Product.find({},
+        
+        const{query} = req.body;
+        const filter = getFiltered(query);
+
+        const allProducts = await Product.find(filter,
             {
                 name: true,
                 price: true,
@@ -179,7 +185,7 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-//get productDetails
+//get productDetails(Only for Customers and Merchants)
 exports.getProductDetails = async (req, res) => {
     try {
         const { productId } = req.body;
@@ -221,7 +227,7 @@ exports.getProductDetails = async (req, res) => {
     }
 }
 
-//edit product
+//edit product(only for Merchant)
 exports.editProduct = async (req, res) => {
     try {
         const { productId } = req.body;
@@ -289,34 +295,35 @@ exports.editProduct = async (req, res) => {
     }
 }
 
-// Get a list of Course for a given Instructor
+// Get a list of Product for a given Merchant(Only for Merchant)
 exports.getMerchantProducts = async (req, res) => {
     try {
         // Get the instructor ID from the authenticated user or request body
-        const merchantId = req.user.id
+        const {query} = req.body;
+        const merchantId = req.user.id;
+
+       const filter = getFiltered(query, merchantId);
 
         // Find all courses belonging to the instructor
-        const merchantProducts = await Product.find({
-            merchant: merchantId,
-        }).sort({ createdAt: -1 })
+        const merchantProducts = await Product.find(filter).sort({ createdAt: -1 });
 
         // Return the instructor's courses
         res.status(200).json({
             success: true,
-            message: "All products of Merchant for instructor",
+            message: "Filtered products of Merchant",
             data: merchantProducts,
         })
     } catch (error) {
         console.error(error)
         res.status(500).json({
             success: false,
-            message: "Failed to retrieve instructor courses",
+            message: "Failed to retrieve filtered products",
             error: error.message,
         })
     }
 }
 
-// Delete the Course
+// Delete the Product(Only for Merchant)
 exports.deleteProduct = async (req, res) => {
     try {
         const { productId } = req.body
@@ -375,3 +382,5 @@ exports.deleteProduct = async (req, res) => {
         })
     }
 }
+
+
