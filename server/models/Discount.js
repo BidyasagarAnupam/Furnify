@@ -10,21 +10,21 @@ const discountSchema = new mongoose.Schema({
         ref: "Product",
         required: true,
     }],
-    brand: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Brand",
-        required: true,
-    }],
-    category: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "Category",
-    },
-    subCategory: [{
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "SubCategory",
-    }],
+    // brand: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Brand",
+    //     required: true,
+    // }],
+    // category: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     ref: "Category",
+    // },
+    // subCategory: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     ref: "SubCategory",
+    // }],
     
 });
 

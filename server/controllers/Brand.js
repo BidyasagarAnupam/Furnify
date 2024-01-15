@@ -2,6 +2,7 @@ const Brand = require("../models/Brand");
 const Category = require("../models/Category");
 const Product = require("../models/Product");
 const SubCategory = require("../models/SubCategory");
+import { getFilteredBrand } from "../utils/getFilterBrands";
 
 exports.createBrand = async(req,res) =>{
     try{
@@ -21,6 +22,18 @@ exports.createBrand = async(req,res) =>{
             name,
             category,
             subCategory,
+        });
+
+        await SubCategory.findByIdAndUpdate(subCategory,{
+            $push:{
+                brands:createBrand._id
+            }
+        });
+
+        await Category.findByIdAndUpdate(category,{
+            $push:{
+                brands:createBrand._id
+            }
         });
 
         return res.status(200).json({
@@ -133,3 +146,32 @@ exports.deleteBrand = async(req,res) =>{
 }
 
 // /TODO: GET ALL BRANDS
+exports.getAllBrands = async(req,res) =>{
+    try{
+        const {query} = req.body;
+
+        const filter = getFilteredBrand(query);
+
+        const brandDetails = await Brand.find(filter).sort({createdAt: -1});
+
+        if(!brandDetails){
+            return res.status(403).json({
+                status: false,
+                message: "Brand Details not found",
+            });
+        }
+
+        return res.status(200).json({
+            success:true,
+            message:"Brand Details fetched successfully",
+            data: brandDetails
+        });
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
+    
+}
