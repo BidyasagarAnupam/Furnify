@@ -1,43 +1,13 @@
-const mongoose = require('mongoose');
 const Category = require('../models/Category');
 const SubCategory = require('../models/SubCategory');
-const Product = require('../models/Product');
-const Brand = require('../models/Brand');
-const Discount = require('../models/Discount');
+const deleteProduct = require('../utils/deleteProductHelpingFun')
 
-const deleteProduct = async (productId, cid) => {
-    // First we fetch all the details of the product
-    const productsDetails = Product.findById(productId);
 
-    // Before delete a propduct 1st we have to pull that product a brand
-    const brandId = productsDetails.brand;
-    // Pull that product from the brand
-    await Brand.findByIdAndUpdate(brandId, {
-        $pull: {
-            products : productId,
-        }
-    })
-
-    await Category.findByIdAndUpdate(cid, {
-        $pull: {
-            products : productId,
-        }
-    })
-
-    // get the Discound id
-    const discountId = productsDetails.discount;
-    await Discount.findByIdAndUpdate(discountId, {
-        $pull: {
-            products : productId,
-        }
-    })
-    await Product.findByIdAndDelete(productId);
-}
 
 exports.createCategory = async(req,res)=>{
     try{
         //fetch data
-        const name = req.body;
+        const {name} = req.body;
         //validation
         if(!name){
             return res.status(403).json({
@@ -97,20 +67,41 @@ exports.deleteCategory = async (req, res) => {
 
             // Now we Delete all the Product from that subCategory
             subCategoryDetails.products.forEach( async (productId) => {
-                await deleteProduct(productId, cid);
+                await deleteProduct(productId, cid, subCategoryId);
             });
 
             // Delete the SubCategory
             await SubCategory.findByIdAndDelete(subCategoryId);
-        });
+        });        
 
-
-
-
-        
-
-        
+        // category deleted successfully
+        await Category.findByIdAndDelete(cid);
     } catch (error) {
+        return res.status(500).json({
+            success: false,
+            err: error.message,
+            message : "Error in deleting Category"
+        })
         
+    }
+}
+
+exports.getAllCategory = async (req,res) => {
+    try{
+        const categoryDetails = await Category.find({});
+        
+       return res.status(200).json({
+        success:true,
+        message:"All Categories returned successfully",
+        data: categoryDetails,
+       });
+
+    }
+    catch(error) {
+        return res.status(500).json({
+            success: false,
+            err: error.message,
+            message : "Error in retrieving Category"
+        })
     }
 }
