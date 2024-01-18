@@ -28,4 +28,4 @@ const discountSchema = new mongoose.Schema({
     
 });
 
-module.exports = mongoose.model("Brand", discountSchema);
+module.exports = mongoose.model("Discount", discountSchema);

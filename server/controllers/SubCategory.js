@@ -148,6 +148,4 @@ exports.getSubCategory = async (req, res) => {
             message : "Error in fetching subCategory"
         })
     }
-
-
 }

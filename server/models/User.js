@@ -49,7 +49,11 @@ const userSchema = new mongoose.Schema({
     ordered: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
-    }]
+    }],
+    wishList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"WishList"
+    }],
 });
 
 module.exports = mongoose.model("User", userSchema);
