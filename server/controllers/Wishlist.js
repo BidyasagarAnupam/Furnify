@@ -158,11 +158,26 @@ exports.getAllWishList = async(req, res) =>{
 }
 
 exports.getWishListDetails = async(req, res) =>{
-    const {wishListId} = req.body;
+    try {
+        const { wishListId } = req.body;
 
-    const wishListDetails = await WishList.findById(wishListId).populate({
-                                                                
-    });
+        const wishListDetails = await WishList.findById(wishListId).populate({
+            path: 'products',
+            model: Product
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "WishList details feteched successfully",
+            data : wishListDetails
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Error while fetching wishlist details",
+            error: error.message,
+        })
+    }
 }
 
 

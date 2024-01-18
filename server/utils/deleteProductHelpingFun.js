@@ -28,13 +28,5 @@ exports.deleteProduct = async (productId, cid, subCategoryId) => {
             products : productId,
         }
     })
-
-    // get the Discound id
-    const discountId = productsDetails.discount;
-    await Discount.findByIdAndUpdate(discountId, {
-        $pull: {
-            products : productId,
-        }
-    })
     await Product.findByIdAndDelete(productId);
 }

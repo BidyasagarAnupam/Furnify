@@ -9,7 +9,6 @@ const Discount = require('../models/Discount');
 const { getFiltered } = require('../utils/getFilterProducts');
 
 
-// TODO: DISCOUNT PART
 //Only for merchant pov
 exports.createProduct = async (req, res) => {
     try {
@@ -24,6 +23,7 @@ exports.createProduct = async (req, res) => {
             category,
             subCategory,
             status,
+            discount,
             brand } = req.body;
         //fetch thumbnail
         const thumbnail = await req.files.thumbnailImage;
@@ -97,6 +97,7 @@ exports.createProduct = async (req, res) => {
             subCategory,
             status,
             brand,
+            discount,
             image: thumbnailImage.secure_url,
             merchant: merchantDetails._id,
         })
@@ -203,7 +204,6 @@ exports.getProductDetails = async (req, res) => {
             .populate("subCategory")
             .populate("ratingAndReviews")
             .populate("brand")
-            .populate("discount")
             .exec();
 
         if (!getProductDetails) {
@@ -276,7 +276,6 @@ exports.editProduct = async (req, res) => {
             .populate("subCategory")
             .populate("ratingAndReviews")
             .populate("brand")
-            .populate("discount")
             .exec();
 
         return res.status(200).json({
@@ -358,14 +357,6 @@ exports.deleteProduct = async (req, res) => {
             $pull: { products: productId }
         })
 
-        // Delete from Discount
-        const discountId = product?.discount
-        if (discountId) {
-            await Discount.findByIdAndUpdate(discountId, {
-                $pull: { products: productId }
-            })
-        }
-        
         // Delete the course
         await Product.findByIdAndDelete(productId);
 
