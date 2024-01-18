@@ -1,12 +1,9 @@
-const mongoose = require('mongoose');
 const Category = require("../models/Category");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 require("dotenv").config();
 const Product = require("../models/Product");
-const SubCategory = require('../models/SubCategory');
-const Brand = require('../models/Brand');
-const Discount = require('../models/Discount');
 const { getFiltered } = require('../utils/getFilterProducts');
+const { deleteProduct } = require('../utils/deleteProduct');
 
 
 //Only for merchant pov
@@ -327,38 +324,7 @@ exports.deleteProduct = async (req, res) => {
     try {
         const { productId } = req.body
 
-        // Find the Product
-        const product = await Product.findById(productId)
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" })
-        }
-
-        // Delete product from Merchant product array
-        const merchantId = product.merchant
-        await User.findByIdAndUpdate(merchantId, {
-            $pull: { products: productId },
-        });
-
-
-        // Delete from category
-        const categoryId = product.category
-        await Category.findByIdAndUpdate(categoryId, {
-            $pull: { products: productId }
-        })
-        // Delete from subcategory
-        const subCategoryId = product.subCategory
-        await SubCategory.findByIdAndUpdate(subCategoryId, {
-            $pull: { products: productId }
-        })
-
-        // Delete from Brand
-        const brandId = product.brand
-        await Brand.findByIdAndUpdate(brandId, {
-            $pull: { products: productId }
-        })
-
-        // Delete the course
-        await Product.findByIdAndDelete(productId);
+        await deleteProduct(productId);
 
         return res.status(200).json({
             success: true,

@@ -1,6 +1,11 @@
+const Address = require('../models/Address');
+const Order = require('../models/Order');
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { deleteProduct } = require('../utils/deleteProduct');
+const { deleteWishlist, deleteWishList } = require("../utils/deleteWishList")
+
 
 
 // update Profile
@@ -54,49 +59,63 @@ exports.updateProfile = async (req, res) => {
 // delete Account
 // TODO Explore -> how can we schedule this operation
 // TODO Expolre Cron Job(✅)
-// exports.deleteAccount = async (req, res) => {
-//     try {
-//         // get user id
-//         console.log("Printing Id ",req.user);
-//         const id = req.user.id;
-//         // validation
-//         const userDetails = await User.findById({ _id: id });
+exports.deleteAccount = async (req, res) => {
+    try {
+        // get user id
+        console.log("Printing Id ", req.user);
+        const id = req.user.id;
+        // validation
+        const userDetails = await User.findById({ _id: id });
 
-//         if (!userDetails) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "User not found",
-//             });
-//         }
+        if (!userDetails) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found",
+            });
+        }
 
-//         // delete profile
-//         await Profile.findByIdAndDelete({ _id: userDetails.additionalDetails });
+        // fetch thr profile detaisl
+        const profileDetail = await Profile.findById({ _id: userDetails.additionalDetails });
 
-//         // TODO: HW Unenroll from all enrolled courses(✅)
-//         await Course.findByIdAndUpdate({ _id: id },
-//             {
-//                 $pull: {
-//                     studentsEnrolled: id
-//                 }
-//             }, { new: true });
+        // Now delete all the addresses of that User
+        profileDetail.addressDetails.forEach(async (addressId) => {
+            await Address.findByIdAndDelete({ _id: addressId })
+        })
 
+        // Now delete the Profile Also
+        await Profile.findByIdAndDelete({ _id: userDetails.additionalDetails });
 
-//         // delete user
-//         await User.findByIdAndDelete({ _id: id });
+        // Now delete the Order of that user (For the customer)
+        userDetails.ordered.forEach(async (orderId) => {
+            await Order.findByIdAndDelete({ _id: orderId })
+        })
 
-//         return res.status(200).json({
-//             success: true,
-//             message: "User deleted Successfully"
-//         });
+        // Now delete all  Products for that Merchant
+        userDetails.products.forEach(async (productId) => {
+            await deleteProduct(productId)
+        })
 
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({
-//             success: false,
-//             message: "User cannot be deleted successfully"
-//         });
-//     }
-// }
+        // Now delete all the wishlists for that Customer
+        userDetails.wishList.forEach(async (wishListId) => {
+            await deleteWishList(wishListId, id)
+        })
+
+        // delete user
+        await User.findByIdAndDelete({ _id: id });
+
+        return res.status(200).json({
+            success: true,
+            message: "User deleted Successfully"
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "User cannot be deleted successfully"
+        });
+    }
+}
 
 // DONE
 exports.getAllUserDetails = async (req, res) => {
@@ -123,7 +142,7 @@ exports.getAllUserDetails = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "User data fetched Successfully",
-            data : userDetails
+            data: userDetails
         });
 
     } catch (error) {
@@ -136,36 +155,36 @@ exports.getAllUserDetails = async (req, res) => {
 }
 
 // TODO
-// exports.updateDisplayPicture = async (req, res) => {
-//     try {
-//         console.log("Backend calling updateDisplayPicture");
-//         const displayPicture = req.files.displayPicture
-//         const userId = req.user.id
-//         console.log("User Id for profile", userId);
-//         const image = await uploadImageToCloudinary(
-//             displayPicture,
-//             process.env.FOLDER_NAME,
-//             1000,
-//             1000
-//         )
-//         console.log("From backend IMg is ",image)
-//         const updatedProfile = await User.findByIdAndUpdate(
-//             { _id: userId },
-//             { image: image.secure_url },
-//             { new: true }
-//         ).populate("additionalDetails").exec(); //! ADDED BY ME
-//         res.send({
-//             success: true,
-//             message: `Image Updated successfully`,
-//             data: updatedProfile,
-//         })
-//     } catch (error) {
-//         return res.status(500).json({
-//             success: false,
-//             message: error.message,
-//         })
-//     }
-// };
+exports.updateDisplayPicture = async (req, res) => {
+    try {
+        console.log("Backend calling updateDisplayPicture");
+        const displayPicture = req.files.displayPicture
+        const userId = req.user.id
+        console.log("User Id for profile", userId);
+        const image = await uploadImageToCloudinary(
+            displayPicture,
+            process.env.FOLDER_NAME,
+            1000,
+            1000
+        )
+        console.log("From backend IMg is ",image)
+        const updatedProfile = await User.findByIdAndUpdate(
+            { _id: userId },
+            { image: image.secure_url },
+            { new: true }
+        ).populate("additionalDetails").exec(); //! ADDED BY ME
+        res.send({
+            success: true,
+            message: `Image Updated successfully`,
+            data: updatedProfile,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        })
+    }
+};
 
 
 exports.getOrderedProducts = async (req, res) => {

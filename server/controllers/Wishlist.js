@@ -1,5 +1,6 @@
 const WishList = require("../models/WishList");
 const Product = require("../models/Product");
+const {deleteWishlist} = require("../utils/deleteWishList")
 
 exports.createWishList = async(req,res) =>{
     try{
@@ -115,13 +116,9 @@ exports.deleteWishlist = async(req,res) =>{
         const {wishListId} = req.body;
         const userId = req.user.id;
 
-        await User.findByIdAndUpdate(userId, {
-            $pull:{
-                wishList: wishListId,
-            }
-        })
+        
 
-        const updatedWishlist = await WishList.findByIdAndDelete(wishListId);
+        const updatedWishlist = await deleteWishlist(wishListId, userId);
 
         return res.status(200).json({
             success:true,
