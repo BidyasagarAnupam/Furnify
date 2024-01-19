@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router()
+const { auth, isMerchant, isAdmin } = require("../middleware/auth")
 
 // Import Constroller
 
@@ -39,8 +40,6 @@ const {
 
 // TODO: Rating and review Controllers
 
-// Importing Middlewares
-const { auth, isCustomer, isMerchant, isAdmin } = require("../middleware/auth")
 
 // ********************************************************************************************************
 //                                      Category routes
@@ -50,13 +49,13 @@ const { auth, isCustomer, isMerchant, isAdmin } = require("../middleware/auth")
 router.post("/createCategory", auth, isAdmin, createCategory)
 
 // Category can Only be Updated by Admin
-router.post("/updateCategory", auth, isAdmin, updateCategory)
+router.put("/updateCategory", auth, isAdmin, updateCategory)
 
 // Category can Only be Delete by Admin
-router.post("/deleteCategory", auth, isAdmin, deleteCategory)
+router.delete("/deleteCategory", auth, isAdmin, deleteCategory)
 
 // Get All Category is access by any one
-router.post("/getAllCategory", getAllCategory)
+router.get("/getAllCategory", getAllCategory)
 
 // ********************************************************************************************************
 //                                      SubCategory routes
@@ -66,13 +65,13 @@ router.post("/getAllCategory", getAllCategory)
 router.post("/createSubCategory", auth, isAdmin, createSubCategory)
 
 // SubCategory can Only be Updated by Admin
-router.post("/updateSubCategory", auth, isAdmin, updateSubCategory)
+router.put("/updateSubCategory", auth, isAdmin, updateSubCategory)
 
 // SubCategory can Only be Delete by Admin
-router.post("/deleteSubCategory", auth, isAdmin, deleteSubCategory)
+router.delete("/deleteSubCategory", auth, isAdmin, deleteSubCategory)
 
 // Get All SubCategory is access by any one
-router.post("/getSubCategory", getSubCategory)
+router.get("/getSubCategory", getSubCategory)
 
 // ********************************************************************************************************
 //                                      Brand routes
@@ -93,3 +92,24 @@ router.post("/getAllBrands", getAllBrands)
 // ********************************************************************************************************
 //                                      Product routes
 //  ********************************************************************************************************
+
+//Product can be created by Merchant only
+router.post("/createProduct", auth, isMerchant, createProduct)
+
+//Products can be viewed by any one.
+router.get("/getAllProducts", getAllProducts)
+
+//Product Details can be viewed by any one
+router.get("/getProductDetails", getProductDetails)
+
+//Product can be edited by merchant only
+router.put("/editProduct", auth, isMerchant, editProduct)
+
+//Merchant can only see his/her listed products
+router.get("/getMerchantProducts", auth, isMerchant, getMerchantProducts)
+
+//Product can be deleted by merchant only
+router.delete("/deleteProduct", auth, isMerchant, deleteProduct)
+
+module.exports = router
+

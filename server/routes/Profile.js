@@ -8,13 +8,45 @@ const {
   updateDisplayPicture,
 } = require("../controllers/Profile")
 
+const{
+  createAddress,
+  updateAddress,
+  deleteAddress,
+  getAllAddress
+} = require("../controllers/Address")
+
 // ********************************************************************************************************
 //                                      Profile routes
 // ********************************************************************************************************
-// Delet User Account
+// Delete User Account
 router.delete("/deleteProfile",auth, deleteAccount)
+
+//Update User Account
 router.put("/updateProfile", auth, updateProfile)
+
+//Get User Details
 router.get("/getUserDetails", auth, getAllUserDetails)
+
+//Update Display Picture
 router.put("/updateDisplayPicture", auth, updateDisplayPicture)
+
+
+// ********************************************************************************************************
+//                                      Address routes
+// ********************************************************************************************************
+
+
+//Create User Address
+router.post("/createAddress", auth, createAddress)
+
+//Update User Address
+router.put("/updateAddress", auth, updateAddress)
+
+//Delete User Address
+router.delete("/deleteAddress", auth, deleteAddress)
+
+//Get User Address
+router.get("/getAllAddress", auth, getAllAddress)
+
 
 module.exports = router

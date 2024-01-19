@@ -2,7 +2,7 @@ const Brand = require("../models/Brand");
 const Category = require("../models/Category");
 const Product = require("../models/Product");
 const SubCategory = require("../models/SubCategory");
-import { getFilteredBrand } from "../utils/getFilterBrands";
+const { getFilteredBrand } = require("../utils/getFilterBrands");
 
 exports.createBrand = async(req,res) =>{
     try{

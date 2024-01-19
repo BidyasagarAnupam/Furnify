@@ -37,6 +37,8 @@ exports.createAddress = async (req, res) => {
         const profileId = userDetails.additionalDetails;
         const profileDetails = await Profile.findById(profileId);
 
+        // TODO: Delete the null addesss
+
         // create the new address
         const newAddressDetails = {
             address: address,
@@ -55,11 +57,20 @@ exports.createAddress = async (req, res) => {
             ...newAddressDetails,
         });
 
+        console.log("New Address is : ", newAddress);
+
         // Add the new address to the profile's addressDetails array
-        profileDetails.addressDetails.push(newAddress);
+        profileDetails.addressDetails.push(newAddress._id);
 
         // Save the updated profile details
-        await profileDetails.save();
+        const updatedProfile = await profileDetails.save();
+
+        return res.status(200).json({
+            success: true,
+            message:"Address created successfully",
+            data: newAddress,
+            updatedProfile: updatedProfile
+        })
 
         // return respince
     } catch (error) {
@@ -96,24 +107,21 @@ exports.updateAddress = async (req, res) => {
             findIndex(address => address._id.toString() === addressId);
         
         // If the address is found, update its details
+        let updatedAddress;
         if (addressIndex !== -1) {
             const addressToUpdate = profileDetails.addressDetails[addressIndex];
 
-            addressToUpdate.address = address;
-            addressToUpdate.city = city;
-            addressToUpdate.state = state;
-            addressToUpdate.country = country;
-            addressToUpdate.zipCode = zipCode;
-            addressToUpdate.name = name;
-            addressToUpdate.contactNumber = contactNumber;
-            addressToUpdate.addressType = addressType;
+              updatedAddress = await Address.findByIdAndUpdate(addressToUpdate,{
+                address:address,
+                city:city,
+                state:state,
+                country:country,
+                zipCode:zipCode,
+                name:name,
+                contactNumber:contactNumber,
+                addressType:addressType,
+            })
 
-            // Save the updated profile details
-            //! Update User extra
-            userDetails.firstName = firstName;
-            userDetails.lastName = lastName;
-            await userDetails.save();
-            await profileDetails.save();
         } else {
             // Handle the case where the address is not found
             console.log('Address not found in profile details.');
@@ -138,7 +146,8 @@ exports.updateAddress = async (req, res) => {
             success: true,
             message: "Address Updated Successfully Updated",
             // profilDetails,
-            data: userDetails
+            data: userDetails, 
+            updateAddress:updatedAddress
         });
     } catch (error) {
         return res.status(500).json({
@@ -220,7 +229,7 @@ exports.getAllAddress = async (req, res) => {
     return res.status(200).json({
         success: true,
         data : allAddresses,
-        message: "User registered successfully",
+        message: "All addresses fetched successfully",
     });
 
 }

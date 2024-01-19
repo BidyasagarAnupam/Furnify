@@ -28,7 +28,6 @@ exports.updateProfile = async (req, res) => {
         const profilDetails = await Profile.findById(profileId);
         // update profile
         profilDetails.dateOfBirth = dateOfBirth;
-        profilDetails.about = about;
         profilDetails.gender = gender;
         profilDetails.contactNumber = contactNumber;
 

@@ -2,7 +2,6 @@ const Category = require('../models/Category');
 const SubCategory = require('../models/SubCategory');
 const Product = require('../models/Product');
 const Brand = require('../models/Brand');
-const Discount = require('../models/Discount');
 
 exports.deleteProduct = async (productId, cid, subCategoryId) => {
     // First we fetch all the details of the product
