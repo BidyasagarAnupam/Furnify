@@ -1,29 +1,39 @@
 const Category = require('../models/Category');
 const SubCategory = require('../models/SubCategory');
 const deleteProduct = require('../utils/deleteProductHelpingFun')
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.createSubCategory = async(req,res)=>{
     try{
         //fetch data
         const {name,cid}= req.body;
+        const subCategoryImage = req.files.subCategoryImage;
         //validation
-        if(!name || !cid){
+        if(!name || !cid || !subCategoryImage){
             return res.status(403).json({
                 success: false,
                 message:"All fields are required",
             });
         }
+
         const subCategory = await SubCategory.find({name})
 
         // if subCategory is already present with the same name than dont create it.
-        if(subCategory) {
+        if(subCategory.length!==0) {
             return res.status(400).json({
                 success: false,
                 message:"This sub category is already present",
             })
         }
+        
+        const image = await uploadImageToCloudinary(
+            subCategoryImage,
+            process.env.FOLDER_NAME,
+            1000,
+            1000
+        )
 
-        const subCategoryDetails = await SubCategory.create({name})
+        const subCategoryDetails = await SubCategory.create({name, image: image.secure_url})
         
         await Category.findByIdAndUpdate(cid, {
             $push: {
