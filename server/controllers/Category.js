@@ -53,10 +53,33 @@ exports.createCategory = async(req,res)=>{
 
 exports.updateCategory = async(req,res) =>{
     try {
-        const {name, cid} = req.body;
+        const {cid} = req.body;
+        const updates = req.body
 
-    const updateCategoryDetails = await Category.findByIdAndUpdate(cid, 
-        {name});
+        const category = await Category.find(cid);
+
+        if(!category){
+            return res.status(400).json({
+                error: "Category not found" 
+            })
+        }
+
+        if(req.files){
+            const thumbnail = req.files.categoryImage
+            const categoryImage = await uploadImageToCloudinary(
+                thumbnail,
+                process.env.FOLDER_NAME
+              )
+            category.thumbnail = categoryImage.secure_url
+        }
+
+        if(updates.name){
+            category.name = updates.name;
+        }
+
+        await category.save();
+
+        const updateCategoryDetails = await Category.findOne({_id: cid});
 
         return res.status(200).json({
             success: true,
@@ -67,7 +90,7 @@ exports.updateCategory = async(req,res) =>{
         return res.status(500).json({
             success: false,
             err: error.message,
-            message : "Error in updateing Category"
+            message : "Error in updating Category"
         })
     }
 }
@@ -107,7 +130,7 @@ exports.deleteCategory = async (req, res) => {
 exports.getAllCategory = async (req,res) => {
     try{
         const categoryDetails = await Category.find({});
-        
+        console.log("Category Details from backend: ", categoryDetails);
        return res.status(200).json({
         success:true,
         message:"All Categories returned successfully",

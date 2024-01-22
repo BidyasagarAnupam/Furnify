@@ -4,6 +4,7 @@ import one from "../assets/icons/one.svg"
 import two from "../assets/icons/two.svg"
 import three from "../assets/icons/three.svg"
 import four from "../assets/icons/four.svg"
+import RenderCategory from '../components/HomePage/RenderCategory'
 
 const Home = () => {
   return (
@@ -63,6 +64,10 @@ const Home = () => {
         '>
           Shop By Category
         </p>
+
+        <div>
+            <RenderCategory/>
+        </div>
         
       </div>
 
