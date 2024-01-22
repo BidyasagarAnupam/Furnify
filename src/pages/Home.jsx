@@ -58,14 +58,13 @@ const Home = () => {
       </div>
 
       {/* Section 3 : Shop by Category*/}
-      <div className='mt-3'>
+      <div className='mt-3 mx-auto'>
         <p className='
         text-center text-[2rem] font-semibold
         '>
           Shop By Category
         </p>
-
-        <div>
+        <div className='mx-auto mt-4'>
             <RenderCategory/>
         </div>
         
