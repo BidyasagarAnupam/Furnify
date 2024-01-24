@@ -17,9 +17,9 @@ exports.getFiltered = (
         filter.name = { $regex: new RegExp(query.name, 'i') }; // Case-insensitive partial match
     }
 
-    if (query.brand) {
-        filter.brand = { $regex: new RegExp(query.brand, 'i') };
-    }
+    // if (query.brand) {
+    //     filter.brand = { $regex: new RegExp(query.brand, 'i') };
+    // }
 
     if (query.priceRange) {
         // Assuming priceRange is an array [min, max]

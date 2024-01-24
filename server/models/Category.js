@@ -19,10 +19,6 @@ const categorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product"
     }],
-    brands: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Brand"
-    }]
 });
 
 module.exports = mongoose.model("Category", categorySchema);

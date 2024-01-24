@@ -44,15 +44,10 @@ const productSchema = new mongoose.Schema({
         required: true,
         ref: "SubCategory",
     },
-    brand: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "Brand",
-    },
-    status:{
-        type: String,
-        enum: ["Draft", "Published"],
-    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+    }
 
 });
 

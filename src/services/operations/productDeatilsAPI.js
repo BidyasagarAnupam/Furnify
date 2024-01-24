@@ -11,6 +11,7 @@ const {
     EDIT_PRODUCT_API,
     GET_MERCHANT_PRODUCTS_API,
     DELETE_PRODUCT_API,
+    GET_NEW_PRODUCTS_API
 } = productEndpoints
 
 export const getAllProducts = async () => {
@@ -28,6 +29,23 @@ export const getAllProducts = async () => {
     }
     toast.dismiss(toastId)
     return result
+}
+
+export const getNewProducts = async () => {
+  const toastId = toast.loading("Loading...")
+  let result = []
+  try {
+    const response = await apiConnector("GET", GET_NEW_PRODUCTS_API)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch New Products")
+    }
+    result = response?.data?.data
+  } catch (error) {
+    console.log("GET_NEW_PRODUCTS_API API ERROR............", error)
+    toast.error(error.message)
+  }
+  toast.dismiss(toastId)
+  return result
 }
 
 export const fetchProductDetails = async (productId) => {

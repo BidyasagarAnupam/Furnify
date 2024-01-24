@@ -33,6 +33,7 @@ export const studentEndpoints = {
 export const productsEndpoints = {
   CREATE_PRODUCT_API: BASE_URL + "/product/createProduct",
   GET_ALL_PRODUCTS_API: BASE_URL + "/product/getAllProducts",
+  GET_NEW_PRODUCTS_API: BASE_URL + "/product/getNewProducts",
   GET_PRODUCT_DETAILS_API: BASE_URL + "/product/getProductDetails",
   EDIT_PRODUCT_API: BASE_URL + "/product/editProduct",
   GET_MERCHANT_PRODUCTS_API: BASE_URL + "/product/getMerchantProducts",

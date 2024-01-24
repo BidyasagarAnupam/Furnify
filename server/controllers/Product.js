@@ -4,6 +4,8 @@ require("dotenv").config();
 const Product = require("../models/Product");
 const { getFiltered } = require('../utils/getFilterProducts');
 const { deleteProduct } = require('../utils/deleteProduct');
+const User = require('../models/User');
+const SubCategory = require("../models/SubCategory");
 
 
 //Only for merchant pov
@@ -19,9 +21,7 @@ exports.createProduct = async (req, res) => {
             price,
             category,
             subCategory,
-            status,
-            discount,
-            brand } = req.body;
+            discount } = req.body;
         //fetch thumbnail
         const thumbnail = await req.files.thumbnailImage;
         //validation
@@ -32,16 +32,11 @@ exports.createProduct = async (req, res) => {
             !price ||
             !category ||
             !subCategory ||
-            !brand ||
             !thumbnail) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required",
             })
-        }
-
-        if (!status || status === undefined) {
-            status = 'Draft';
         }
         //check account type
         const merchantDetails = await User.findById(userID, {
@@ -65,7 +60,7 @@ exports.createProduct = async (req, res) => {
             });
         }
 
-        const subCategoryDetails = await subCategory.findById(subCategory);
+        const subCategoryDetails = await SubCategory.findById(subCategory);
 
         if (!subCategoryDetails) {
             return res.status(404).json({
@@ -74,12 +69,12 @@ exports.createProduct = async (req, res) => {
             });
         }
 
-        if (subCategoryDetails.category !== category) {
-            return res.status(404).json({
-                success: false,
-                message: "Category is not valid for the subcategory",
-            });
-        }
+        // if (subCategoryDetails.category !== category) {
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: "Category is not valid for the subcategory",
+        //     });
+        // }
 
         //upload image to cloudinary
         const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
@@ -92,8 +87,6 @@ exports.createProduct = async (req, res) => {
             price,
             category,
             subCategory,
-            status,
-            brand,
             discount,
             image: thumbnailImage.secure_url,
             merchant: merchantDetails._id,
@@ -122,7 +115,7 @@ exports.createProduct = async (req, res) => {
             { new: true }
         );
 
-        await subCategory.findByIdAndUpdate({
+        await SubCategory.findByIdAndUpdate({
             _id: subCategoryDetails._id
         },
             {
@@ -134,7 +127,7 @@ exports.createProduct = async (req, res) => {
         );
 
         //return response
-        return Response.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Product created successfully",
             data: newProduct,
@@ -183,6 +176,36 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
+// get new 7 products
+exports.getNewProducts = async (req, res) => { 
+    try {
+        const newProducts = await
+            Product
+                .find()
+                .sort({ createdAt: "desc" })
+                .limit(7);
+
+        if (!newProducts) {
+            res.status(404).json({
+                success: false,
+                message: `Can't Fetch Product Data`,
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Recent Products are fetched successfully",
+            data: newProducts,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json({
+            success: false,
+            message: `Can't Fetch Product Data`,
+            error: error.message,
+        });
+    }
+}
+
 //get productDetails(Only for Customers and Merchants)
 exports.getProductDetails = async (req, res) => {
     try {
@@ -200,7 +223,6 @@ exports.getProductDetails = async (req, res) => {
             .populate("category")
             .populate("subCategory")
             .populate("ratingAndReviews")
-            .populate("brand")
             .exec();
 
         if (!getProductDetails) {
@@ -272,7 +294,6 @@ exports.editProduct = async (req, res) => {
             .populate("category")
             .populate("subCategory")
             .populate("ratingAndReviews")
-            .populate("brand")
             .exec();
 
         return res.status(200).json({

@@ -11,7 +11,8 @@ const {
     getProductDetails,
     editProduct,
     getMerchantProducts,
-    deleteProduct
+    deleteProduct,
+    getNewProducts
 } = require("../controllers/Product");
 
 // Category Controllers Import
@@ -98,6 +99,9 @@ router.post("/createProduct", auth, isMerchant, createProduct)
 
 //Products can be viewed by any one.
 router.get("/getAllProducts", getAllProducts)
+
+//New Products can be viewed by any one.
+router.get("/getNewProducts", getNewProducts)
 
 //Product Details can be viewed by any one
 router.get("/getProductDetails", getProductDetails)
