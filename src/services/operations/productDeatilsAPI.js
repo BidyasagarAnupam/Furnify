@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast"
 
 import { apiConnector } from "../apiconnector"
-import { productEndpoints } from "../apis"
+import { productsEndpoints } from "../apis"
 
 
 const {
@@ -12,7 +12,7 @@ const {
     GET_MERCHANT_PRODUCTS_API,
     DELETE_PRODUCT_API,
     GET_NEW_PRODUCTS_API
-} = productEndpoints
+} = productsEndpoints
 
 export const getAllProducts = async () => {
     const toastId = toast.loading("Loading...")

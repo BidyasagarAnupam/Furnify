@@ -5,6 +5,7 @@ import two from "../assets/icons/two.svg"
 import three from "../assets/icons/three.svg"
 import four from "../assets/icons/four.svg"
 import RenderCategory from '../components/HomePage/RenderCategory'
+import RenderNewLaunches from '../components/HomePage/RenderNewLaunches'
 
 const Home = () => {
   return (
@@ -69,6 +70,20 @@ const Home = () => {
         </div>
         
       </div>
+
+      {/* Section 4: New Launches */}
+      <div className='mt-3 mx-auto'>
+        <p className='
+        text-center text-[2rem] font-semibold
+        '>
+          New Launches
+        </p>
+        <div className='mx-auto mt-4'>
+            <RenderNewLaunches/>
+        </div>
+        
+      </div>
+
 
     </div>
   )
