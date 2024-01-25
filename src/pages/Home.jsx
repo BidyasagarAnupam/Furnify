@@ -72,13 +72,11 @@ const Home = () => {
       </div>
 
       {/* Section 4: New Launches */}
-      <div className='mt-3 mx-auto'>
-        <p className='
-        text-center text-[2rem] font-semibold
-        '>
+      <div className="flex flex-col bg-neutral-2 mt-5">
+        <p className="flex px-5 my-5 items-start font-bold text-4xl text-neutral-4 overflow-hidden">
           New Launches
         </p>
-        <div className='mx-auto mt-4'>
+        <div>
             <RenderNewLaunches/>
         </div>
         

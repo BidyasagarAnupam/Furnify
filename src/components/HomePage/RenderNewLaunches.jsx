@@ -10,12 +10,13 @@ const RenderNewLaunches = () => {
             const res = await getNewProducts();
             if(res){
                 setNewProduct(res);
+                console.log("The new products are: ", res);
             }
         }
         getNewProduct();
     },[])
   return (
-    <div className='grid w-11/12 mx-auto gap-y-5 lg:grid-cols-6 md:grid-cols-4 grid-cols-3'>
+      <div className="mx-5 flex gap-12 overflow-x-scroll no-scrollbar">
        { newProduct.map((product, index) =>(
             <ProductCard key={index} product={ product}/>
         ))}

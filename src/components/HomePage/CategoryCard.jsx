@@ -10,7 +10,7 @@ const CategoryCard = ({category}) => {
       pt-3
       '
     >
-      <img className='
+      <img loading='lazy' className='
         aspect-square h-auto
         max-w-44 rounded-md
         transition-all
