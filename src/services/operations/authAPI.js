@@ -14,7 +14,7 @@ const {
     RESETPASSWORD_API,
 } = authEndpoints
 
-export function sendotp(email, navigate) {
+export function sendOTP(email, navigate) {
     return async (dispatch) => {
         const toastId = toast.loading("Loading...")
         dispatch(setLoading(true))
@@ -126,7 +126,9 @@ export function login(email, password, navigate) {
             // to store the user into local storage
             localStorage.setItem("user", JSON.stringify(response.data.user))
 
-            navigate("/dashboard/my-profile")
+            // navigate("/dashboard/my-profile")
+            navigate("/")
+
         } catch (error) {
             console.log("LOGIN API ERROR............", error.response.data)
             // toast.error("Login Failed, Check your userId or password")

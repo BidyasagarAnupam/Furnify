@@ -1,5 +1,8 @@
 * {
   color: black;
+  scroll-behavior: smooth;
+}
+html {
   overflow-x: hidden;
 }
 .App {

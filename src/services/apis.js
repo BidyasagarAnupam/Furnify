@@ -76,12 +76,9 @@ export const brandEndpoints = {
 
 // WISHLIST ENDPOINTS
 export const wishListEndpoints = {
-  CREATE_WISHLIST_API: BASE_URL + "/wishlist/createWishList",
-  UPDATE_WISHLIST_API: BASE_URL + "/wishlist/updateWishList",
   ADD_PRODUCT_TO_WISHLIST_API: BASE_URL + "/wishlist/addProductToWishlist",
-  DELETE_WISHLIST_API: BASE_URL + "/wishlist/deleteWishlist",
-  GET_ALL_WISHLIST_API: BASE_URL + "/wishlist/getAllWishList",
-  GET_WISHLIST_DETAILS_API: BASE_URL + "/wishlist/getWishListDetails",
+  GET_ALL_PRODUCT_FROM_WISHLIST_API: BASE_URL + "/wishlist/getAllWishList",
+  DELETE_PRODUCT_FROM_WISHLIST_API: BASE_URL + "/wishlist/deleteProductFromWishlist",
 }
 
 // CONTACT-US API

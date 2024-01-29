@@ -59,7 +59,7 @@ const Home = () => {
       </div>
 
       {/* Section 3 : Shop by Category*/}
-      <div className='mt-3 mx-auto'>
+      <div id={'product'} className='mt-3 mx-auto'>
         <p className='
         text-center text-[2rem] font-semibold
         '>

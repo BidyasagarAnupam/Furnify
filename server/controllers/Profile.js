@@ -4,7 +4,7 @@ const Profile = require('../models/Profile');
 const User = require('../models/User');
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { deleteProduct } = require('../utils/deleteProduct');
-const { deleteWishlist, deleteWishList } = require("../utils/deleteWishList")
+const WishList = require('../models/WishList');
 
 
 
@@ -94,10 +94,8 @@ exports.deleteAccount = async (req, res) => {
             await deleteProduct(productId)
         })
 
-        // Now delete all the wishlists for that Customer
-        userDetails.wishList.forEach(async (wishListId) => {
-            await deleteWishList(wishListId, id)
-        })
+        // Now delete the wishlist for that Customer
+        await WishList.findByIdAndDelete({ _id: userDetails.wishList });
 
         // delete user
         await User.findByIdAndDelete({ _id: id });

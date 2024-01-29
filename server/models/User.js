@@ -50,10 +50,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
     }],
-    wishList: [{
+    wishList: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"WishList"
-    }],
+    },
 });
 
 module.exports = mongoose.model("User", userSchema);

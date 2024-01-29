@@ -7,6 +7,7 @@ const mailSender = require("../utils/mailSender");
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 const Profile = require("../models/Profile");
 const Address = require("../models/Address");
+const WishList = require("../models/WishList");
 require("dotenv").config();
 
 // Signup Controller for Registering USers
@@ -116,7 +117,6 @@ exports.signup = async (req, res) => {
 
 		// Create the Address for the User
 		const address = await createAddress(user);
-
 		const data = await User.findById(user._id).populate({
 			path: "additionalDetails",
 			populate: {
@@ -124,9 +124,20 @@ exports.signup = async (req, res) => {
 			}
 		}).exec();
 
+		// Initialize Wishlist for a user
+		const wishListDetails = await WishList.create({
+			products: [],
+			user: user._id
+		})
+
+		await User.findByIdAndUpdate(user._id, {
+			wishList: wishListDetails._id
+		})
+		const updateUser = await User.findById(user._id);
+
 		return res.status(200).json({
 			success: true,
-			data,
+			data: updateUser,
 			message: "User registered successfully",
 		});
 	} catch (error) {

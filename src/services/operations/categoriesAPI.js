@@ -18,7 +18,6 @@ export const fetchCategories = async() =>{
         const response = await apiConnector("GET", GET_CATEGORIES_API)
 
         if(!response.data.success) {
-            console.log("Andr aagye")
             throw new Error(response.data.message)
         }
 

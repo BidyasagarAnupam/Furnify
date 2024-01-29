@@ -22,7 +22,7 @@ const RenderCategory = () => {
       loading ? (
          <div>Loading...</div>
       ) :
-         (<div className='grid w-11/12 mx-auto gap-y-5 lg:grid-cols-6 md:grid-cols-4 grid-cols-3'>
+         (<div className='grid w-11/12 mx-auto gap-y-5 lg:grid-cols-6 md:grid-cols-3 grid-cols-1 '>
             {categories.map((category, index) => (
                <CategoryCard key={index} category={category} />
             ))
