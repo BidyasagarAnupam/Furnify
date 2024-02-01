@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 
 import {login} from "../../services/operations/authAPI"
+import PrimaryButton from "../common/PrimaryButton"
 
 const LoginForm = () => {
     const navigate = useNavigate()
@@ -102,13 +103,8 @@ const LoginForm = () => {
 
                 </div>
 
-
-                <button
-                    type="submit"
-                    className="mt-6 w-11/12 rounded-[8px] bg-primary text-white py-[8px] px-[12px] font-medium"
-                >
-                    Sign in
-                </button>
+                <PrimaryButton type={"submit"} text={"Sign in"} width={"11/12"}/>
+                
             </form>
         </div>
     )

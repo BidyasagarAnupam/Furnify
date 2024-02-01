@@ -3,6 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import PrimaryButton from "../common/PrimaryButton"
 
 import { sendOTP } from "../../services/operations/authAPI"
 import { setSignupData } from "../../slices/authSlice"
@@ -226,12 +227,9 @@ const SignupForm = () => {
                         </span>
                     </div>
                 </div>
-                <button
-                    type="submit"
-                    className="mt-6 w-11/12 rounded-[8px] bg-primary text-white py-[8px] px-[12px] font-medium text-richblack-900"
-                >
-                    Create Account
-                </button>
+                
+                <PrimaryButton type={"submit"} text={"Sign up"} width={"11/12"} />
+
             </form>
         </div>
     )

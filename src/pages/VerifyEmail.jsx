@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { sendOTP, signUp } from '../services/operations/authAPI';
 import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
+import PrimaryButton from '../components/common/PrimaryButton';
 
 
 
@@ -105,12 +106,7 @@ const VerifyEmail = () => {
                                     gap: "0 6px",
                                 }}
                             />
-                            <button
-                                type='submit'
-                                className="mt-6 w-full rounded-[8px] bg-primary text-white py-[8px] px-[12px] font-medium"
-                            >
-                                Verify Email
-                            </button>
+                            <PrimaryButton type={"submit"} text={"Verify Email"} width={"11/12"} />
                         </form>
                         <div className='flex justify-between'>
                                 <div className="mt-6 flex items-center justify-between">

@@ -4,7 +4,7 @@ import signupImg from "../assets/Images/ChairLogo.png"
 
 const Signup = () => {
   return (
-    <div className=' w-full  bg-neutral-10'>
+    <div className=' w-full  bg-neutral-10 h-[calc(100vh-5rem)] overflow-y-hidden'>
       <Template
         title="Sign up"
         desc="Already have an account? "

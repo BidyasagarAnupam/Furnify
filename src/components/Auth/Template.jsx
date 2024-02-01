@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const Template = ({ title, desc, image, formtype}) => {
 
     return (
-        <div className='flex flex-col-reverse items-center md:flex-row lg:flex-row justify-between w-11/12 max-w-[1160px] py-12 mx-auto gap-x-12 gap-y-0'>
+        <div className='flex flex-col-reverse items-center md:flex-row lg:flex-row justify-between w-11/12 max-w-[1160px]  py-12 mx-auto gap-x-12 gap-y-0'>
 
             <div className=' w-11/12 max-w-[450px] mx-auto '>
                 <img src={image}

@@ -47,7 +47,6 @@ export const getAllProductsFromWishlist = async (token) => {
         if (!response?.data?.success) {
             throw new Error("Could Not get all Product from Wishlist")
         }
-        toast.success("Fetched all products from Wishlist Successfully")
         result = response?.data?.data
 
     } catch (error) {

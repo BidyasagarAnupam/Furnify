@@ -6,13 +6,25 @@ import OpenRoute from './components/Auth/OpenRoute';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import VerifyEmail from './pages/VerifyEmail';
+import ForgotPassword from './pages/ForgotPassword';
+import UpdatePassword from './pages/UpdatePassword';
+import Dashboard from './pages/Dashboard';
+import Account from './components/Dashboard/Account';
+import Address from './components/Dashboard/Address';
+import MyOrders from './components/Dashboard/Customer/MyOrders';
+import AddProduct from './components/Dashboard/Merchant/AddProduct';
+import MyProducts from './components/Dashboard/Merchant/MyProduct';
+import Settings from './components/Dashboard/Settings';
+import Wishlist from './components/Dashboard/Customer/Wishlist';
+import Merchant from './components/Dashboard/Merchant/Merchant';
+import EditProduct from './components/Dashboard/Merchant/EditProduct';
 
 
 function App() {
   return (
     <div className="w-screen min-h-screen flex flex-col font-inter ">
-        <NavBar/>
-        <Routes>
+      <NavBar />
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route
           path="signup"
@@ -38,8 +50,86 @@ function App() {
             </OpenRoute>
           }
         />
-        </Routes>
-        
+        <Route
+          path="forgot-password"
+          element={
+            <OpenRoute>
+              <ForgotPassword />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="update-password/:id"
+          element={
+            <OpenRoute>
+              <UpdatePassword />
+            </OpenRoute>
+          }
+        />
+
+        {/* Private Route - for Only Logged in User */}
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        >
+          {/* Route for all users */}
+          <Route path="dashboard/account" element={<Account />} />
+          <Route path="dashboard/settings" element={<Settings />} />
+          <Route path="dashboard/address" element={<Address />} />
+
+          {/* Route only for Customers */}
+          {user?.accountType === ACCOUNT_TYPE.CUSTOMER && (
+            <>
+              <Route path="dashboard//my-orders" element={<MyOrders />} />
+              <Route path="dashboard/wishlist" element={<Wishlist />} />
+            </>
+          )}
+
+          {/* Route only for Merchant */}
+          {user?.accountType === ACCOUNT_TYPE.MERCHANT && (
+            <>
+              <Route
+                path="dashboard/merchant"
+                element={<Merchant />} 
+              />
+              <Route
+                path="dashboard/myProducts"
+                element={<MyProducts />}
+              />
+              <Route
+                path="/dashboard/addProduct"
+                element={<AddProduct />} 
+              />
+              <Route
+                path="dashboard/edit-product/:productId"
+                element={<EditProduct />}
+              />
+            </>
+          )}
+
+          {/* Route only for Admin */}
+          {user?.accountType === ACCOUNT_TYPE.ADMIN && (
+            <>
+              <Route path="/dashboard/addcategory" element={<AddCategory />} />
+              <Route path="/dashboard/mycategory" element={<MyCategory />} />
+              <Route path="/dashboard/editcategory/:categoryId" element={<EditCategory />} />
+              <Route path="/dashboard/addsubcategory" element={<AddSubCategory />} />
+              <Route path="/dashboard/mysubcategory" element={<MySubCategory />} />
+              <Route path="/dashboard/editsubcategory/:subCategoryId" element={<EditSubCategory />} />
+              <Route path="/dashboard/addbrand" element={<AddBrand />} />
+              <Route path="/dashboard/allbrand" element={<AllBrand />} />
+              <Route path="/dashboard/editBrand/:brandId" element={<EditBrand />} />
+              
+            </>
+          )}
+
+        </Route>
+
+      </Routes>
+
     </div>
   );
 }
