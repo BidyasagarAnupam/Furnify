@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
-import { sidebarLinks } from "../../../data/dashboard-links"
-import { logout } from "../../../services/operations/authAPI"
-import ConfirmationModal from "../../Common/ConfirmationModal"
+import { sidebarLinks } from "../../data/dashboard-links"
+import { logout } from "../../services/operations/authAPI"
+import ConfirmationModal from "../common/ConfirmationModal"
 import SidebarLink from "./SidebarLink"
+import { MdOutlineCameraAlt } from "react-icons/md";
+import { IconContext } from "react-icons"
 
 export default function Sidebar() {
   const { user, loading: profileLoading } = useSelector(
@@ -26,10 +28,44 @@ export default function Sidebar() {
     )
   }
 
+  function getTimeOfDay() {
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+
+    if (currentHour >= 6 && currentHour < 12) {
+      return 'Morning';
+    } else if (currentHour >= 12 && currentHour < 18) {
+      return 'Afternoon';
+    } else {
+      return 'Evening';
+    }
+  }
+
   return (
     <>
-      <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
+      <div className="flex h-[calc(70vh-3.5rem)] 
+      min-w-[220px] flex-col 
+      neomorphic
+      lg:mt-20
+      lg:ml-6
+      relative
+       py-10">
+        {/* image */}
+        
         <div className="flex flex-col">
+          <div className="rounded-full relative -top-5 left-[30%]">
+            <img src={user?.image} alt={`profile-${user?.firstName}`}
+              className="aspect-square w-[70px] rounded-full object-cover"
+            />
+            <NavLink to={'/dashboard/settings'}>
+              <div className="absolute top-12 left-10 text-2xl rounded-full bg-white p-[0.20rem]">
+                <MdOutlineCameraAlt />
+              </div>
+            </NavLink>
+          </div>
+          <div>
+            <p className="text-center font-semibold mb-5">{`Good ${getTimeOfDay()} Divyanshu😊`}</p>
+          </div>
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null
             return (

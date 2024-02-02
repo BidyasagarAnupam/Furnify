@@ -46,12 +46,20 @@ const ProductCard = ({ product }) => {
   return (
 
     <div className="
+    neomorphic
       w-64
+      mb-5
       rounded-md flex-none bg-white relative
+      hover:cursor-pointer
+      transition-all
+      ease-in-out
+      duration-200
+      hover:scale-105
+      hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]
       "
     >
       <div>
-        <img src={product.image} alt="" className="h-full w-full" />
+        <img src={product.image} alt="" className="h-full w-full rounded-t-[20px]" />
       </div>
 
       <div className='p-3'>

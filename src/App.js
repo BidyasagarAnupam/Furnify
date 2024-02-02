@@ -18,9 +18,22 @@ import Settings from './components/Dashboard/Settings';
 import Wishlist from './components/Dashboard/Customer/Wishlist';
 import Merchant from './components/Dashboard/Merchant/Merchant';
 import EditProduct from './components/Dashboard/Merchant/EditProduct';
+import PrivateRoute from './components/Auth/PrivateRoute';
+import { ACCOUNT_TYPE } from './utils/constants';
+import { useSelector } from 'react-redux';
+import AddCategory from './components/Dashboard/Admin/Category/AddCategory'
+import AllCategory from './components/Dashboard/Admin/Category/AllCategory'
+import EditCategory from './components/Dashboard/Admin/Category/EditCategory'
+import AddSubCategory from './components/Dashboard/Admin/SubCategory/AddSubCategory'
+import AllSubCategory from './components/Dashboard/Admin/SubCategory/AllSubCategory'
+import EditSubCategory from './components/Dashboard/Admin/SubCategory/EditSubCategory'
+import AddBrand from './components/Dashboard/Admin/Brand/AddBrand'
+import AllBrand from './components/Dashboard/Admin/Brand/AllBrand'
+import EditBrand from './components/Dashboard/Admin/Brand/EditBrand'
 
 
 function App() {
+  const { user } = useSelector((state) => state.profile)
   return (
     <div className="w-screen min-h-screen flex flex-col font-inter ">
       <NavBar />
@@ -83,7 +96,7 @@ function App() {
           {/* Route only for Customers */}
           {user?.accountType === ACCOUNT_TYPE.CUSTOMER && (
             <>
-              <Route path="dashboard//my-orders" element={<MyOrders />} />
+              <Route path="dashboard/my-orders" element={<MyOrders />} />
               <Route path="dashboard/wishlist" element={<Wishlist />} />
             </>
           )}
@@ -114,10 +127,10 @@ function App() {
           {user?.accountType === ACCOUNT_TYPE.ADMIN && (
             <>
               <Route path="/dashboard/addcategory" element={<AddCategory />} />
-              <Route path="/dashboard/mycategory" element={<MyCategory />} />
+              <Route path="/dashboard/mycategory" element={<AllCategory />} />
               <Route path="/dashboard/editcategory/:categoryId" element={<EditCategory />} />
               <Route path="/dashboard/addsubcategory" element={<AddSubCategory />} />
-              <Route path="/dashboard/mysubcategory" element={<MySubCategory />} />
+              <Route path="/dashboard/mysubcategory" element={<AllSubCategory />} />
               <Route path="/dashboard/editsubcategory/:subCategoryId" element={<EditSubCategory />} />
               <Route path="/dashboard/addbrand" element={<AddBrand />} />
               <Route path="/dashboard/allbrand" element={<AllBrand />} />

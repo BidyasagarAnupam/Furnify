@@ -16,7 +16,7 @@ const RenderNewLaunches = () => {
         getNewProduct();
     },[])
   return (
-      <div className="mx-5 flex gap-12 overflow-x-scroll no-scrollbar">
+      <div className="mx-5 py-4 flex gap-12 overflow-x-scroll no-scrollbar">
        { newProduct.map((product, index) =>(
             <ProductCard key={index} product={ product}/>
         ))}

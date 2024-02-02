@@ -17,14 +17,14 @@ export const sidebarLinks = [
     name: "Orders",
     path: "/dashboard/my-orders",
     type: ACCOUNT_TYPE.CUSTOMER,
-    icon: "VscVm",
+    icon: "VscTasklist",
   },
   {
     id: 4,
     name: "Wishlist",
     path: "/dashboard/wishlist",
     type: ACCOUNT_TYPE.CUSTOMER,
-    icon: "VscHistory",
+    icon: "VscHeart",
   },
   {
     id: 5,

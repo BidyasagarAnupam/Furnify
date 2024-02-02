@@ -126,8 +126,9 @@ export function login(email, password, navigate) {
             // to store the user into local storage
             localStorage.setItem("user", JSON.stringify(response.data.user))
 
-            // navigate("/dashboard/my-profile")
-            navigate("/")
+            console.log("NAVIGATE ", navigate);
+            // navigate("/dashboard/account")
+            // navigate("/")
 
         } catch (error) {
             console.log("LOGIN API ERROR............", error.response.data)

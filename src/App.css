@@ -53,3 +53,11 @@ html {
     transform: rotate(360deg);
   }
 }
+
+/* For Neomorphic style */
+.neomorphic {
+  background: #EEF0F4;
+/* border-radius: 19%; */
+border-radius: 20px;
+box-shadow: 8.41px 8.41px 19px #B6B8BB, -8.41px -8.41px 19px #FFFFFF;
+}

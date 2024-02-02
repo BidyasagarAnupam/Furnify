@@ -2,7 +2,7 @@ import * as Icons from "react-icons/vsc"
 import { useDispatch } from "react-redux"
 import { NavLink, matchPath, useLocation } from "react-router-dom"
 
-import { resetCourseState } from "../../../slices/courseSlice"
+import { resetProductState } from "../../slices/productSlice"
 
 export default function SidebarLink({ link, iconName }) {
   const Icon = Icons[iconName]
@@ -16,10 +16,10 @@ export default function SidebarLink({ link, iconName }) {
   return (
     <NavLink
       to={link.path}
-      onClick={() => dispatch(resetCourseState())}
+      onClick={() => dispatch(resetProductState())}
       className={`relative px-8 py-2 text-sm font-medium ${
         matchRoute(link.path)
-          ? "bg-yellow-800 text-yellow-50"
+        ? "bg-[#B6B8BB] text-yellow-50"
           : "bg-opacity-0 text-richblack-300"
       } transition-all duration-200`}
     >

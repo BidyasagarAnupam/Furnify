@@ -11,6 +11,7 @@ const CategoryCard = ({category}) => {
       '
     >
       <img loading='lazy' className='
+      neomorphic
         aspect-square h-auto
         max-w-44 rounded-md
         transition-all
