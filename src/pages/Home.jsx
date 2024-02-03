@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div>
       {/* Section 1 */}
-      <div className='relative mx-auto flex flex-col w-11/12 gap-y-10 max-w-maxContent items-center 
+      {/* <div className='relative mx-auto flex flex-col w-11/12 gap-y-10 max-w-maxContent items-center 
       text-white justify-between'>
         <img className="w-full" src={Banner} alt="BannerImage" />
         <div className='flex justify-between w-full items-center'>
@@ -24,6 +24,16 @@ const Home = () => {
             <span className='text-neutral-4 font-bold'>Furnify</span> is a gift & decorations store based in HCMC, <br /> Vietnam. Est since 2019.
           </p>
         </div>
+      </div> */}
+
+      <div className='w-full h-[780px] bg-hero-section bg-no-repeat bg-cover flex flex-col justify-center items-center'>
+        <div className='text-[3.5rem] w-1/2 text-neutral-3 font-semibold text-center leading-[4rem] -mt-36'>Furniture that everyone Loves</div>
+        <p className='w-1/2 text-center text-neutral-9 text-lg mt-10 tracking-wide'>
+          We have 5000+ Reviews and customers trust on our furniture and Qualilty products.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, impedit!
+        </p>
+        <button className=' text-neutral-3 px-20 py-3 bg-primary rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 mt-12
+"'>Shop Now</button>
       </div>
 
       {/* Section 2 */}
@@ -59,16 +69,16 @@ const Home = () => {
       </div>
 
       {/* Section 3 : Shop by Category*/}
-      <div id={'product'} className='mt-3 mx-auto'>
+      <div id={'product'} className='mt-3 mx-auto '>
         <p className='
         text-center text-[2rem] font-semibold
         '>
           Shop By Category
         </p>
         <div className='mx-auto mt-4'>
-            <RenderCategory/>
+          <RenderCategory />
         </div>
-        
+
       </div>
 
       {/* Section 4: New Launches */}
@@ -77,13 +87,13 @@ const Home = () => {
           New Launches
         </p>
         <div>
-            <RenderNewLaunches/>
+          <RenderNewLaunches />
         </div>
-        
+
       </div>
 
 
-    </div>
+    </div >
   )
 }
 

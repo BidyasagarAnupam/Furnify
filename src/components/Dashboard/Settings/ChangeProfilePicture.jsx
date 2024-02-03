@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import { FiUpload } from "react-icons/fi"
 import { useDispatch, useSelector } from "react-redux"
 
-import { updateDisplayPicture } from "../../../../services/operations/SettingsAPI"
-import IconBtn from "../../../common/IconBtn"
+import { updateDisplayPicture } from "../../../services/operations/SettingsAPI"
+import IconBtn from "../../common/IconBtn"
 
 export default function ChangeProfilePicture() {
   const { token } = useSelector((state) => state.auth)
@@ -12,7 +12,7 @@ export default function ChangeProfilePicture() {
 
   const [loading, setLoading] = useState(false)
   const [imageFile, setImageFile] = useState(null)
-  
+
   // this state is used to priview the profile picture
   const [previewSource, setPreviewSource] = useState(null)
 
@@ -64,7 +64,7 @@ export default function ChangeProfilePicture() {
   }, [imageFile])
   return (
     <>
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12 text-richblack-5">
+      <div className="flex items-center justify-between rounded-md neomorphic p-8 px-12">
         <div className="flex items-center gap-x-4">
           <img
             src={previewSource || user?.image}

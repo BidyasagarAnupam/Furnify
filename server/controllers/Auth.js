@@ -269,7 +269,7 @@ exports.changePassword = async (req, res) => {
 		const userDetails = await User.findById(req.user.id);
 
 		// Get old password, new password, and confirm new password from req.body
-		const { oldPassword, newPassword, confirmNewPassword } = req.body;
+		const { oldPassword, newPassword } = req.body;
 
 		// Validate old password
 		const isPasswordMatch = await bcrypt.compare(
@@ -281,15 +281,6 @@ exports.changePassword = async (req, res) => {
 			return res
 				.status(401)
 				.json({ success: false, message: "The password is incorrect" });
-		}
-
-		// Match new password and confirm new password
-		if (newPassword !== confirmNewPassword) {
-			// If new password and confirm new password do not match, return a 400 (Bad Request) error
-			return res.status(400).json({
-				success: false,
-				message: "The password and confirm password does not match",
-			});
 		}
 
 		// Update password
@@ -304,6 +295,7 @@ exports.changePassword = async (req, res) => {
 		try {
 			const emailResponse = await mailSender(
 				updatedUserDetails.email,
+				"Password Updated Successfully",
 				passwordUpdated(
 					updatedUserDetails.email,
 					`Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`

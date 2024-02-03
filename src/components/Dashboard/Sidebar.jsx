@@ -64,7 +64,7 @@ export default function Sidebar() {
             </NavLink>
           </div>
           <div>
-            <p className="text-center font-semibold mb-5">{`Good ${getTimeOfDay()} Divyanshu😊`}</p>
+            <p className="text-center font-semibold mb-5">{`Good ${getTimeOfDay()} ${user.firstName}😊`}</p>
           </div>
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null

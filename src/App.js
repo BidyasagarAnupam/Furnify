@@ -106,7 +106,7 @@ function App() {
             <>
               <Route
                 path="dashboard/merchant"
-                element={<Merchant />} 
+                element={<Merchant />}
               />
               <Route
                 path="dashboard/myProducts"
@@ -114,7 +114,7 @@ function App() {
               />
               <Route
                 path="/dashboard/addProduct"
-                element={<AddProduct />} 
+                element={<AddProduct />}
               />
               <Route
                 path="dashboard/edit-product/:productId"
@@ -135,7 +135,7 @@ function App() {
               <Route path="/dashboard/addbrand" element={<AddBrand />} />
               <Route path="/dashboard/allbrand" element={<AllBrand />} />
               <Route path="/dashboard/editBrand/:brandId" element={<EditBrand />} />
-              
+
             </>
           )}
 

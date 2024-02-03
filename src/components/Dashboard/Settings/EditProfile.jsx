@@ -2,8 +2,8 @@ import React from 'react'
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import IconBtn from "../../../common/IconBtn"
-import { updateProfile } from '../../../../services/operations/SettingsAPI'
+import IconBtn from "../../common/IconBtn"
+import { updateProfile } from '../../../services/operations/SettingsAPI'
 
 
 const genders = ["Male", "Female", "Non-Binary", "Prefer not to say", "Other"]
@@ -38,13 +38,13 @@ const EditProfile = () => {
     return (
         <div>
             <form onSubmit={handleSubmit(submitProfileForm)}>
-                <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
+                <div className="my-10 flex flex-col gap-y-6 neomorphic p-8 px-12">
                     <h2 className="text-lg font-semibold text-richblack-5">
                         Profile Information
                     </h2>
                     {/* div for first name and last name */}
-                    <div className="flex flex-col gap-5 lg:flex-row">
-                        {/* div for only first name */}
+                    {/* <div className="flex flex-col gap-5 lg:flex-row">
+                        
                         <div className="flex flex-col gap-2 lg:w-[48%]">
                             <label htmlFor="firstName" className="lable-style">
                                 First Name <sup className="text-pink-200">*</sup>
@@ -79,6 +79,65 @@ const EditProfile = () => {
                             />
                             {errors.lastName && (
                                 <span className="-mt-1 text-[12px] text-yellow-100">
+                                    Please enter your last name.
+                                </span>
+                            )}
+                        </div>
+                    </div> */}
+                    <div className="flex w-11/12 justify-between">
+                        <div className="relative z-0 w-[45%]">
+                            <input
+                                // required
+                                type="text"
+                                name="firstName"
+                                {...register("firstName", { required: true })}
+                                defaultValue={user?.firstName}
+                                id="floating_standard"
+                                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer"
+                                placeholder=" " />
+                            <label for="floating_standard"
+                                className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                                First Name
+                            </label>
+
+                            {errors.firstName && (
+                                <span className="-mt-1 text-[12px] text-secondary-red">
+                                    Please enter your first name.
+                                </span>
+                            )}
+                        </div>
+
+
+                        <div className="relative z-0 w-[45%]">
+                            <input
+                                // required
+                                type="text"
+                                name="lastName"
+                                {...register("lastName", { required: true })}
+                                defaultValue={user?.lastName}
+                                id="floating_standard"
+                                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer"
+                                placeholder=" " />
+                            <label for="floating_standard"
+                                className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                                Last Name
+                            </label>
+                            {errors.lastName && (
+                                <span className="-mt-1 text-[12px] text-secondary-red">
                                     Please enter your last name.
                                 </span>
                             )}
@@ -174,33 +233,13 @@ const EditProfile = () => {
                             )}
                         </div>
 
-                        {/* section for about section */}
-                        <div className="flex flex-col gap-2 lg:w-[48%]">
-                            <label htmlFor="about" className="lable-style">
-                                About <sup className="text-pink-200">*</sup>
-                            </label>
-                            <input
-                                type="text"
-                                name="about"
-                                id="about"
-                                placeholder="Enter Bio Details"
-                                className="form-style"
-                                {...register("about", { required: true })}
-                                defaultValue={user?.additionalDetails?.about}
-                            />
-                            {errors.about && (
-                                <span className="-mt-1 text-[12px] text-yellow-100">
-                                    Please enter your About.
-                                </span>
-                            )}
-                        </div>
                     </div>
                 </div>
 
                 <div className="flex justify-end gap-2">
                     <button
                         onClick={() => {
-                            navigate("/dashboard/my-profile")
+                            navigate("/dashboard/account")
                         }}
                         className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
                     >
