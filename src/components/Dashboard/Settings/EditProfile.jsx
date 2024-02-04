@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import IconBtn from "../../common/IconBtn"
 import { updateProfile } from '../../../services/operations/SettingsAPI'
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 
 const genders = ["Male", "Female", "Non-Binary", "Prefer not to say", "Other"]
@@ -147,7 +148,7 @@ const EditProfile = () => {
                     {/* section for date of birth and  gender*/}
                     <div className="flex flex-col gap-5 lg:flex-row">
                         {/* section for date of birth */}
-                        <div className="flex flex-col gap-2 lg:w-[48%]">
+                        {/* <div className="flex flex-col gap-2 lg:w-[48%]">
                             <label htmlFor="dateOfBirth" className="lable-style">
                                 Date of Birth <sup className="text-pink-200">*</sup>
                             </label>
@@ -173,9 +174,36 @@ const EditProfile = () => {
                                     {errors.dateOfBirth.message}
                                 </span>
                             )}
+                        </div> */}
+                        <div className="relative z-0 w-[45%]">
+                            <input
+                                // required
+                                type="date"
+                                name="dateOfBirth"
+                                {...register("dateOfBirth", { required: true })}
+                                defaultValue={user?.additionalDetails?.dateOfBirth}
+                                id="floating_standard"
+                                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer"
+                                placeholder=" " />
+                            <label for="floating_standard"
+                                className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                                Date of Birth <sup>*</sup>
+                            </label>
+                            {errors.dateOfBirth && (
+                                <span className="-mt-1 text-[12px] text-secondary-red">
+                                    Please enter your Date of Birth.
+                                </span>
+                            )}
                         </div>
                         {/* section for gender */}
-                        <div className="flex flex-col gap-2 lg:w-[48%]">
+                        {/* <div className="flex flex-col gap-2 lg:w-[48%]">
                             <label htmlFor="gender" className="lable-style">
                                 Gender <sup className="text-pink-200">*</sup>
                             </label>
@@ -200,7 +228,46 @@ const EditProfile = () => {
                                     Please enter your gender
                                 </span>
                             )}
+                        </div> */}
+
+                        <div className="relative z-0 w-[45%]">
+                            <select
+                                // required
+                                type=""
+                                name="gender"
+                                {...register("gender", { required: true })}
+                                defaultValue={user?.additionalDetails?.gender}
+                                id="floating_standard"
+                                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer w-full"
+                                placeholder=" " >
+                                {genders.map((ele, i) => {
+                                    return (
+                                        <option key={i} value={ele}>
+                                            {ele}
+                                        </option>
+                                    )
+                                })}
+
+                            </select>
+                            <RiArrowDropDownLine className='absolute right-0 text-3xl bottom-1 ' />
+                            <label for="floating_standard"
+                                className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                                Gender <sup>*</sup>
+                            </label>
+                            {errors.gender && (
+                                <span className="-mt-1 text-[12px] text-secondary-red">
+                                    Please select you Gender
+                                </span>
+                            )}
                         </div>
+
                     </div>
 
                     {/* section for contact number and about  */}

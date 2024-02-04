@@ -4,7 +4,7 @@ import { getAllProductsFromWishlist, deleteProductWishlist, addProductToWishlist
 import { useSelector } from 'react-redux';
 
 const ProductCard = ({ product }) => {
-  
+
   const [isLiked, setIsLiked] = useState(false);
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth);
@@ -36,7 +36,7 @@ const ProductCard = ({ product }) => {
 
     }
     fetchData()
-  },[])
+  }, [])
 
   let price = product.price;
   const discount = product.discount;
@@ -59,7 +59,7 @@ const ProductCard = ({ product }) => {
       "
     >
       <div>
-        <img src={product.image} alt="" className="h-full w-full rounded-t-[20px]" />
+        <img src={product.image} alt="" className="h-full w-full rounded-t-[10px]" />
       </div>
 
       <div className='p-3'>
@@ -93,7 +93,7 @@ const ProductCard = ({ product }) => {
         {
           isLiked ? <FcLike fontSize="1.5rem" /> : <FcLikePlaceholder fontSize="1.5rem" />
         }
-        
+
       </button>
 
 
