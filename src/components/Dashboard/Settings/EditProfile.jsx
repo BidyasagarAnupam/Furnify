@@ -148,33 +148,6 @@ const EditProfile = () => {
                     {/* section for date of birth and  gender*/}
                     <div className="flex flex-col lg:flex-row justify-between w-11/12">
                         {/* section for date of birth */}
-                        {/* <div className="flex flex-col gap-2 lg:w-[48%]">
-                            <label htmlFor="dateOfBirth" className="lable-style">
-                                Date of Birth <sup className="text-pink-200">*</sup>
-                            </label>
-                            <input
-                                type="date"
-                                name="dateOfBirth"
-                                id="dateOfBirth"
-                                className="form-style"
-                                {...register("dateOfBirth", {
-                                    required: {
-                                        value: true,
-                                        message: "Please enter your Date of Birth.",
-                                    },
-                                    max: {
-                                        value: new Date().toISOString().split("T")[0],
-                                        message: "Date of Birth cannot be in the future.",
-                                    },
-                                })}
-                                defaultValue={user?.additionalDetails?.dateOfBirth}
-                            />
-                            {errors.dateOfBirth && (
-                                <span className="-mt-1 text-[12px] text-yellow-100">
-                                    {errors.dateOfBirth.message}
-                                </span>
-                            )}
-                        </div> */}
                         <div className="relative z-0 w-[45%]">
                             <input
                                 // required
@@ -273,33 +246,6 @@ const EditProfile = () => {
                     {/* section for contact number and about  */}
 
                     {/* section for contact number */}
-                    {/* <div className="flex flex-col gap-2 lg:w-[48%]">
-                            <label htmlFor="contactNumber" className="lable-style">
-                                Contact Number <sup className="text-pink-200">*</sup>
-                            </label>
-                            <input
-                                type="tel"
-                                name="contactNumber"
-                                id="contactNumber"
-                                placeholder="Enter Contact Number"
-                                className="form-style"
-                                {...register("contactNumber", {
-                                    required: {
-                                        value: true,
-                                        message: "Please enter your Contact Number.",
-                                    },
-                                    maxLength: { value: 12, message: "Invalid Contact Number" },
-                                    minLength: { value: 10, message: "Invalid Contact Number" },
-                                })}
-                                defaultValue={user?.additionalDetails?.contactNumber}
-                            />
-                            {errors.contactNumber && (
-                                <span className="-mt-1 text-[12px] text-yellow-100">
-                                    {errors.contactNumber.message}
-                                </span>
-                            )}
-                        </div> */}
-
                     <div className="relative z-0 w-[45%]">
                         <input
                             // required

@@ -30,6 +30,7 @@ import EditSubCategory from './components/Dashboard/Admin/SubCategory/EditSubCat
 import AddBrand from './components/Dashboard/Admin/Brand/AddBrand'
 import AllBrand from './components/Dashboard/Admin/Brand/AllBrand'
 import EditBrand from './components/Dashboard/Admin/Brand/EditBrand'
+import 'react-image-crop/dist/ReactCrop.css'
 
 
 function App() {

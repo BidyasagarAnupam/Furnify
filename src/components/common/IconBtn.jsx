@@ -8,19 +8,20 @@ const IconBtn = ({
     outline = false,
     customClasses,
     type,
+    loading
 
 }) => {
     return (
         <button
-            disabled={disabled}
+            disabled={loading}
             onClick={onclick}
             type={type}
-            className={`flex items-center ${outline ? "border border-yellow-50 bg-transparent" : "bg-yellow-50"
-                } cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900 ${customClasses}`}
+            className={`flex items-center ${outline ? "border border-yellow-50 bg-transparent" : "bg-primary"
+                } cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-neutral-3 ${customClasses}`}
         >
             {children ? (
                 <>
-                    <span className={`${outline && "text-yellow-50"}`}>{text}</span>
+                    <span className={`${ "text-neutral-3"}`}>{text}</span>
                     {children}
                 </>
             ) : (

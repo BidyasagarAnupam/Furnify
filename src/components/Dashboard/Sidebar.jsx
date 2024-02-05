@@ -8,7 +8,6 @@ import { logout } from "../../services/operations/authAPI"
 import ConfirmationModal from "../common/ConfirmationModal"
 import SidebarLink from "./SidebarLink"
 import { MdOutlineCameraAlt } from "react-icons/md";
-import { IconContext } from "react-icons"
 
 export default function Sidebar() {
   const { user, loading: profileLoading } = useSelector(
@@ -57,8 +56,9 @@ export default function Sidebar() {
             <img src={user?.image} alt={`profile-${user?.firstName}`}
               className="aspect-square w-[70px] rounded-full object-cover"
             />
-            <NavLink to={'/dashboard/settings'}>
-              <div className="absolute top-12 left-10 text-2xl rounded-full bg-white p-[0.20rem]">
+            <NavLink to={"dashboard/settings"}>
+              <div
+                className="absolute top-12 left-10 text-2xl rounded-full bg-white p-[0.20rem]">
                 <MdOutlineCameraAlt />
               </div>
             </NavLink>

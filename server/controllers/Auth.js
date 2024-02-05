@@ -280,7 +280,12 @@ exports.changePassword = async (req, res) => {
 			// If old password does not match, return a 401 (Unauthorized) error
 			return res
 				.status(401)
-				.json({ success: false, message: "The password is incorrect" });
+				.json({ success: false, message: "You have enter the wrong password" });
+		}
+		if (oldPassword === newPassword) { 
+			return res
+				.status(401)
+				.json({ success: false, message: "New password cannot be same as old Password" });
 		}
 
 		// Update password

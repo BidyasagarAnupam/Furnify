@@ -17,7 +17,7 @@ export default function UpdatePassword() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors },reset
   } = useForm()
 
   const submitPasswordForm = async (data) => {
@@ -25,6 +25,7 @@ export default function UpdatePassword() {
     try {
       // TODO
       await changePassword(token, data, navigate)
+      reset()
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message)
     }
@@ -35,22 +36,30 @@ export default function UpdatePassword() {
       <form onSubmit={handleSubmit(submitPasswordForm)}>
         <div className="my-10 flex flex-col gap-y-6 neomorphic p-8 px-12">
           <h2 className="text-lg font-semibold text-richblack-5">Password</h2>
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="oldPassword" className="lable-style">
-                Current Password
-              </label>
+          <div className="flex flex-col lg:flex-row justify-between w-11/12">
+            <div className="relative z-0 w-[45%]">
               <input
                 type={showOldPassword ? "text" : "password"}
-                name="oldPassword"
                 id="oldPassword"
-                placeholder="Enter Current Password"
-                className="form-style"
+                name="oldPassword"
                 {...register("oldPassword", { required: true })}
-              />
+
+                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer"
+                placeholder=" " />
+              <label for="oldPassword"
+                className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                Old Password
+              </label>
               <span
                 onClick={() => setShowOldPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-0 top-[38px] z-[10] cursor-pointer"
               >
                 {showOldPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -59,26 +68,34 @@ export default function UpdatePassword() {
                 )}
               </span>
               {errors.oldPassword && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your Current Password.
+                <span className="-mt-1 text-[12px] text-secondary-red">
+                  Please enter your old Password
                 </span>
               )}
             </div>
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="newPassword" className="lable-style">
-                New Password
-              </label>
+            <div className="relative z-0 w-[45%]">
               <input
                 type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 id="newPassword"
-                placeholder="Enter New Password"
-                className="form-style"
                 {...register("newPassword", { required: true })}
-              />
+
+                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer"
+                placeholder=" " />
+              <label for="newPassword"
+                className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                New Password
+              </label>
               <span
                 onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-0 top-[38px] z-[10] cursor-pointer"
               >
                 {showNewPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -87,13 +104,14 @@ export default function UpdatePassword() {
                 )}
               </span>
               {errors.newPassword && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your New Password.
+                <span className="-mt-1 text-[12px] text-secondary-red">
+                  Please enter your New Password
                 </span>
               )}
             </div>
           </div>
         </div>
+        
         <div className="flex justify-end gap-2">
           <button
             onClick={() => {
