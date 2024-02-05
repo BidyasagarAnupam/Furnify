@@ -105,7 +105,7 @@ const EditProfile = () => {
                             peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
                             peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
                             rtl:peer-focus:left-auto">
-                                First Name
+                                First Name <sup className='text-secondary-red'>*</sup>
                             </label>
 
                             {errors.firstName && (
@@ -146,7 +146,7 @@ const EditProfile = () => {
                     </div>
 
                     {/* section for date of birth and  gender*/}
-                    <div className="flex flex-col gap-5 lg:flex-row">
+                    <div className="flex flex-col lg:flex-row justify-between w-11/12">
                         {/* section for date of birth */}
                         {/* <div className="flex flex-col gap-2 lg:w-[48%]">
                             <label htmlFor="dateOfBirth" className="lable-style">
@@ -238,7 +238,7 @@ const EditProfile = () => {
                                 {...register("gender", { required: true })}
                                 defaultValue={user?.additionalDetails?.gender}
                                 id="floating_standard"
-                                className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                                className=" mt-10 block  px-0 text-md  bg-transparent border-0 border-b-2 
                             appearance-none text-primary border-gray-600 focus:border-neutral-4
                             focus:outline-none focus:ring-0 peer w-full"
                                 placeholder=" " >
@@ -251,8 +251,8 @@ const EditProfile = () => {
                                 })}
 
                             </select>
-                            <RiArrowDropDownLine className='absolute right-0 text-3xl bottom-1 ' />
-                            <label for="floating_standard"
+                            <RiArrowDropDownLine className='absolute right-0 text-3xl bottom-1' />
+                            <label htmlFor="floating_standard"
                                 className="
                             absolute text-md text-neutral-4 duration-300 transform mt-6
                             -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
@@ -263,7 +263,7 @@ const EditProfile = () => {
                             </label>
                             {errors.gender && (
                                 <span className="-mt-1 text-[12px] text-secondary-red">
-                                    Please select you Gender
+                                    Please select your Gender
                                 </span>
                             )}
                         </div>
@@ -271,9 +271,9 @@ const EditProfile = () => {
                     </div>
 
                     {/* section for contact number and about  */}
-                    <div className="flex flex-col gap-5 lg:flex-row">
-                        {/* section for contact number */}
-                        <div className="flex flex-col gap-2 lg:w-[48%]">
+
+                    {/* section for contact number */}
+                    {/* <div className="flex flex-col gap-2 lg:w-[48%]">
                             <label htmlFor="contactNumber" className="lable-style">
                                 Contact Number <sup className="text-pink-200">*</sup>
                             </label>
@@ -298,9 +298,39 @@ const EditProfile = () => {
                                     {errors.contactNumber.message}
                                 </span>
                             )}
-                        </div>
+                        </div> */}
 
+                    <div className="relative z-0 w-[45%]">
+                        <input
+                            // required
+                            type="tel"
+                            name="contactNumber"
+                            {...register("contactNumber", { required: true, minLength: 10, maxLength: 10 })}
+                            defaultValue={user?.additionalDetails?.contactNumber}
+                            id="floating_standard"
+                            className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
+                            appearance-none text-primary border-gray-600 focus:border-neutral-4
+                            focus:outline-none focus:ring-0 peer"
+                            placeholder=" " />
+                        <label for="floating_standard"
+                            className="
+                            absolute text-md text-neutral-4 duration-300 transform mt-6
+                            -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0
+                            peer-focus:text-neutral-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                            peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4
+                            rtl:peer-focus:left-auto">
+                            Contact Number <sup>*</sup>
+                        </label>
+
+                        {errors.contactNumber && (
+                            <span className="-mt-1 text-[12px] text-secondary-red">
+                                Please enter your 10 digit number.
+                            </span>
+                        )}
                     </div>
+
+
+
                 </div>
 
                 <div className="flex justify-end gap-2">
