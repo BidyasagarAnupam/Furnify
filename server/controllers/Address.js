@@ -20,13 +20,13 @@ const Profile = require('../models/Profile');
 exports.createAddress = async (req, res) => {
     try {
         // Fetch the data
-        const { address, city, state, country, zipCode, name, contactNumber, addressType } = req.body;
+        const { address, city, state, zipCode, name, contactNumber, addressType, locality } = req.body;
 
         // fetch the user
         const id = req.user.id;
 
         // data validation
-        if (!address || !city || !state || !country || !zipCode || !name || !contactNumber || !addressType) {
+        if (!address || !city || !state || !zipCode || !name || !contactNumber || !addressType || !locality) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -44,11 +44,11 @@ exports.createAddress = async (req, res) => {
             address: address,
             city: city,
             state: state,
-            country: country,
             zipCode: zipCode,
             name: name,
             contactNumber: contactNumber,
-            addressType: addressType
+            addressType: addressType,
+            locality: locality
         };
 
         // Create a new address
@@ -67,7 +67,7 @@ exports.createAddress = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message:"Address created successfully",
+            message: "Address created successfully",
             data: newAddress,
             updatedProfile: updatedProfile
         })
@@ -86,16 +86,13 @@ exports.createAddress = async (req, res) => {
 exports.updateAddress = async (req, res) => {
     try {
         // get data
-        const { address, city, state, country, zipCode, addressId, name, contactNumber, addressType } = req.body;
+        const { addressId } = req.body;
+        const updates = req.body;
+
         // get userId(From Cookies)
         const id = req.user.id;
         // verify data
-        if (!address || !city || !state || !country || !zipCode || !addressId || !name || !contactNumber || !addressType) {
-            return res.status(400).json({
-                success: false,
-                message: "All fields are required"
-            });
-        }
+
         // find profile
         let userDetails = await User.findById(id)
         const profileId = userDetails.additionalDetails;
@@ -105,50 +102,36 @@ exports.updateAddress = async (req, res) => {
         // Find the index of the address you want to update within the array
         const addressIndex = profileDetails.addressDetails.
             findIndex(address => address._id.toString() === addressId);
-        
+
         // If the address is found, update its details
         let updatedAddress;
         if (addressIndex !== -1) {
-            const addressToUpdate = profileDetails.addressDetails[addressIndex];
+            const addressToUpdateId = profileDetails.addressDetails[addressIndex];
+            const addressDetail = await Address.findById(addressToUpdateId)
 
-              updatedAddress = await Address.findByIdAndUpdate(addressToUpdate,{
-                address:address,
-                city:city,
-                state:state,
-                country:country,
-                zipCode:zipCode,
-                name:name,
-                contactNumber:contactNumber,
-                addressType:addressType,
+            // Update only the fields that are present in the request body
+            for (const key in updates) {
+                if (updates.hasOwnProperty(key)) {
+                    addressDetail[key] = updates[key]
+                }
+            }
+
+            await addressDetail.save();
+
+            const updatedAddress = await Address.findOne({ _id: addressDetail })
+            return res.status(200).json({
+                success: true,
+                message: "Address updated successfully",
+                data: updatedAddress,
             })
 
         } else {
-            // Handle the case where the address is not found
-            console.log('Address not found in profile details.');
             return res.status(400).json({
                 success: false,
-                message: "Address not found in profile details."
+                message: "Address details not updated."
             });
         }
 
-        
-
-        // await profileDetails.save();
-        userDetails = await User.findById(id).populate({
-            path: "additionalDetails",
-            populate: {
-                path: "addressDetails"
-            }
-        }).exec();
-
-        // return responce
-        return res.status(200).json({
-            success: true,
-            message: "Address Updated Successfully Updated",
-            // profilDetails,
-            data: userDetails, 
-            updateAddress:updatedAddress
-        });
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -159,7 +142,7 @@ exports.updateAddress = async (req, res) => {
 }
 
 // Delete new Address
-exports.deleteAddress = async (req, res) => { 
+exports.deleteAddress = async (req, res) => {
     try {
 
         const { addressId } = req.body;
@@ -174,7 +157,7 @@ exports.deleteAddress = async (req, res) => {
         // Find the index of the address you want to update within the array
         const addressIndex = profileDetails.addressDetails.
             findIndex(address => address._id.toString() === addressId);
-        
+
         if (addressIndex !== -1) {
 
             // Delete the address from the Address Model
@@ -214,7 +197,7 @@ exports.deleteAddress = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: "Something went wrong while deleting the address",
-            error : error.message
+            error: error.message
         });
     }
 }
@@ -225,11 +208,47 @@ exports.getAllAddress = async (req, res) => {
     const id = req.user.id;
 
     const allAddresses = await Address.find({ user: id });
-    
+
     return res.status(200).json({
         success: true,
-        data : allAddresses,
+        data: allAddresses,
         message: "All addresses fetched successfully",
     });
 
+}
+
+//Get full address detail
+exports.getFullAddressDetails = async (req, res) => {
+
+    try {
+        const { addressId } = req.body;
+
+        console.log("THE REQ.BODY ", req.body)
+        if (!addressId) {
+            return res.status(400).json({
+                success: false,
+                message: "Give a valid addressId to fetch address details"
+            })
+        }
+
+        const getAddressDetails = await Address.findById(addressId)
+
+        if (!getAddressDetails) {
+            return res.status(500).json({
+                success: false,
+                message: "Address details not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Address details fetched successfullly",
+            data: getAddressDetails,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Error while Fetching Address Details"
+        })
+    }
 }

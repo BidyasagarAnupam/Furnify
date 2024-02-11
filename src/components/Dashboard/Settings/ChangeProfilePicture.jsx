@@ -79,7 +79,7 @@ export default function ChangeProfilePicture() {
   };
 
   const previewFile = (file) => {
-      setPreviewSource(file)
+    setPreviewSource(file)
   }
 
   const handleFileUpload = () => {

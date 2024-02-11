@@ -20,6 +20,7 @@ export const addressEndpoints = {
   UPDATE_ADDRESS_API: BASE_URL + "/profile/updateAddress",
   DELETE_ADDRESS_API: BASE_URL + "/profile/deleteAddress",
   GET_ALL_ADDRESS_API: BASE_URL + "/profile/getAllAddress",
+  GET_FULL_ADDRESS_DETAILS_API: BASE_URL + "/profile/getFullAddressDetails",
 }
 
 //TODO: STUDENTS ENDPOINTS

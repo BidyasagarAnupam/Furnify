@@ -98,7 +98,7 @@ export const deleteCategory = async(data, token) =>{
     } 
     catch (error) {
         console.log("DELETE CATEGORY API ERROR............", error)
-    toast.error(error.message)
+        toast.error(error.message)
     }
     toast.dismiss(toastId)
 }

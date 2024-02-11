@@ -78,26 +78,26 @@ exports.signup = async (req, res) => {
 		const hashedPassword = await bcrypt.hash(password, 10);
 
 		// Create Address function
-		const createAddress = async (user) => {
-			const addressDetails = await Address.create({
-				user: user._id,
-				address: null,
-				city: null,
-				state: null,
-				country: null,
-				zipCode: null,
-				name: null,
-				contactNumber: null,
-				addressType : "Home"
-			});
+		// const createAddress = async (user) => {
+		// 	const addressDetails = await Address.create({
+		// 		user: user._id,
+		// 		address: null,
+		// 		city: null,
+		// 		state: null,
+		// 		country: null,
+		// 		zipCode: null,
+		// 		name: null,
+		// 		contactNumber: null,
+		// 		addressType : "Home"
+		// 	});
 
-			// Update the profile to reference the newly created address
-			await Profile.findByIdAndUpdate(user.additionalDetails, {
-				addressDetails: addressDetails._id,
-			});
+		// 	// Update the profile to reference the newly created address
+		// 	await Profile.findByIdAndUpdate(user.additionalDetails, {
+		// 		addressDetails: addressDetails._id,
+		// 	});
 
-			return addressDetails;
-		};
+		// 	return addressDetails;
+		// };
 
 		// Create the Additional Profile For User
 		const profileDetails = await Profile.create({
@@ -116,7 +116,7 @@ exports.signup = async (req, res) => {
 		});
 
 		// Create the Address for the User
-		const address = await createAddress(user);
+		// const address = await createAddress(user);
 		const data = await User.findById(user._id).populate({
 			path: "additionalDetails",
 			populate: {

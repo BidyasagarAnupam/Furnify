@@ -18,10 +18,6 @@ const addressSchema = new mongoose.Schema({
         type: String,
         // required: true
     },
-    country: {
-        type: String,
-        // required: true
-    },
     zipCode: {
         type: Number,
         // required: true
@@ -35,6 +31,9 @@ const addressSchema = new mongoose.Schema({
     addressType: {
         type: String,
         enum: ["Home", "Work"]
+    },
+    locality: {
+        type: String,
     }
     
 });

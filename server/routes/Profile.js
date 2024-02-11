@@ -12,7 +12,8 @@ const{
   createAddress,
   updateAddress,
   deleteAddress,
-  getAllAddress
+  getAllAddress,
+  getFullAddressDetails,
 } = require("../controllers/Address")
 
 // ********************************************************************************************************
@@ -47,6 +48,9 @@ router.delete("/deleteAddress", auth, deleteAddress)
 
 //Get User Address
 router.get("/getAllAddress", auth, getAllAddress)
+
+//Get Full Address Details
+router.post("/getFullAddressDetails", auth, getFullAddressDetails)
 
 
 module.exports = router

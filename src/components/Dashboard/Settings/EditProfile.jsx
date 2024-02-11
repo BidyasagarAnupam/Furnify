@@ -43,48 +43,7 @@ const EditProfile = () => {
                     <h2 className="text-lg font-semibold text-richblack-5">
                         Profile Information
                     </h2>
-                    {/* div for first name and last name */}
-                    {/* <div className="flex flex-col gap-5 lg:flex-row">
-                        
-                        <div className="flex flex-col gap-2 lg:w-[48%]">
-                            <label htmlFor="firstName" className="lable-style">
-                                First Name <sup className="text-pink-200">*</sup>
-                            </label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                id="firstName"
-                                placeholder="Enter first name"
-                                className="form-style"
-                                {...register("firstName", { required: true })}
-                                defaultValue={user?.firstName}
-                            />
-                            {errors.firstName && (
-                                <span className="-mt-1 text-[12px] text-yellow-100">
-                                    Please enter your first name.
-                                </span>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-2 lg:w-[48%]">
-                            <label htmlFor="lastName" className="lable-style">
-                                Last Name <sup className="text-pink-200">*</sup>
-                            </label>
-                            <input
-                                type="text"
-                                name="lastName"
-                                id="lastName"
-                                placeholder="Enter first name"
-                                className="form-style"
-                                {...register("lastName", { required: true })}
-                                defaultValue={user?.lastName}
-                            />
-                            {errors.lastName && (
-                                <span className="-mt-1 text-[12px] text-yellow-100">
-                                    Please enter your last name.
-                                </span>
-                            )}
-                        </div>
-                    </div> */}
+
                     <div className="flex w-11/12 justify-between">
                         <div className="relative z-0 w-[45%]">
                             <input
@@ -175,38 +134,11 @@ const EditProfile = () => {
                                 </span>
                             )}
                         </div>
-                        {/* section for gender */}
-                        {/* <div className="flex flex-col gap-2 lg:w-[48%]">
-                            <label htmlFor="gender" className="lable-style">
-                                Gender <sup className="text-pink-200">*</sup>
-                            </label>
-                            <select
-                                type="text"
-                                name="gender"
-                                id="gender"
-                                className="form-style"
-                                {...register("gender", { required: true })}
-                                defaultValue={user?.additionalDetails?.gender}
-                            >
-                                {genders.map((ele, i) => {
-                                    return (
-                                        <option key={i} value={ele}>
-                                            {ele}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                            {errors.gender && (
-                                <span className="-mt-1 text-[12px] text-yellow-100">
-                                    Please enter your gender
-                                </span>
-                            )}
-                        </div> */}
 
                         <div className="relative z-0 w-[45%]">
                             <select
                                 // required
-                                type=""
+                                type="text"
                                 name="gender"
                                 {...register("gender", { required: true })}
                                 defaultValue={user?.additionalDetails?.gender}

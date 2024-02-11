@@ -10,11 +10,11 @@ const {
     DELETE_PRODUCT_FROM_WISHLIST_API
 } = wishListEndpoints
 
-export const addProductToWishList = async (data, token) => {
+export const addProductToWishList = async (productid, token) => {
     const toastId = toast.loading("Loading...")
     let result = null
     try {
-        const response = await apiConnector("POST", ADD_PRODUCT_TO_WISHLIST_API, data, {
+        const response = await apiConnector("POST", ADD_PRODUCT_TO_WISHLIST_API, { productid }, {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         })
@@ -57,11 +57,11 @@ export const getAllProductsFromWishlist = async (token) => {
     return result
 }
 
-export const deleteProductFromWishlist = async (data, token) => {
+export const deleteProductFromWishlist = async (productid, token) => {
     const toastId = toast.loading("Loading...")
     let result = null
     try {
-        const response = await apiConnector("POST", DELETE_PRODUCT_FROM_WISHLIST_API, data, {
+        const response = await apiConnector("POST", DELETE_PRODUCT_FROM_WISHLIST_API, { productid }, {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         })
