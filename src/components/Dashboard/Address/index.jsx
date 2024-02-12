@@ -11,6 +11,9 @@ const Address = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth)
+
+  // TODO:
+  const [resetFunction, setResetFunction] = useState();
   
   useEffect(() => {
     console.log("IN USE EFFECT THE isSaved", isSaved)
@@ -51,7 +54,14 @@ const Address = () => {
             {addresses.map((address, index) => {
               {/* To avoid the null address */}
               return (
-                <AddressCard key={index} address={address} setShowForm={setShowForm} setIsSaved={setIsSaved} isSaved={isSaved} />
+                <AddressCard
+                  key={index}
+                  address={address}
+                  setShowForm={setShowForm}
+                  setIsSaved={setIsSaved}
+                  isSaved={isSaved}
+                  showForm={showForm}
+                />
               )
             })
             }

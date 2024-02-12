@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FcLike, FcLikePlaceholder } from "react-icons/fc"
-import { getAllProductsFromWishlist, deleteProductWishlist, addProductToWishlist } from '../../services/operations/WishListAPI'
+import { getAllProductsFromWishlist, deleteProductWishlist, addProductToWishlist, addProductToWishList, deleteProductFromWishlist } from '../../services/operations/WishListAPI'
 import { useSelector } from 'react-redux';
 
 const ProductCard = ({ product }) => {
@@ -12,11 +12,12 @@ const ProductCard = ({ product }) => {
   // check whether the product is already exists or not
   const isLikedFunction = async (productId) => {
     if (!token) {
+      console.log("LOGOUT");
       return false;
     }
     const res = await getAllProductsFromWishlist(token);
-    // console.log("The result is -----", res);
-    if (res.includes(productId)) {
+    console.log("The result is -----", res.products);
+    if (res.products.includes(productId)) {
       return true;
     } else {
       return false;
@@ -24,19 +25,36 @@ const ProductCard = ({ product }) => {
   }
 
   // TODO: add and delete product from wishlist
-  const onClickHandler = () => {
+  const addProductHandler = async (productId) => {
+    const res = await addProductToWishList(productId, token);
+    console.log("Result:  ", res);
+    if (res) {
+      console.log("islikes is: ", isLiked);
+      setIsLiked(true);
+      console.log("islikes is: ", isLiked);
+    }
+    console.log("Add hua");
+    // setIsLiked(true)
+  }
 
+  const removeProductHandler = async (productId) => {
+    const res = await deleteProductFromWishlist(productId, token);
+    if (res) {
+      setIsLiked(false);
+    }
+    console.log("Remove hua");
+    // setIsLiked(false);
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await isLikedFunction(product._id).then(
+      await isLikedFunction(product._id).then(
         res => setIsLiked(res)
       )
 
     }
     fetchData()
-  }, [])
+  }, [token])
 
   let price = product.price;
   const discount = product.discount;
@@ -89,9 +107,9 @@ const ProductCard = ({ product }) => {
       <button className='absolute rounded-full 
       right-3 bottom-32 h-9 w-9 bg-white
       flex items-center justify-center
-      ' onClick={onClickHandler}>
+      '>
         {
-          isLiked ? <FcLike fontSize="1.5rem" /> : <FcLikePlaceholder fontSize="1.5rem" />
+          isLiked ? <FcLike fontSize="1.5rem" onClick={() => removeProductHandler(product._id)} /> : <FcLikePlaceholder fontSize="1.5rem" onClick={() => addProductHandler(product._id)} />
         }
 
       </button>

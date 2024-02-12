@@ -22,6 +22,7 @@ exports.createAddress = async (req, res) => {
         // Fetch the data
         const { address, city, state, zipCode, name, contactNumber, addressType, locality } = req.body;
 
+        console.log("FROM BACKEND ", address, city, state, zipCode, name, contactNumber, addressType, locality);
         // fetch the user
         const id = req.user.id;
 

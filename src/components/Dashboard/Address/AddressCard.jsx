@@ -6,7 +6,7 @@ import { getFullAddressDetails, deleteAddress } from '../../../services/operatio
 import ConfirmationModal from '../../common/ConfirmationModal';
 
 
-const AddressCard = ({ address, setShowForm, setIsSaved, isSaved }) => {
+const AddressCard = ({ address, setShowForm, setIsSaved, isSaved, showForm }) => {
 
     const [isHovering, setIsHovering] = useState(false);
     const { token } = useSelector((state) => state.auth);
@@ -24,8 +24,10 @@ const AddressCard = ({ address, setShowForm, setIsSaved, isSaved }) => {
 
     const handleEditBtn = async (addressId) => {
         console.log("ADDRESS ID", addressId);
+        setShowForm(false);
         const addressDetails = await getFullAddressDetails(addressId, token)
         // console.log("THE DATA IS ", res)
+        console.log("THE NEXT ADDRESS IS", addressDetails);
         dispatch(setAddress(addressDetails))
         dispatch(setEditAddress(true));
         setShowForm(true);
@@ -35,6 +37,7 @@ const AddressCard = ({ address, setShowForm, setIsSaved, isSaved }) => {
     const onPressDelete = async (addressId) => {
         await deleteAddress(addressId, token);
         setIsSaved(!isSaved)
+        // setShowForm(!showForm)
     }
 
     const deleteHandler = async (addressId) => {
@@ -60,8 +63,10 @@ const AddressCard = ({ address, setShowForm, setIsSaved, isSaved }) => {
                         {
                             isHovering && (
                                 <div className='flex flex-col absolute -top-2 -right-1 gap-2 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] bg-white p-3 rounded-sm'>
-                                    <p onClick={() => handleEditBtn(address._id)} className='text-sm hover:text-richBlue-500 cursor-pointer'>Edit</p>
-                                    <p onClick={() => deleteHandler(address._id)} className='text-sm hover:text-richBlue-500 cursor-pointer'>Delete</p>
+                                    <button onClick={() => handleEditBtn(address._id)} className='text-sm hover:text-richBlue-500 cursor-pointer'>Edit</button>
+                                    {
+                                        !showForm && <button disabled={showForm} onClick={() => deleteHandler(address._id)} className='text-sm hover:text-richBlue-500 cursor-pointer '>Delete</button>
+                                    }
                                 </div>
                             )
                         }
@@ -71,8 +76,7 @@ const AddressCard = ({ address, setShowForm, setIsSaved, isSaved }) => {
                 <div className='w-full flex flex-col gap-2 text-neutral-5'>
                     <span className='font-semibold'>{`${address.name} ${address.contactNumber}`}</span>
                     <div className='flex gap-x-2'>
-                        <span> {`${address.address}, ${address.city}, ${address.state}, 
-                    ${address.country} - `}</span>
+                        <span> {`${address.address}, ${address.city}, ${address.state} - `}</span>
                         <span className='font-semibold'>{address.zipCode}</span>
                     </div>
                 </div>

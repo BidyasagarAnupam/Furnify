@@ -11,10 +11,14 @@ const {
 } = wishListEndpoints
 
 export const addProductToWishList = async (productid, token) => {
+    if (!token) {
+        toast.error("Please login first...");
+        return;
+    }
     const toastId = toast.loading("Loading...")
     let result = null
     try {
-        const response = await apiConnector("POST", ADD_PRODUCT_TO_WISHLIST_API, { productid }, {
+        const response = await apiConnector("PUT", ADD_PRODUCT_TO_WISHLIST_API, { productid }, {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         })
@@ -24,7 +28,7 @@ export const addProductToWishList = async (productid, token) => {
             throw new Error("Could Not Add Product to Wishlist")
         }
         toast.success("Product Added into Wishlist Successfully")
-        result = response?.data?.data
+        result = response?.data?.success
 
     } catch (error) {
         console.log("ADD_PRODUCT_TO_WISHLIST_API ERROR............", error)
@@ -35,6 +39,10 @@ export const addProductToWishList = async (productid, token) => {
 }
 
 export const getAllProductsFromWishlist = async (token) => {
+    if (!token) {
+        toast.error("Please login first...");
+        return;
+    }
     const toastId = toast.loading("Loading...")
     let result = []
     try {
@@ -54,14 +62,18 @@ export const getAllProductsFromWishlist = async (token) => {
         toast.error(error.message)
     }
     toast.dismiss(toastId)
-    return result
+    return result[0]
 }
 
 export const deleteProductFromWishlist = async (productid, token) => {
+    if (!token) {
+        toast.error("Please login first...");
+        return;
+    }
     const toastId = toast.loading("Loading...")
     let result = null
     try {
-        const response = await apiConnector("POST", DELETE_PRODUCT_FROM_WISHLIST_API, { productid }, {
+        const response = await apiConnector("PUT", DELETE_PRODUCT_FROM_WISHLIST_API, { productid }, {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         })
@@ -71,7 +83,7 @@ export const deleteProductFromWishlist = async (productid, token) => {
             throw new Error("Could Not Delete Product from Wishlist")
         }
         toast.success("Product Deleted from Wishlist Successfully")
-        result = response?.data?.data
+        result = response?.data?.success
 
     } catch (error) {
         console.log("ADD_PRODUCT_TO_WISHLIST_API ERROR............", error)

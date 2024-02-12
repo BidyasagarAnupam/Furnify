@@ -14,6 +14,7 @@ const {
 export const addAddress = async (data, token) => {
     const toastId = toast.loading("Loading...")
     let result = null;
+    console.log("FROM FRONTEND ", data.name);
     try {
         const response = await apiConnector("POST", CREATE_ADDRESS_API, data, {
             "Content-Type": "multipart/form-data",

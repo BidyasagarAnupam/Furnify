@@ -10,7 +10,7 @@ export const sidebarLinks = [
     id: 2,
     name: "Address",
     path: "/dashboard/address",
-    icon: "VscDashboard",
+    icon: "FaHome",
   },
   {
     id: 3,

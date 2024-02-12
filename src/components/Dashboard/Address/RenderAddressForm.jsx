@@ -5,8 +5,9 @@ import {
 } from "../../../services/operations/addressAPI"
 import { setAddress, setEditAddress } from "../../../slices/addressSlice"
 import { useDispatch, useSelector } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import { get, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import Address from '.'
 
 
 const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
@@ -24,81 +25,93 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
     const { address, editAddress } = useSelector((state) => state.address)
     const [loading, setLoading] = useState(false)
 
-    const [zipCode, setZipCode] = useState('');
+    const [pinCode, setPinCode] = useState('');
     const [error, setError] = useState('');
     const [locality, setLocality] = useState([]);
     const [city, setCity] = useState([]);
-    const [state, setState] = useState('');
+    const [stateName, setStateName] = useState('');
+
+
+    // Fetch the address details from PIN code
+    const fetchZipCodeDetails = async (input) => {
+        try {
+            // Fetach API
+            const response = await fetch(`https://api.postalpincode.in/pincode/${input}`);
+            const data = await response.json();
+            console.log("Fetching the data....", data);
+
+            if (data[0].Status === "Error") {
+                toast.error("Enter a valid zip code")
+                setError("ZIP code is not valid");
+            } else {
+                setError(true)
+                const res1 = new Set();
+                const res2 = new Set();
+                data[0].PostOffice.map((zone) => (
+                    res1.add(zone?.Name),
+                    zone.Block !== "NA" && res2.add(zone?.Block)
+                ))
+
+                let Locality = Array.from(res1);
+                let City = Array.from(res2);
+                // To set the zipcode into useForm
+                setValue("zipCode", input);
+                setLocality(Locality);
+                setCity(City);
+                setStateName(data[0].PostOffice[0].State);
+                setValue("state", data[0].PostOffice[0].State);
+                setPinCode(input)
+            }
+        } catch (error) {
+            setError("An error occurred while validating ZIP code");
+        }
+    }
 
     const handleChange = async (e) => {
         const input = e.target.value;
         if (input.length <= 6) {
-            setZipCode(input);
+            setPinCode(input);
             setError("");
             setLocality([]);
             setCity([]);
-            setState('');
+            setStateName('');
         }
         if (input.length === 6) {
-            try {
-                // Fetach API
-                const response = await fetch(`https://api.postalpincode.in/pincode/${input}`);
-                const data = await response.json();
-                console.log("Fetching the data....", data);
-
-                if (data[0].Status === "Error") {
-                    setError("ZIP code is not valid");
-                } else {
-                    setError(true)
-                    const res1 = new Set();
-                    const res2 = new Set();
-                    data[0].PostOffice.map((zone) => {
-                        res1.add(zone?.Name)
-                        zone.Block !== "NA" && res2.add(zone?.Block)
-                    })
-
-                    let Locality = Array.from(res1);
-                    let City = Array.from(res2);
-
-                    setLocality(Locality);
-                    setCity(City);
-                    setState(data[0].PostOffice[0].State);
-
-
-                }
-            } catch (error) {
-                setError("An error occurred while validating ZIP code");
-            }
+            fetchZipCodeDetails(input)
         }
     };
 
     useEffect(() => {
         if (editAddress) {
+            console.log("ADDRESS IS : ", address);
             // To show the Address form
+            fetchZipCodeDetails(address.zipCode)
             setShowForm(true);
             setValue("address", address.address)
             setValue("city", address.city)
-            setValue("state", address.state)
-            setValue("country", address.country)
-            setValue("zipCode", address.zipCode)
+            // setValue("state", address.state)
+            // setStateName(address.state);
+            // setValue("zipCode", address.zipCode)
+            // setPinCode(address.zipCode)
             setValue("name", address.name)
             setValue("contactNumber", address.contactNumber)
             setValue("addressType", address.addressType)
+            
         }
     }, [editAddress])
 
     const isFormUpdated = () => {
         const currentValues = getValues()
-        // console.log("changes after editing form values:", currentValues)
+        console.log("changes after editing form values:", currentValues)
         if (
             currentValues.address !== address.address ||
             currentValues.city !== address.city ||
             currentValues.state !== address.state ||
-            currentValues.country !== address.country ||
             currentValues.zipCode !== address.zipCode ||
             currentValues.name !== address.name ||
             currentValues.contactNumber !== address.contactNumber ||
-            currentValues.addressType !== address.addressType
+            currentValues.addressType !== address.addressType ||
+            currentValues.locality !== address.locality
         ) {
             return true
         }
@@ -107,7 +120,7 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
 
     //   handle next button click
     const onSubmit = async (data) => {
-        // console.log(data)
+        console.log("FORM DATA:", data)
         setIsSaved(false);
 
         if (editAddress) {
@@ -128,9 +141,6 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                 }
                 if (currentValues.state !== address.state) {
                     formData.append("state", data.state)
-                }
-                if (currentValues.country !== address.country) {
-                    formData.append("country", data.country)
                 }
                 if (currentValues.zipCode !== address.zipCode) {
                     formData.append("zipCode", data.zipCode)
@@ -167,11 +177,11 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
         formData.append("address", data.address)
         formData.append("city", data.city)
         formData.append("state", data.state)
-        formData.append("country", data.country)
         formData.append("zipCode", data.zipCode)
         formData.append("name", data.name)
         formData.append("contactNumber", data.contactNumber)
         formData.append("addressType", data.addressType)
+        formData.append("locality", data.locality);
 
         setLoading(true)
         const result = await addAddress(formData, token)
@@ -261,13 +271,12 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                             type="text"
                             id="zipCode"
                             name="zipCode"
-                            value={zipCode}
+                            value={pinCode}
                             onChange={handleChange}
                             ref={register("zipCode", {
                                 required: true,
                                 pattern: /^\d{0,6}$/, // Regex pattern for up to 6 digits
                                 minLength: { value: 6 },
-
                             })}
 
 
@@ -305,6 +314,7 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                             appearance-none text-primary border-gray-600 focus:border-neutral-4
                             focus:outline-none focus:ring-0 peer"
                             placeholder=" " >
+                            <option value="">Choose your locality</option>
                             {locality.map((ele, i) => {
                                 return (
                                     <option key={i} value={ele}>
@@ -359,7 +369,7 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                     )}
                 </div>
 
-                {/* section for state and country */}
+                {/* section for city and state  */}
                 <div className="flex w-11/12 justify-between">
                     <div className="relative z-0 w-[45%]">
                         <select
@@ -372,7 +382,7 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                             appearance-none text-primary border-gray-600 focus:border-neutral-4
                             focus:outline-none focus:ring-0 peer"
                             placeholder=" ">
-
+                            <option value="">Choose your city/District/Town</option>
                             {city.map((ele, i) => {
                                 return (
                                     <option key={i} value={ele}>
@@ -394,7 +404,7 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
 
                         {errors.city && (
                             <span className="-mt-1 text-[12px] text-secondary-red">
-                                Please fill out this field.
+                                {`${errors.city}`}
                             </span>
                         )}
                     </div>
@@ -404,9 +414,10 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                             // required
                             type="text"
                             name="state"
-                            value={state}
-                            {...register("state", { required: true, minLength: 6, maxLength: 6, disabled:true})}
                             id="state"
+                            value={stateName}
+                            readOnly="true"
+                            {...register("state", { required: true})}
                             className=" mt-10 block  px-0 w-full text-md  bg-transparent border-0 border-b-2 
                             appearance-none text-primary border-gray-600 focus:border-neutral-4
                             focus:outline-none focus:ring-0 peer"
@@ -429,22 +440,46 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                     </div>
                 </div>
 
-                <input
-                    id="addressType"
-                    placeholder="Enter addressType"
-                    {...register("addressType", { required: true })}
-                    className="form-style w-full"
-                />
+                <div className=" mt-6 flex flex-col w-[45%] gap-2">
+                    <p className='text-sm text-neutral-4'>Address Type <sup className='text-secondary-red'>*</sup></p>
+                    <div className='flex gap-4'>
+                        <div className='flex gap-3'>
+                            <input
+                                // required
+                                type="radio"
+                                name="addressType"
+                                {...register("addressType", { required: true })}
+                                id="home"
+                                value="Home"
+                            />
+                            <label htmlFor="home">Home</label>
+                        </div>
+                        <div className='flex gap-3'>
+                            <input
+                                // required
+                                type="radio"
+                                name="addressType"
+                                {...register("addressType", { required: true })}
+                                id="work"
+                                value="Work"
+                            />
+                            <label htmlFor="work">Work</label>
+                        </div>
+                    </div>
+                    {errors.addressType && (
+                        <span className="-mt-1 text-[12px] text-secondary-red">
+                            Please fill out this field.
+                        </span>
+                    )}
+                </div>
 
             </div>
-
-
-
 
             <div className="flex justify-end gap-x-2">
                 <button type="submit">Save</button>
                 <button onClick={handleCancelBtn} >Cancel</button>
             </div>
+
         </form>
     )
 }
