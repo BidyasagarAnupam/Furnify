@@ -73,20 +73,20 @@ export const sidebarLinks = [
     name: "My Products",
     path: "/dashboard/myProducts",
     type: ACCOUNT_TYPE.MERCHANT,
-    icon: "VscHistory",
+    icon: "VscThreeBars",
   },
   {
     id: 9,
     name: "Add Product",
     path: "/dashboard/addProduct",
     type: ACCOUNT_TYPE.MERCHANT,
-    icon: "VscHistory",
+    icon: "VscDiffAdded",
   },
   {
     id: 10,
     name: "Dashboard",
     path: "/dashboard/merchant",
     type: ACCOUNT_TYPE.MERCHANT,
-    icon: "VscHistory",
+    icon: "VscDashboard",
   },
 ];

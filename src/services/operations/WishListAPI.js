@@ -51,18 +51,18 @@ export const getAllProductsFromWishlist = async (token) => {
             Authorization: `Bearer ${token}`,
         })
 
-        console.log("GET_ALL_PRODUCT_FROM_WISHLIST_API RESPONSE............", response)
+        
         if (!response?.data?.success) {
             throw new Error("Could Not get all Product from Wishlist")
         }
         result = response?.data?.data
-
+        console.log("GET_ALL_PRODUCT_FROM_WISHLIST_API RESPONSE............", result)
     } catch (error) {
         console.log("GET_ALL_PRODUCT_FROM_WISHLIST_API ERROR............", error)
         toast.error(error.message)
     }
     toast.dismiss(toastId)
-    return result[0]
+    return result
 }
 
 export const deleteProductFromWishlist = async (productid, token) => {

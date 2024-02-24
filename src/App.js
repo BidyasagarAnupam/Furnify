@@ -36,7 +36,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 function App() {
   const { user } = useSelector((state) => state.profile)
   return (
-    <div className="w-screen min-h-screen flex flex-col font-inter ">
+    <div className="overflow-hidden w-screen min-h-screen flex flex-col font-inter ">
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -7,6 +7,7 @@ const IconBtn = ({
     disabled,
     outline = false,
     customClasses,
+    color = "bg-primary",
     type,
     loading
 
@@ -16,12 +17,12 @@ const IconBtn = ({
             disabled={loading}
             onClick={onclick}
             type={type}
-            className={`flex items-center ${outline ? "border border-yellow-50 bg-transparent" : "bg-primary"
-                } cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-neutral-3 ${customClasses}`}
+            className={`flex items-center justify-center ${outline ? `border bg-transparent border-${color} text-${color}` : color
+                } cursor-pointer gap-x-1 rounded-md py-2 px-5 font-semibold text-neutral-3 ${customClasses}`}
         >
             {children ? (
                 <>
-                    <span className={`${ "text-neutral-3"}`}>{text}</span>
+                    <span className={`${"text-neutral-3"}`}>{text}</span>
                     {children}
                 </>
             ) : (

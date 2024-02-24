@@ -16,8 +16,8 @@ const ProductCard = ({ product }) => {
       return false;
     }
     const res = await getAllProductsFromWishlist(token);
-    console.log("The result is -----", res.products);
-    if (res.products.includes(productId)) {
+
+    if (res[0].products.some(obj => obj._id === productId)) {
       return true;
     } else {
       return false;
@@ -51,10 +51,10 @@ const ProductCard = ({ product }) => {
       await isLikedFunction(product._id).then(
         res => setIsLiked(res)
       )
-
+      console.log("Inside useEffect", isLiked);
     }
     fetchData()
-  }, [token])
+  }, [])
 
   let price = product.price;
   const discount = product.discount;

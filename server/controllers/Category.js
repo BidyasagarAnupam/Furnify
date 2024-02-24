@@ -129,7 +129,7 @@ exports.deleteCategory = async (req, res) => {
 
 exports.getAllCategory = async (req,res) => {
     try{
-        const categoryDetails = await Category.find({});
+        const categoryDetails = await Category.find({}).populate("subCategory");
         console.log("Category Details from backend: ", categoryDetails);
        return res.status(200).json({
         success:true,

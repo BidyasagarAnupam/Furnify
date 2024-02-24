@@ -14,7 +14,7 @@ const Address = () => {
 
   // TODO:
   const [resetFunction, setResetFunction] = useState();
-  
+
   useEffect(() => {
     console.log("IN USE EFFECT THE isSaved", isSaved)
     const getAddresses = async () => {
@@ -28,11 +28,11 @@ const Address = () => {
     }
 
     getAddresses();
-    
+
   }, [isSaved])
   return (
     <div>
-      <h1>Manage Addresses</h1>
+      <h1 className='text-3xl mb-4 font-semibold'>Manage Addresses</h1>
       {
         showForm ?
           (<div>
@@ -52,7 +52,7 @@ const Address = () => {
         ) :
           (<div className='flex flex-col gap-4 w-full'>
             {addresses.map((address, index) => {
-              {/* To avoid the null address */}
+              {/* To avoid the null address */ }
               return (
                 <AddressCard
                   key={index}

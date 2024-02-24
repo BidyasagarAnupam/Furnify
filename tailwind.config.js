@@ -12,7 +12,7 @@ module.exports = {
       primary: "#000000",
       transparent: "#ffffff00",
       secondary: {
-        red: "#FF5630",
+        red: "#ED2939",
         yellow: "#FFAB00",
         green: "#38CB89",
         blue: "#377DFF",
@@ -32,7 +32,8 @@ module.exports = {
         7: "#141718",
         8: "#F5F5F5",
         9: "#C2C2C2",
-        10: "#F2F5F7"
+        10: "#F2F5F7",
+        11: "#858585"
       },
       'richBlue': {
         '50': '#ecffff',
