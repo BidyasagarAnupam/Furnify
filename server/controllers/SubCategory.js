@@ -134,7 +134,7 @@ exports.deleteSubCategory = async (req, res) => {
 
 exports.getSubCategory = async (req, res) => {
     try {
-        const {cid} = req.body;
+        const {cid} = req.headers;
 
         if(!cid){
             return res.status(403).json({

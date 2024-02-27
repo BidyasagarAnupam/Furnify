@@ -67,8 +67,21 @@ html {
 
 .inputField {
   outline: none;
-  border: solid 1px #F3F3F3;
+  border: solid 1px #c2c2c2;
   border-radius: 5px;
   padding: 3px 3px;
-  background: #F7FAFB;
+  background: #f7fafb;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+  transform: scale(0.8);
+  background-color: #5e8583;
+  padding: 30px;
+  border-radius: 30px;
+}
+
+.swiper-button-next {
+  margin-right: 10px;
 }

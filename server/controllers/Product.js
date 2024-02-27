@@ -15,24 +15,27 @@ exports.createProduct = async (req, res) => {
         const userID = req.user.id;
         //fetch the data
         let {
-            name,
-            description,
-            weight,
+            productName,
+            productDesc,
+            dimension,
             price,
-            category,
-            subCategory,
-            discount } = req.body;
+            productCategory,
+            productSubCategory,
+            discount,
+            status,
+        } = req.body;
         //fetch thumbnail
-        const thumbnail = await req.files.thumbnailImage;
+        const thumbnail = await req.files.productImage;
         //validation
         if (
-            !name ||
-            !description ||
-            !weight ||
+            !productName ||
+            !productDesc ||
+            !dimension ||
             !price ||
-            !category ||
-            !subCategory ||
-            !thumbnail) {
+            !productCategory ||
+            !productSubCategory ||
+            !thumbnail ||
+            !status) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required",
@@ -51,7 +54,7 @@ exports.createProduct = async (req, res) => {
         }
 
         //check category & subcategory
-        const categoryDetails = await Category.findById(category);
+        const categoryDetails = await Category.findById(productCategory);
 
         if (!categoryDetails) {
             return res.status(404).json({
@@ -60,7 +63,7 @@ exports.createProduct = async (req, res) => {
             });
         }
 
-        const subCategoryDetails = await SubCategory.findById(subCategory);
+        const subCategoryDetails = await SubCategory.findById(productSubCategory);
 
         if (!subCategoryDetails) {
             return res.status(404).json({
@@ -69,27 +72,26 @@ exports.createProduct = async (req, res) => {
             });
         }
 
-        // if (subCategoryDetails.category !== category) {
-        //     return res.status(404).json({
-        //         success: false,
-        //         message: "Category is not valid for the subcategory",
-        //     });
-        // }
-
         //upload image to cloudinary
         const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
-
+        var sts;
+        if (status) {
+            sts = "Published"
+        } else {
+            sts = "Unpublished";
+        }
         //create an entry for new product
         const newProduct = await Product.create({
-            name,
-            description,
-            weight,
+            name: productName,
+            description: productDesc,
+            weight: dimension,
             price,
-            category,
-            subCategory,
+            category: productCategory,
+            subCategory: productSubCategory,
             discount,
             image: thumbnailImage.secure_url,
             merchant: merchantDetails._id,
+            status: sts
         })
 
         //add new product to the user schema of merchant
@@ -147,11 +149,17 @@ exports.createProduct = async (req, res) => {
 // get all Products(Only for Customers)
 exports.getAllProducts = async (req, res) => {
     try {
-        
-        const{query} = req.body;
+
+        const { query } = req.body;
         const filter = getFiltered(query);
 
-        const allProducts = await Product.find(filter,
+        const allProducts = await Product.find(
+            {
+                $and: [
+                    filter,
+                    { status: "Published" } // Adding filter for status
+                ]
+            },
             {
                 name: true,
                 price: true,
@@ -177,7 +185,7 @@ exports.getAllProducts = async (req, res) => {
 };
 
 // get new 7 products
-exports.getNewProducts = async (req, res) => { 
+exports.getNewProducts = async (req, res) => {
     try {
         const newProducts = await
             Product
@@ -275,6 +283,13 @@ exports.editProduct = async (req, res) => {
 
         // Update only the fields that are present in the request body
         for (const key in updates) {
+            if (key === 'status') {
+                if (updates[key]) {
+                    product[key] = "Published"
+                } else {
+                    product[key] = "Unpublished"
+                }
+            }
             if (updates.hasOwnProperty(key)) {
                 product[key] = updates[key]
             }
@@ -316,10 +331,10 @@ exports.editProduct = async (req, res) => {
 exports.getMerchantProducts = async (req, res) => {
     try {
         // Get the instructor ID from the authenticated user or request body
-        const {query} = req.body;
+        const { query } = req.body;
         const merchantId = req.user.id;
 
-       const filter = getFiltered(query, merchantId);
+        const filter = getFiltered(query, merchantId);
 
         // Find all courses belonging to the instructor
         const merchantProducts = await Product.find(filter).sort({ createdAt: -1 });

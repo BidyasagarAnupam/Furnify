@@ -16,7 +16,7 @@ const ProductCard = ({ product }) => {
       return false;
     }
     const res = await getAllProductsFromWishlist(token);
-
+    console.log("Val: ", res[0].products);
     if (res[0].products.some(obj => obj._id === productId)) {
       return true;
     } else {
@@ -64,7 +64,8 @@ const ProductCard = ({ product }) => {
   return (
 
     <div className="
-    neomorphic
+      mt-5 ml-5
+      neomorphic
       w-64
       mb-5
       rounded-md flex-none bg-white relative
@@ -76,8 +77,8 @@ const ProductCard = ({ product }) => {
       hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]
       "
     >
-      <div>
-        <img src={product.image} alt="" className="h-full w-full rounded-t-[10px]" />
+      <div className='h-[250px]'>
+        <img src={product.image} alt="" className="h-full w-full object-cover rounded-t-[10px]" />
       </div>
 
       <div className='p-3'>

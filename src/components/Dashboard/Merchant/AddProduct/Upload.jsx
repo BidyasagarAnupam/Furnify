@@ -59,7 +59,7 @@ export default function Upload({
 
     return (
         <div className="flex flex-col space-y-2">
-            <label className="text-sm text-richblack-5" htmlFor={name}>
+            <label className="text-sm text-neutral-5" htmlFor={name}>
                 {label} {!viewData && <sup className="text-secondary-red">*</sup>}
             </label>
             <div
@@ -102,7 +102,7 @@ export default function Upload({
                         </div>
                         <p className="mt-2 max-w-[200px] text-center text-sm text-neutral-4">
                             Drag and drop an {!video ? "image" : "video"}, or click to{" "}
-                            <span className="font-semibold text-yellow-50">Browse</span> a
+                            <span className="font-semibold text-richBlue-300">Browse</span> a
                             file
                         </p>
                         <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-neutral-4">
