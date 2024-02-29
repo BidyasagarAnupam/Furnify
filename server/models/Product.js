@@ -42,7 +42,7 @@ const productSchema = new mongoose.Schema({
     subCategory: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: "SubCategory",
+        ref: "subCategory",
     },
     createdAt: {
         type: Date,

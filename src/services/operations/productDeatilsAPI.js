@@ -77,6 +77,7 @@ export const addProductDetails = async (data, token) => {
   console.log("Data ------>>>", data);
   let result = null
   const toastId = toast.loading("Loading...")
+  console.log("Status data: ", data.status);
   try {
     const response = await apiConnector("POST", CREATE_PRODUCT_API, data, {
       "Content-Type": "multipart/form-data",
@@ -120,17 +121,18 @@ export const editProductDetails = async (data, token) => {
 }
 
 // fetching all products under a specific Merchant
-export const fetchMerchantProducts = async (token) => {
+export const fetchMerchantProducts = async (query, token) => {
   let result = []
+  console.log("Query", query);
   const toastId = toast.loading("Loading...")
   try {
     const response = await apiConnector(
-      "GET",
+      "POST",
       GET_MERCHANT_PRODUCTS_API,
-      null,
+      query,
       {
         Authorization: `Bearer ${token}`,
-      }
+      },
     )
     console.log("MERCHANT PRODUCTS API RESPONSE............", response)
     if (!response?.data?.success) {

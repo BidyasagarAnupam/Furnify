@@ -110,7 +110,7 @@ router.get("/getProductDetails", getProductDetails)
 router.put("/editProduct", auth, isMerchant, editProduct)
 
 //Merchant can only see his/her listed products
-router.get("/getMerchantProducts", auth, isMerchant, getMerchantProducts)
+router.post("/getMerchantProducts", auth, isMerchant, getMerchantProducts)
 
 //Product can be deleted by merchant only
 router.delete("/deleteProduct", auth, isMerchant, deleteProduct)

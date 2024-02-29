@@ -68,6 +68,7 @@ const ProductBuilderForm = () => {
             setValue("productName", product.name)
             setValue("productDesc", product.description)
             setValue("dimension", product.weight)
+            setValue("status", product.status)
             setValue("price", product.price)
             setValue("discount", product.discount)
             setValue("productImage", product.image)
@@ -83,6 +84,7 @@ const ProductBuilderForm = () => {
             currentValues.productName !== product.name ||
             currentValues.productDesc !== product.description ||
             currentValues.dimension !== product.dimension ||
+            currentValues.status !== product.status ||
             currentValues.price !== product.price ||
             currentValues.discount !== product.discount ||
             currentValues.productImage !== product.image ||
@@ -111,6 +113,9 @@ const ProductBuilderForm = () => {
                 }
                 if (currentValues.dimension !== product.weight) {
                     formData.append("dimension", data.dimension)
+                }
+                if (currentValues.status !== product.status) {
+                    formData.append("status", data.status)
                 }
                 if (currentValues.price !== product.price) {
                     formData.append("price", data.price)
@@ -144,6 +149,7 @@ const ProductBuilderForm = () => {
         formData.append("productName", data.productName)
         formData.append("productDesc", data.productDesc)
         formData.append("dimension", data.dimension)
+        formData.append("status", data.status)
         formData.append("price", data.price)
         formData.append("discount", data.discount)
         formData.append("productImage", data.productImage)
@@ -257,11 +263,24 @@ const ProductBuilderForm = () => {
                             <p>Do you want to publish ?</p>
                             <div className='flex flex-row gap-3'>
                                 <div className=' flex gap-1'>
-                                    <input type="radio" name="status" id="yes" value="true" defaultChecked="true" />
+                                    <input
+                                        type="radio"
+                                        name="status"
+                                        id="yes"
+                                        value="true"
+                                        defaultChecked="true" 
+                                        {...register("status", { required: true })}    
+                                    />
                                     <label htmlFor="yes">Yes</label>
                                 </div>
                                 <div className=' flex gap-1'>
-                                    <input type="radio" name="status" id="no" value="false" />
+                                    <input
+                                        type="radio"
+                                        name="status"
+                                        id="no"
+                                        value="false" 
+                                        {...register("status", { required: true })}   
+                                        />
                                     <label htmlFor="no">No</label>
                                 </div>
                             </div>

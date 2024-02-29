@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import NavBar from './components/common/NavBar';
 import OpenRoute from './components/Auth/OpenRoute';
@@ -31,6 +31,7 @@ import AddBrand from './components/Dashboard/Admin/Brand/AddBrand'
 import AllBrand from './components/Dashboard/Admin/Brand/AllBrand'
 import EditBrand from './components/Dashboard/Admin/Brand/EditBrand'
 import 'react-image-crop/dist/ReactCrop.css'
+import Error404 from './components/common/Error404';
 
 
 function App() {
@@ -39,7 +40,7 @@ function App() {
     <div className="overflow-hidden w-screen min-h-screen flex flex-col font-inter ">
       <NavBar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={user?.accountType === "Merchant" ? <Navigate to="/dashboard/account" /> : <Home />} />
         <Route
           path="signup"
           element={
@@ -141,6 +142,8 @@ function App() {
           )}
 
         </Route>
+
+        <Route path='*' element={<Error404/>} />
 
       </Routes>
 

@@ -37,25 +37,43 @@ const NavBar = () => {
                     <ul className='flex gap-x-6 text-richblack-25'>
                         {
                             NavbarLinks.map((link, index) => {
-                                return (
-                                    <li key={index}>
-                                        {
-                                            link.title === "Products" ? (
-                                                <a href={`${link?.path}`}>
-                                                    <p className={`${location.hash === '#product' ? "text-secondary-yellow" : "text-richblack-25"}`}>
-                                                        {link?.title}
-                                                    </p>
-                                                </a>
-                                            ) : (
-                                                <Link to={link?.path} >
+                                if (user?.accountType === "Merchant") {
+                                    if (user?.accountType !== link.type) return null;
+                                    else {
+                                        return (
+                                            <li key={index}>
+                                                {
+                                                    <Link to={link?.path} >
                                                         <p className={`${location.hash === '#product' ? '' : matchRoute(link?.path) ? "text-secondary-yellow" : "text-richblack-25"}`}>
-                                                        {link?.title}
-                                                    </p>
-                                                </Link>
-                                            )
-                                        }
-                                    </li>
-                                )
+                                                            {link?.title}
+                                                        </p>
+                                                    </Link>
+                                                }
+                                            </li>
+                                        )
+                                    }
+                                }
+                                else if (!link?.type) {
+                                    return (
+                                        <li key={index}>
+                                            {
+                                                link.title === "Products" ? (
+                                                    <a href={`${link?.path}`}>
+                                                        <p className={`${location.hash === '#product' ? "text-secondary-yellow" : "text-richblack-25"}`}>
+                                                            {link?.title}
+                                                        </p>
+                                                    </a>
+                                                ) : (
+                                                    <Link to={link?.path} >
+                                                        <p className={`${location.hash === '#product' ? '' : matchRoute(link?.path) ? "text-secondary-yellow" : "text-richblack-25"}`}>
+                                                            {link?.title}
+                                                        </p>
+                                                    </Link>
+                                                )
+                                            }
+                                        </li>
+                                    )
+                                }
                             })
                         }
                     </ul>

@@ -25,6 +25,7 @@ exports.createProduct = async (req, res) => {
             status,
         } = req.body;
         //fetch thumbnail
+        console.log("Status: ", status);
         const thumbnail = await req.files.productImage;
         //validation
         if (
@@ -74,12 +75,15 @@ exports.createProduct = async (req, res) => {
 
         //upload image to cloudinary
         const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
-        var sts;
-        if (status) {
+        let sts;
+        console.log("Status", status);
+        if (status === "true") {
             sts = "Published"
         } else {
             sts = "Unpublished";
         }
+        console.log("sts value: ", sts);
+
         //create an entry for new product
         const newProduct = await Product.create({
             name: productName,
@@ -189,7 +193,7 @@ exports.getNewProducts = async (req, res) => {
     try {
         const newProducts = await
             Product
-                .find()
+                .find({ status: "Published" })
                 .sort({ createdAt: "desc" })
                 .limit(7);
 
@@ -331,13 +335,33 @@ exports.editProduct = async (req, res) => {
 exports.getMerchantProducts = async (req, res) => {
     try {
         // Get the instructor ID from the authenticated user or request body
-        const { query } = req.body;
+        const query = req.body;
+        console.log("Quert", query);
         const merchantId = req.user.id;
 
+
+        if (!merchantId) {
+            return res.status(500).json({
+                success: false,
+                message: "Merchant ID not found"
+            });
+        }
+
         const filter = getFiltered(query, merchantId);
+        console.log("Filter: ", filter);
 
         // Find all courses belonging to the instructor
-        const merchantProducts = await Product.find(filter).sort({ createdAt: -1 });
+        const merchantProducts = await Product.find(filter)
+            .populate('category')
+            .populate('subCategory')
+            .sort({ createdAt: -1 });
+
+        if (!merchantProducts) {
+            return res.status(500).json({
+                success: false,
+                message: "Product Not Found"
+            });
+        }
 
         // Return the instructor's courses
         res.status(200).json({

@@ -1,11 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FilterSection from './FilterSection'
 import { NavLink } from 'react-router-dom'
 import { IoMdArrowDropright } from 'react-icons/io'
 import IconBtn from '../../../common/IconBtn'
 import { MdOutlineAddToPhotos } from 'react-icons/md'
+import { IoSearch } from "react-icons/io5";
+import ProductsList from './ProductsList'
+import { fetchMerchantProducts } from '../../../../services/operations/productDeatilsAPI'
+import { useSelector } from 'react-redux'
 
 const MyProducts = () => {
+  const [searchProduct, setSearchProduct] = useState('');
+  const [productList, setProductList] = useState([]);
+  const [query, setQuery] = useState({})
+  const {token} = useSelector((state) => state.auth)
+
+  const handleChange = (e) => {
+    setSearchProduct(e.target.value);
+  }
+
+  // TODO: Add search functionalty (Enter and Button Click)
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await fetchMerchantProducts(query, token)
+      console.log("All Products of Merchant ", res);
+      if (res) {
+        setProductList(res);
+      }
+    }
+    fetchProducts()
+  }, [])
+
+
   return (
     <div>
       {/* Header Section */}
@@ -26,17 +54,21 @@ const MyProducts = () => {
         </div>
         {/* Right Part */}
         <div className='flex flex-row gap-x-2'>
-          <IconBtn
-            // onclick={() => reset()}
-            // disabled={loading}
-            text={"Discard Changes"}
-            outline={true}
-            color='secondary-red'
-          />
+          <div className='flex gap-2 bg-neutral-2 items-center rounded-md lg:w-[300px]'>
+            <IoSearch className='ml-2 text-xl' />
+            <input
+              type="text"
+              onChange={handleChange}
+              value={searchProduct}
+              placeholder='Search Products...'
+              className="appearance-none border-none bg-transparent focus:outline-none focus:ring-0"
+            />
+
+          </div>
           <IconBtn
             // disabled={loading}
             // type="submit"
-            text={"Save Changes"}
+            text={"Add Product"}
             color='bg-[#327590]'
           >
             <MdOutlineAddToPhotos className='text-lg' />
@@ -44,10 +76,12 @@ const MyProducts = () => {
         </div>
       </div>
       <div>
-        <h1>Products</h1>
         {/* Search  */}
       </div>
       <FilterSection />
+
+      {/* All Products */}
+      <ProductsList productList={productList } />
     </div>
   )
 }

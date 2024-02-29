@@ -1,15 +1,13 @@
 
 exports.getFiltered = (
-    {
         query,
         merchantId = null,
-    }
 ) => {
     // Build the filter object based on provided parameters
     const filter = {};
 
     if (merchantId) {
-        filter.merchantId = merchantId;
+        filter.merchant = merchantId;
     }
 
     //filter the products on the basis of these parameters.
