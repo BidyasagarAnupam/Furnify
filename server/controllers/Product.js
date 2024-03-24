@@ -15,26 +15,25 @@ exports.createProduct = async (req, res) => {
         const userID = req.user.id;
         //fetch the data
         let {
-            productName,
-            productDesc,
-            dimension,
+            name,
+            description,
+            weight,
             price,
-            productCategory,
-            productSubCategory,
+            category,
+            subCategory,
             discount,
             status,
         } = req.body;
         //fetch thumbnail
-        console.log("Status: ", status);
-        const thumbnail = await req.files.productImage;
+        const thumbnail = await req.files.image;
         //validation
         if (
-            !productName ||
-            !productDesc ||
-            !dimension ||
+            !name ||
+            !description ||
+            !weight ||
             !price ||
-            !productCategory ||
-            !productSubCategory ||
+            !category ||
+            !subCategory ||
             !thumbnail ||
             !status) {
             return res.status(400).json({
@@ -55,7 +54,7 @@ exports.createProduct = async (req, res) => {
         }
 
         //check category & subcategory
-        const categoryDetails = await Category.findById(productCategory);
+        const categoryDetails = await Category.findById(category);
 
         if (!categoryDetails) {
             return res.status(404).json({
@@ -64,7 +63,7 @@ exports.createProduct = async (req, res) => {
             });
         }
 
-        const subCategoryDetails = await SubCategory.findById(productSubCategory);
+        const subCategoryDetails = await SubCategory.findById(subCategory);
 
         if (!subCategoryDetails) {
             return res.status(404).json({
@@ -75,27 +74,19 @@ exports.createProduct = async (req, res) => {
 
         //upload image to cloudinary
         const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
-        let sts;
-        console.log("Status", status);
-        if (status === "true") {
-            sts = "Published"
-        } else {
-            sts = "Unpublished";
-        }
-        console.log("sts value: ", sts);
 
         //create an entry for new product
         const newProduct = await Product.create({
-            name: productName,
-            description: productDesc,
-            weight: dimension,
+            name: name,
+            description: description,
+            weight: weight,
             price,
-            category: productCategory,
-            subCategory: productSubCategory,
+            category: category,
+            subCategory: subCategory,
             discount,
             image: thumbnailImage.secure_url,
             merchant: merchantDetails._id,
-            status: sts
+            status
         })
 
         //add new product to the user schema of merchant
@@ -161,7 +152,7 @@ exports.getAllProducts = async (req, res) => {
             {
                 $and: [
                     filter,
-                    { status: "Published" } // Adding filter for status
+                    { status: "true" } // Adding filter for status
                 ]
             },
             {
@@ -193,7 +184,7 @@ exports.getNewProducts = async (req, res) => {
     try {
         const newProducts = await
             Product
-                .find({ status: "Published" })
+                .find({ status: "true" })
                 .sort({ createdAt: "desc" })
                 .limit(7);
 
@@ -222,6 +213,7 @@ exports.getNewProducts = async (req, res) => {
 exports.getProductDetails = async (req, res) => {
     try {
         const { productId } = req.body;
+        console.log("pRODUCT ID IS: ", productId);
 
         const getProductDetails = await Product.find({ _id: productId })
             .populate(
@@ -234,8 +226,8 @@ exports.getProductDetails = async (req, res) => {
             )
             .populate("category")
             .populate("subCategory")
-            .populate("ratingAndReviews")
             .exec();
+        console.log("Data is: ", getProductDetails);
 
         if (!getProductDetails) {
             return res.status(400).json({
@@ -243,6 +235,7 @@ exports.getProductDetails = async (req, res) => {
                 message: `Could not find the product with id ${productId}`,
             })
         }
+
 
         return res.status(200).json({
             success: true,
@@ -265,6 +258,8 @@ exports.editProduct = async (req, res) => {
         //updates contains an object which contains updated details from frontend
         const updates = req.body;
 
+        console.log("UPDATES________", updates);
+
         const product = await Product.findById(productId);
 
         if (!product) {
@@ -272,6 +267,63 @@ exports.editProduct = async (req, res) => {
                 success: false,
                 message: "Product not found",
             })
+        }
+
+        // If category is changed
+        if (!(updates.category === product.category)) {
+            // Remove product id from old category
+            await Category.findByIdAndUpdate(
+                {
+                    _id: product.category
+                },
+                {
+                    $pull: {
+                        products: productId,
+                    }
+                },
+                { new: true }
+            )
+            // Push product id from new category
+            await Category.findByIdAndUpdate(
+                {
+                    _id: updates.category
+                },
+                {
+                    $push: {
+                        products: productId,
+                    }
+                },
+                { new: true }
+            )
+        }
+
+        // If subcategory is changed
+        if (!(updates.subCategory === product.subCategory)) {
+            // Remove product id from old subcategory
+            await SubCategory.findByIdAndUpdate(
+                {
+                    _id: product.subCategory
+                },
+                {
+                    $pull: {
+                        products: productId,
+                    }
+                },
+                { new: true }
+            )
+
+            // Push product id from new subcategory
+            await SubCategory.findByIdAndUpdate(
+                {
+                    _id: updates.subCategory
+                },
+                {
+                    $push: {
+                        products: productId,
+                    }
+                },
+                { new: true }
+            )
         }
 
         // If Thumbnail Image is found, update it
@@ -287,13 +339,6 @@ exports.editProduct = async (req, res) => {
 
         // Update only the fields that are present in the request body
         for (const key in updates) {
-            if (key === 'status') {
-                if (updates[key]) {
-                    product[key] = "Published"
-                } else {
-                    product[key] = "Unpublished"
-                }
-            }
             if (updates.hasOwnProperty(key)) {
                 product[key] = updates[key]
             }
@@ -312,7 +357,7 @@ exports.editProduct = async (req, res) => {
             )
             .populate("category")
             .populate("subCategory")
-            .populate("ratingAndReviews")
+            // .populate("ratingAndReviews")
             .exec();
 
         return res.status(200).json({

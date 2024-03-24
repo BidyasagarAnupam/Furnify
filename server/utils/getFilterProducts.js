@@ -36,6 +36,10 @@ exports.getFiltered = (
         filter.subcategory = query.subcategory;
     }
 
+    if (query.status) {
+        filter.status = query.status;
+    }
+
     //TODO 
     // if (query.rating) {
 

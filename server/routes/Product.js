@@ -104,10 +104,10 @@ router.get("/getAllProducts", getAllProducts)
 router.get("/getNewProducts", getNewProducts)
 
 //Product Details can be viewed by any one
-router.get("/getProductDetails", getProductDetails)
+router.post("/getProductDetails", getProductDetails)
 
 //Product can be edited by merchant only
-router.put("/editProduct", auth, isMerchant, editProduct)
+router.post("/editProduct", auth, isMerchant, editProduct)
 
 //Merchant can only see his/her listed products
 router.post("/getMerchantProducts", auth, isMerchant, getMerchantProducts)

@@ -53,7 +53,7 @@ export const fetchProductDetails = async (productId) => {
   //   dispatch(setLoading(true));
   let result = null
   try {
-    const response = await apiConnector("GET", GET_PRODUCT_DETAILS_API, {
+    const response = await apiConnector("POST", GET_PRODUCT_DETAILS_API, {
       productId,
     })
     console.log("GET_PRODUCT_DETAILS_API API RESPONSE............", response)
@@ -99,6 +99,7 @@ export const addProductDetails = async (data, token) => {
 
 // edit the Product details
 export const editProductDetails = async (data, token) => {
+  console.log("Data is ------> ", data);
   let result = null
   const toastId = toast.loading("Loading...")
   try {
@@ -148,10 +149,11 @@ export const fetchMerchantProducts = async (query, token) => {
 }
 
 // delete a product
-export const deleteProduct = async (data, token) => {
+export const deleteProduct = async (productId, token) => {
   const toastId = toast.loading("Loading...")
+  console.log("Product id: ", productId);
   try {
-    const response = await apiConnector("DELETE", DELETE_PRODUCT_API, data, {
+    const response = await apiConnector("DELETE", DELETE_PRODUCT_API, {productId}, {
       Authorization: `Bearer ${token}`,
     })
     console.log("DELETE PRODUCT API RESPONSE............", response)

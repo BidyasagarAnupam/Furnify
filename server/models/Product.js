@@ -50,7 +50,7 @@ const productSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["Published", "Unpublished"]
+        enum: ["true", "false"]
     }
 
 });

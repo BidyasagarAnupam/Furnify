@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import FilterSection from './FilterSection'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Navigate, useNavigate } from 'react-router-dom'
 import { IoMdArrowDropright } from 'react-icons/io'
 import IconBtn from '../../../common/IconBtn'
 import { MdOutlineAddToPhotos } from 'react-icons/md'
@@ -10,28 +10,40 @@ import { fetchMerchantProducts } from '../../../../services/operations/productDe
 import { useSelector } from 'react-redux'
 
 const MyProducts = () => {
+  const navigate = useNavigate();
   const [searchProduct, setSearchProduct] = useState('');
   const [productList, setProductList] = useState([]);
-  const [query, setQuery] = useState({})
-  const {token} = useSelector((state) => state.auth)
+  const [publishedCount, setPublishedCount] = useState(0)
+  const [query, setQuery] = useState({
+  })
+  const { token } = useSelector((state) => state.auth)
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const handleChange = (e) => {
     setSearchProduct(e.target.value);
   }
 
   // TODO: Add search functionalty (Enter and Button Click)
-
+  // TODO: Count of published and ubpublished products
 
   useEffect(() => {
     const fetchProducts = async () => {
       const res = await fetchMerchantProducts(query, token)
-      console.log("All Products of Merchant ", res);
+      // console.log("All Products of Merchant ", res);
       if (res) {
         setProductList(res);
+        // count published products
+        res.forEach((product) => {
+          console.log("status", product.status);
+          if (product.status) {
+            setPublishedCount(publishedCount + 1)
+          }
+        })
+        console.log("count", publishedCount);
       }
     }
     fetchProducts()
-  }, [])
+  }, [isDeleted, query])
 
 
   return (
@@ -68,7 +80,8 @@ const MyProducts = () => {
           <IconBtn
             // disabled={loading}
             // type="submit"
-            text={"Add Product"}
+            onclick={() => navigate('/dashboard/addProduct')}
+            text={"New Product"}
             color='bg-[#327590]'
           >
             <MdOutlineAddToPhotos className='text-lg' />
@@ -78,10 +91,10 @@ const MyProducts = () => {
       <div>
         {/* Search  */}
       </div>
-      <FilterSection />
+      <FilterSection setQuery={setQuery} all={productList.length} publishedCount={publishedCount} />
 
       {/* All Products */}
-      <ProductsList productList={productList } />
+      <ProductsList productList={productList} setIsDeleted={setIsDeleted} isDeleted={isDeleted} />
     </div>
   )
 }
