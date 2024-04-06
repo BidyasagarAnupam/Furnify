@@ -25,11 +25,11 @@ const NavBar = () => {
     }
 
     return (
-        <div className='flex h-14 items-center justify-center mb-3 '>
+        <div className='flex h-14 items-center justify-center border-b-2 border-neutral-4 '>
             <div className='flex w-11/12 max-w-maxContent items-center justify-between'>
                 {/* logo */}
                 <Link to="/">
-                    <img src={Logo} alt="logo" width={160} height={50} loading='lazy' />
+                    <img src={Logo} alt="logo" width={120} height={40} loading='lazy' />
                 </Link>
 
                 {/* Nav links */}

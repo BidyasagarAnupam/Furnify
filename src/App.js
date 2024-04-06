@@ -32,6 +32,7 @@ import AllBrand from './components/Dashboard/Admin/Brand/AllBrand'
 import EditBrand from './components/Dashboard/Admin/Brand/EditBrand'
 import 'react-image-crop/dist/ReactCrop.css'
 import Error404 from './components/common/Error404';
+import AllProducts from './pages/AllProducts';
 
 
 function App() {
@@ -143,7 +144,8 @@ function App() {
 
         </Route>
 
-        <Route path='*' element={<Error404/>} />
+        <Route path='*' element={<Error404 />} />
+        <Route path='/allProducts' element={<AllProducts />} />
 
       </Routes>
 
