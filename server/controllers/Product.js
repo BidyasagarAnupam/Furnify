@@ -144,8 +144,8 @@ exports.createProduct = async (req, res) => {
 // get all Products(Only for Customers)
 exports.getAllProducts = async (req, res) => {
     try {
-
-        const { query } = req.body;
+        const query = req.body;
+        console.log("Filter: ", req.body);
         const filter = getFiltered(query);
 
         const allProducts = await Product.find(
@@ -158,12 +158,12 @@ exports.getAllProducts = async (req, res) => {
             {
                 name: true,
                 price: true,
-                thumbnail: true,
+                image: true,
                 discount: true,
                 weight: true,
-                ratingAndReviews: true,
+                // ratingAndReviews: true,
             })
-            .populate("ratingAndReviews")
+            // .populate("ratingAndReviews")
             .exec();
         return res.status(200).json({
             success: true,
@@ -213,7 +213,6 @@ exports.getNewProducts = async (req, res) => {
 exports.getProductDetails = async (req, res) => {
     try {
         const { productId } = req.body;
-        console.log("pRODUCT ID IS: ", productId);
 
         const getProductDetails = await Product.find({ _id: productId })
             .populate(

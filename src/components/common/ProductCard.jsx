@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FcLike, FcLikePlaceholder } from "react-icons/fc"
 import { getAllProductsFromWishlist, deleteProductWishlist, addProductToWishlist, addProductToWishList, deleteProductFromWishlist } from '../../services/operations/WishListAPI'
 import { useSelector } from 'react-redux';
-
+import {useNavigate} from 'react-router-dom'
 const ProductCard = ({ product }) => {
 
   const [isLiked, setIsLiked] = useState(false);
@@ -24,7 +24,6 @@ const ProductCard = ({ product }) => {
     }
   }
 
-  // TODO: add and delete product from wishlist
   const addProductHandler = async (productId) => {
     const res = await addProductToWishList(productId, token);
     console.log("Result:  ", res);
@@ -61,6 +60,7 @@ const ProductCard = ({ product }) => {
   let displayPrice = Math.round(price - (price * (discount / 100)));
   displayPrice = displayPrice.toLocaleString('en-IN')
   price = price.toLocaleString('en-IN')
+  const navigate = useNavigate();
   return (
 
     <div className="
@@ -76,6 +76,7 @@ const ProductCard = ({ product }) => {
       hover:scale-105
       hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]
       "
+      onClick={() => navigate(`/product/${product._id}`)}
     >
       <div className='h-[250px]'>
         <img src={product.image} alt="" className="h-full w-full object-cover rounded-t-[10px]" />
@@ -108,7 +109,10 @@ const ProductCard = ({ product }) => {
       <button className='absolute rounded-full 
       right-3 bottom-32 h-9 w-9 bg-white
       flex items-center justify-center
-      '>
+      '
+        // to avoid the functionality of parent 
+        onClick={(e) => { e.stopPropagation(); }}
+      >
         {
           isLiked ? <FcLike fontSize="1.5rem" onClick={() => removeProductHandler(product._id)} /> : <FcLikePlaceholder fontSize="1.5rem" onClick={() => addProductHandler(product._id)} />
         }

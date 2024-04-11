@@ -32,8 +32,8 @@ exports.getFiltered = (
         filter.category = query.category;
     }
 
-    if (query.subcategory) {
-        filter.subcategory = query.subcategory;
+    if (query.subCategory) {
+        filter.subCategory = query.subCategory;
     }
 
     if (query.status) {

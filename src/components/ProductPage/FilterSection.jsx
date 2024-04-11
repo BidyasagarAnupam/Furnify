@@ -7,20 +7,15 @@ import { fetchsubCategories } from '../../services/operations/subCategories';
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { MdStarOutline } from "react-icons/md";
 
-const FilterSection = () => {
-    const [value, setValue] = useState([1000, 50000]);
+const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
+    
     const [categories, setCategories] = useState([]);
     const [subCategory, setSubCategory] = useState([]);
     const [subCategoryLoading, setSubCategoryLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [categoryLoading, setCategoryLoading] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
-    const [filterData, setFilterData] = useState({
-        priceRange: value,
-        discount: null,
-        category: "",
-        subCategory: "",
-    });
+    
     const [isClear, setIsClear] = useState(false);
 
 
@@ -32,6 +27,31 @@ const FilterSection = () => {
         }));
     };
 
+
+    const handleSubCategoryClick = (subCategoryId, categoryId) => {
+        if (filterData.category === categoryId) {
+            setFilterData(prevData => ({
+                ...prevData,
+                subCategory: subCategoryId
+            }));
+        } else {
+            setFilterData(prevData => ({
+                ...prevData,
+                subCategory: subCategoryId,
+                category: ""
+            }));
+        }
+
+    }
+
+    const handleCategory = (categoryId) => {
+        setFilterData(prevData => ({
+            ...prevData,
+            category: categoryId,
+            subCategory: ""
+        }));
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFilterData(prevData => ({
@@ -40,22 +60,14 @@ const FilterSection = () => {
         }));
     };
 
-    useEffect(() => {
-        console.log("Filter data is", filterData)
-    }, [filterData])
 
     const getSubCategories = async (cid) => {
         setSubCategoryLoading(true);
         if (!cid) return;
 
         const subCategoriesData = await fetchsubCategories(cid);
-        console.log("Heluuuuu")
         if (subCategoriesData.length > 0) {
             setSubCategory(subCategoriesData);
-            setFilterData(prevData => ({
-                ...prevData,
-                subCategory: subCategoriesData[0]._id // Set default subcategory
-            }));
         }
         setSubCategoryLoading(false);
     };
@@ -64,8 +76,9 @@ const FilterSection = () => {
         setSelectedCategory(cid);
         console.log("CID:", cid);
         getSubCategories(cid);
-
     }
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -109,22 +122,23 @@ const FilterSection = () => {
                         CLEAR All
                     </div>
                 }
-                
-                
+
+
             </div>
             <div className='mt-3 flex flex-col gap-2 border-b-2 pb-2'>
                 <p className='font-semibold px-1'>Price Range</p>
                 <Slider
                     size='sm'
                     formatOptions={{ style: "currency", currency: "INR" }}
-                    step={1}
+                    step={1000}
                     label
                     maxValue={50000}
+                    showSteps={true}
                     minValue={0}
                     showTooltip={true}
                     value={value}
-                    onChange={handleSliderChange}
-                    className="w-full -mt-4"
+                    onChangeEnd={handleSliderChange}
+                    className="w-full -mt-1"
                 />
             </div>
 
@@ -150,11 +164,12 @@ const FilterSection = () => {
                                                         </div>) :
                                                         (
                                                             <div className='flex flex-col gap-2 font-medium'>
-                                                                <div className='hover:cursor-pointer  hover:font-semibold transition-all duration-200'>All Items</div>
+                                                                <div className='hover:cursor-pointer  hover:font-semibold transition-all duration-200'
+                                                                    onClick={() => handleCategory(category._id)}
+                                                                >All Items</div>
                                                                 {
                                                                     subCategory.map((item) => (
-                                                                        <div
-                                                                            
+                                                                        <div onClick={() => handleSubCategoryClick(item._id, category._id)}
                                                                             className='hover:cursor-pointer  hover:font-semibold transition-all duration-200'
                                                                         >{item.name}</div>
                                                                     ))
@@ -171,7 +186,7 @@ const FilterSection = () => {
                 }
             </Accordion>
             <div className="border-b-2"></div>
-            
+
 
             {/* Customer Ratings */}
             <Accordion className='p-0'>
@@ -181,12 +196,11 @@ const FilterSection = () => {
                         <label htmlFor="4star" className='flex items-center font-medium text-[15px]'>4 <span><MdStarOutline /></span> and above</label>
                     </div>
                     <div className=" mt-2 flex gap-2 items-center font-semibold ml-4">
-                        <input type="radio" name="star" id="5star"  />
+                        <input type="radio" name="star" id="5star" />
                         <label htmlFor="5star" className='flex items-center font-medium text-[15px] '>5 <span><MdStarOutline /></span>and above</label>
                     </div>
                 </AccordionItem>
             </Accordion>
-
             {/* Discount */}
             <Accordion className='p-0'>
                 <AccordionItem key={1} aria-label='Discount' title='Discount' classNames={classNames1}>

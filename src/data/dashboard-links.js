@@ -89,4 +89,11 @@ export const sidebarLinks = [
     type: ACCOUNT_TYPE.MERCHANT,
     icon: "VscDashboard",
   },
+  {
+    id: 11,
+    name: "Cart",
+    path: "/dashboard/cart",
+    type: ACCOUNT_TYPE.CUSTOMER,
+    icon: "FaShoppingCart",
+  },
 ];

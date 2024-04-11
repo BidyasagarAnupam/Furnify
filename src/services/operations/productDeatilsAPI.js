@@ -14,11 +14,12 @@ const {
   GET_NEW_PRODUCTS_API
 } = productsEndpoints
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (query) => {
   const toastId = toast.loading("Loading...")
+  console.log("Query", query);
   let result = []
   try {
-    const response = await apiConnector("GET", GET_ALL_PRODUCTS_API)
+    const response = await apiConnector("POST", GET_ALL_PRODUCTS_API, query)
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Products")
     }
@@ -64,7 +65,7 @@ export const fetchProductDetails = async (productId) => {
     result = response.data
   } catch (error) {
     console.log("GET_PRODUCT_DETAILS_API API ERROR............", error)
-    result = error.response.data
+    toast.error("Couldn't get product details")
     // toast.error(error.response.data.message);
   }
   toast.dismiss(toastId)

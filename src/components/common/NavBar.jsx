@@ -84,12 +84,12 @@ const NavBar = () => {
                     {
                         user && user.accountType !== "Merchant" && (
                             <Link to="/dashboard/cart" className='relative'>
-                                <AiOutlineShoppingCart className='text-pure-greys-100 text-2xl' />
+                                <AiOutlineShoppingCart className='text-pure-greys-100 text-2xl ' />
                                 {
                                     totalItems > 0 && (
-                                        <span className='text-pure-greys-300'>
+                                        <div className='flex items-center justify-center rounded-full h-4 w-4 bg-red-500 text-white text-sm absolute -right-1 -top-2'>
                                             {totalItems}
-                                        </span>
+                                        </div>
                                     )
                                 }
                             </Link>

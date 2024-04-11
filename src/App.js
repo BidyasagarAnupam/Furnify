@@ -33,6 +33,8 @@ import EditBrand from './components/Dashboard/Admin/Brand/EditBrand'
 import 'react-image-crop/dist/ReactCrop.css'
 import Error404 from './components/common/Error404';
 import AllProducts from './pages/AllProducts';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './components/Dashboard/Customer/Cart';
 
 
 function App() {
@@ -42,6 +44,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={user?.accountType === "Merchant" ? <Navigate to="/dashboard/account" /> : <Home />} />
+        <Route path="/product/:id" element={user?.accountType === "Merchant" ? <Navigate to="/dashboard/account" /> : <ProductDetails />} />
         <Route
           path="signup"
           element={
@@ -101,6 +104,7 @@ function App() {
             <>
               <Route path="dashboard/my-orders" element={<MyOrders />} />
               <Route path="dashboard/wishlist" element={<Wishlist />} />
+              <Route path="/dashboard/cart" element={<Cart />} />
             </>
           )}
 

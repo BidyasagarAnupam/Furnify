@@ -17,7 +17,11 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         require: true,
         ref: "User"
-    }, 
+    },
+    users: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
     image: {
         type: String,
         required: true,

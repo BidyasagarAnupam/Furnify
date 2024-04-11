@@ -1,19 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import IconBtn from "../../../common/IconBtn"
 import { MdDelete } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteProductFromWishlist } from '../../../../services/operations/WishListAPI';
+import { ACCOUNT_TYPE } from "../../../../utils/constants"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import { addToCart } from '../../../../slices/cartSlice';
+import ConfirmationModal from '../../../common/ConfirmationModal'
+
+
 
 const WishListProduct = ({ allWishList, wishlistUpdated, setWishlistUpdated }) => {
 
+  const { user } = useSelector((state) => state.profile)
   const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [confirmationModal, setConfirmationModal] = useState(null)
 
   const handleOnDelete = async (productId) => {
     const res = await deleteProductFromWishlist(productId, token);
     if(res) setWishlistUpdated(!wishlistUpdated);
+  }
+
+  const handleAddToCart = (product) => {
+    if (user && user?.accountType === ACCOUNT_TYPE.MERCHANT) {
+      toast.error("You are a Merchant, you cant buy a product");
+      return;
+    }
+    if (token) {
+      console.log("dispatching add to cart")
+      dispatch(addToCart(product));
+      return;
+    }
+    setConfirmationModal({
+      text1: "you are not logged in",
+      text2: "Please login to add to cart",
+      btn1Text: "Login",
+      btn2Text: "cancel",
+      btn1Handler: () => navigate("/login"),
+      btn2Handler: () => setConfirmationModal(null),
+    })
   }
 
   return (
@@ -76,6 +107,7 @@ const WishListProduct = ({ allWishList, wishlistUpdated, setWishlistUpdated }) =
                     </Td>
                     <Td className="flex flex-col gap-2">
                       <IconBtn
+                        onclick={() => handleAddToCart(product)}
                         text={"Add to Cart"}>
                         <IoCartSharp className='text-lg' />
                       </IconBtn>
@@ -92,6 +124,7 @@ const WishListProduct = ({ allWishList, wishlistUpdated, setWishlistUpdated }) =
           }
         </Tbody>
       </Table>
+      {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
   )
 }

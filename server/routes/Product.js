@@ -98,7 +98,7 @@ router.post("/getAllBrands", getAllBrands)
 router.post("/createProduct", auth, isMerchant, createProduct)
 
 //Products can be viewed by any one.
-router.get("/getAllProducts", getAllProducts)
+router.post("/getAllProducts", getAllProducts)
 
 //New Products can be viewed by any one.
 router.get("/getNewProducts", getNewProducts)
