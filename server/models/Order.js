@@ -19,6 +19,10 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",
         required: true,
+    },
+    status: {
+        type: String,
+        enum: ["Confirmed", "Shipped", "Out for Delivery", "Delivered"]
     }
 });
 

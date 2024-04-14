@@ -11,7 +11,7 @@ import UpdatePassword from './pages/UpdatePassword';
 import Dashboard from './pages/Dashboard';
 import Account from './components/Dashboard/Account';
 import Address from './components/Dashboard/Address';
-import MyOrders from './components/Dashboard/Customer/MyOrders';
+import MyOrders from './components/Dashboard/Customer/Order/MyOrders';
 import AddProduct from './components/Dashboard/Merchant/AddProduct';
 import MyProducts from './components/Dashboard/Merchant/MyProduct';
 import Settings from './components/Dashboard/Settings';
@@ -95,15 +95,15 @@ function App() {
           }
         >
           {/* Route for all users */}
-          <Route path="dashboard/account" element={<Account />} />
-          <Route path="dashboard/settings" element={<Settings />} />
-          <Route path="dashboard/address" element={<Address />} />
+          <Route path="/dashboard/account" element={<Account />} />
+          <Route path="/dashboard/settings" element={<Settings />} />
+          <Route path="/dashboard/address" element={<Address />} />
 
           {/* Route only for Customers */}
           {user?.accountType === ACCOUNT_TYPE.CUSTOMER && (
             <>
-              <Route path="dashboard/my-orders" element={<MyOrders />} />
-              <Route path="dashboard/wishlist" element={<Wishlist />} />
+              <Route path="/dashboard/my-orders" element={<MyOrders />} />
+              <Route path="/dashboard/wishlist" element={<Wishlist />} />
               <Route path="/dashboard/cart" element={<Cart />} />
             </>
           )}
@@ -112,11 +112,11 @@ function App() {
           {user?.accountType === ACCOUNT_TYPE.MERCHANT && (
             <>
               <Route
-                path="dashboard/merchant"
+                path="/dashboard/merchant"
                 element={<Merchant />}
               />
               <Route
-                path="dashboard/myProducts"
+                path="/dashboard/myProducts"
                 element={<MyProducts />}
               />
               <Route
@@ -124,7 +124,7 @@ function App() {
                 element={<AddProduct />}
               />
               <Route
-                path="dashboard/edit-product/:productId"
+                path="/dashboard/edit-product/:productId"
                 element={<EditProduct />}
               />
             </>

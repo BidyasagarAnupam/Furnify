@@ -7,6 +7,7 @@ const profileRoutes = require("./routes/Profile");
 const productRoutes = require("./routes/Product");
 const wishlistRoutes = require("./routes/Wishlist");
 const paymentRoutes = require("./routes/Payments");
+const orderRoutes = require("./routes/Order");
 
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -45,6 +46,7 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/wishlist", wishlistRoutes);
 app.use("/api/v1/payment", paymentRoutes);
+app.use("/api/v1/order", orderRoutes);
 
 
 //def route

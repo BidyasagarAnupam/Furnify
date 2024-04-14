@@ -95,6 +95,19 @@ export const settingsEndpoints = {
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 }
 
+// ORDERS ENDPOINTS
+export const ordersEndpoints = {
+   GET_ALL_ORDERS_API : BASE_URL + "/order/my-orders",
+   UPDATE_STATUS_API: BASE_URL + "/order/update-order"
+}
+
+// RATING & REVIEWS API
+export const ratingReviewEndpoints = {
+  CREATE_RATING_API: BASE_URL + "/product/createRating",
+  REVIEWS_DETAILS_API: BASE_URL + "/product/getReviews",
+  GET_PRODUCT_REVIEW_API: BASE_URL + "/product/getProductRatingReview"
+}
+
 export const customerEndpoints = {
   PRODUCT_PAYMENT_API: BASE_URL + "/payment/capturePayment",
   PRODUCT_VERIFY_API: BASE_URL + "/payment/verifyPayment",

@@ -126,7 +126,8 @@ const registerCustomer = async (products, addressId, userId, res) => {
             const order = await Order.create({
                 user: userId,
                 product: productId,
-                address : addressId
+                address : addressId,
+                status: "Confirmed"
             })
 
             //find the customer and add the product to their list of orderedProducts

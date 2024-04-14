@@ -9,11 +9,11 @@ const OrderSuccessful = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   return (
-    <div className='flex flex-col justify-center items-center w-full mt-6 gap-5'>
+    <div className='flex flex-col justify-center items-center w-full mt-4 gap-3 overflow-y-hidden'>
       <p className='text-3xl text-neutral-4 font-semibold'>Thank You! 🎉</p>
-      <p className='text-4xl mt-2 text-neutral-6 font-semibold'>Your order has been received</p>
+      <p className='text-4xl text-neutral-6 font-semibold'>Your order has been received</p>
       <p className='text-md text-neutral-4 font-medium'>Check you email for more details</p>
-      <img className='mt-10 mb-5' src={Order} alt="" width="300px"  />
+      <img className='mt-6 mb-5' src={Order} alt="" width="300px"  />
       <IconBtn 
         text="Go to Orders"
         onclick={() => {

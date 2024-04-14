@@ -161,9 +161,9 @@ exports.getAllProducts = async (req, res) => {
                 image: true,
                 discount: true,
                 weight: true,
-                // ratingAndReviews: true,
+                ratingAndReviews: true,
             })
-            // .populate("ratingAndReviews")
+            .populate("ratingAndReviews")
             .exec();
         return res.status(200).json({
             success: true,
@@ -186,7 +186,9 @@ exports.getNewProducts = async (req, res) => {
             Product
                 .find({ status: "true" })
                 .sort({ createdAt: "desc" })
-                .limit(7);
+                .limit(7)
+                .populate("ratingAndReviews")
+                .exec()
 
         if (!newProducts) {
             res.status(404).json({
@@ -225,6 +227,7 @@ exports.getProductDetails = async (req, res) => {
             )
             .populate("category")
             .populate("subCategory")
+            .populate("ratingAndReviews")
             .exec();
         console.log("Data is: ", getProductDetails);
 
@@ -356,7 +359,7 @@ exports.editProduct = async (req, res) => {
             )
             .populate("category")
             .populate("subCategory")
-            // .populate("ratingAndReviews")
+            .populate("ratingAndReviews")
             .exec();
 
         return res.status(200).json({
@@ -398,6 +401,7 @@ exports.getMerchantProducts = async (req, res) => {
         const merchantProducts = await Product.find(filter)
             .populate('category')
             .populate('subCategory')
+            .populate("ratingAndReviews")
             .sort({ createdAt: -1 });
 
         if (!merchantProducts) {

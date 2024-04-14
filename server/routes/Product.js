@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router()
-const { auth, isMerchant, isAdmin } = require("../middleware/auth")
+const { auth, isMerchant, isAdmin, isCustomer } = require("../middleware/auth")
 
 // Import Constroller
 
@@ -39,7 +39,14 @@ const {
     getAllBrands
 } = require("../controllers/Brand");
 
-// TODO: Rating and review Controllers
+// Rating and review Controllers
+const {
+    createRating,
+    getAllRatingReview,
+    getAverageRating,
+    getProductRatingReview
+} = require("../controllers/RatingandReview")
+
 
 
 // ********************************************************************************************************
@@ -91,6 +98,15 @@ router.post("/deleteBrand", auth, isAdmin, deleteBrand)
 router.post("/getAllBrands", getAllBrands)
 
 // ********************************************************************************************************
+//                                      Rating & Reviews routes
+//  ********************************************************************************************************
+router.post("/createRating", auth, isCustomer, createRating)
+// router.get("/getAverageRating", getAverageRating)
+router.get("/getReviews", getAllRatingReview)
+router.post("/getProductRatingReview",getProductRatingReview)
+
+
+// ********************************************************************************************************
 //                                      Product routes
 //  ********************************************************************************************************
 
@@ -114,6 +130,7 @@ router.post("/getMerchantProducts", auth, isMerchant, getMerchantProducts)
 
 //Product can be deleted by merchant only
 router.delete("/deleteProduct", auth, isMerchant, deleteProduct)
+
 
 module.exports = router
 

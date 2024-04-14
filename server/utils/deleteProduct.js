@@ -1,6 +1,7 @@
 const Category = require("../models/Category");
 require("dotenv").config();
 const Product = require("../models/Product");
+const RatingAndReview = require("../models/RatingAndReview");
 const SubCategory = require('../models/SubCategory');
 const User = require("../models/User");
 
@@ -28,6 +29,12 @@ exports.deleteProduct = async (productId) => {
     await SubCategory.findByIdAndUpdate(subCategoryId, {
         $pull: { products: productId }
     })
+
+    // Delete from Rating and review
+    const ratingIds = product.ratingAndReviews;
+    for (const rating of ratingIds) {
+        await RatingAndReview.findByIdAndDelete(rating);
+    }
 
     // Delete from Brand
     // const brandId = product.brand

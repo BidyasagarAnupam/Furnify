@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom"
 import IconBtn from '../../../../common/IconBtn';
 import { setStep } from '../../../../../slices/cartSlice';
 import { buyProduct } from '../../../../../services/operations/customerFeaturesAPI';
+import toast from 'react-hot-toast';
 
 const CheckoutForm = ({ totalMRP, totalDiscountedPrice }) => {
 
@@ -31,8 +32,6 @@ const CheckoutForm = ({ totalMRP, totalDiscountedPrice }) => {
     const products = cart.map((product) => product._id)
     buyProduct(token, products, totalDiscountedPrice, showAddress._id, user, navigate, dispatch)
   }
-
-
 
   useEffect(() => {
     const getAddresses = async () => {
@@ -60,6 +59,12 @@ const CheckoutForm = ({ totalMRP, totalDiscountedPrice }) => {
         <Spinner />
       </div>
     )
+  }
+
+  if (addresses.length === 0) {
+    // toast.error("Add at least one address")
+    navigate('/dashboard/address')
+    return
   }
 
 

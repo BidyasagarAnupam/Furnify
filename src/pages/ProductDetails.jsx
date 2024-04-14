@@ -14,6 +14,14 @@ import { ACCOUNT_TYPE } from '../utils/constants';
 import toast from "react-hot-toast"
 import { addToCart } from '../slices/cartSlice';
 import ConfirmationModal from '../components/common/ConfirmationModal'
+import { buyProduct } from '../services/operations/customerFeaturesAPI';
+import { getAllAddresses } from '../services/operations/addressAPI';
+import { RadioGroup, Radio, cn } from "@nextui-org/react";
+import {
+  Modal, ModalContent, ModalHeader,
+  ModalBody, ModalFooter, Button, useDisclosure,
+} from "@nextui-org/react";
+import RatingAndReview from '../components/ProductDetails/RatingAndReview';
 
 
 const ProductDetails = () => {
@@ -26,6 +34,21 @@ const ProductDetails = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [confirmationModal, setConfirmationModal] = useState(null)
+  
+
+  const [addresses, setAddresses] = useState([]);
+  const [showAddress, setShowAddress] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [index, setIndex] = useState(0)
+  const { cart, step } = useSelector((state) => state.cart)
+
+  let discountedPrice = (Math.round(product.price - (product.price * (product.discount / 100))));
+  const handleBuyProduct = (onClose) => {
+    onClose();
+    console.log("SHOWADDRESS: ", showAddress._id);
+    buyProduct(token, [productId], discountedPrice, showAddress._id, user, navigate, dispatch)
+  }
 
   const addProductHandler = async (productId) => {
     const res = await addProductToWishList(productId, token);
@@ -63,6 +86,24 @@ const ProductDetails = () => {
     }
   }
 
+  const handleSelectAddress = async () =>{
+    onOpen();
+    setLoading(true);
+    const res = await getAllAddresses(token);
+    if (res) {
+      setAddresses(res);
+      setShowAddress(res[0])
+      console.log("AFTER ADTER THE ALL ADDRESSES ARE, ", addresses)
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    console.log("Chala", index);
+    setShowAddress(addresses[index])
+    console.log("Address", addresses[index]);
+  }, [index])
+
   useEffect(() => {
     const fetchData = async () => {
       await isLikedFunction(productId).then(
@@ -94,11 +135,6 @@ const ProductDetails = () => {
 
   const handleAddToCart = () => {
     console.log("USER", user);
-
-    // if (!token) {
-    //   toast.error("You are a Merchant, you cant buy a product");
-    //   return;
-    // }
 
     if (user && user?.accountType === ACCOUNT_TYPE.MERCHANT) {
       toast.error("You are a Merchant, you cant buy a product");
@@ -205,8 +241,7 @@ const ProductDetails = () => {
             </IconBtn>
 
             <IconBtn
-              // onclick={modalData?.btn1Handler}
-              // onclick={}
+              onclick={() =>handleSelectAddress()}
               text={"Buy Now"}
             >
               <BiPurchaseTag className='text-xl ml-2' />
@@ -216,8 +251,90 @@ const ProductDetails = () => {
         </div>
       </div>
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
+
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="auto"
+        backdrop='opaque'
+        motionProps={{
+          variants: {
+            enter: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.3,
+                ease: "easeOut",
+              },
+            },
+            exit: {
+              y: -20,
+              opacity: 0,
+              transition: {
+                duration: 0.2,
+                ease: "easeIn",
+              },
+            },
+          }
+        }}
+
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Select Address</ModalHeader>
+              <ModalBody className='w-full'>
+                <RadioGroup size='md' label="Address" defaultValue={0} onChange={(e) => {
+                  setIndex(e.target.value)
+                }}>
+                  {
+                    addresses.map((address, index) => (
+                      <CustomRadio description={`${address.address},${address.city}`} value={index}>
+                        {
+                          `${address.name}, ${address.zipCode} `
+                        }
+                        <span className='ml-2 bg-green-500 text-neutral-2 rounded-md px-2 py-[2px] text-xs uppercase  font-semibold'> {address.addressType}</span>
+                      </CustomRadio>
+                    ))
+                  }
+                </RadioGroup>
+              </ModalBody>
+              <ModalFooter>
+                <Button className='font-semibold' color="primary" onClick={() => handleBuyProduct(onClose)}>
+                  Place Order
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      
+      {/* Rating and Review Section */}
+      <RatingAndReview ratingAndReviews={ratingAndReviews} />
+      
     </div>
   )
 }
 
 export default ProductDetails
+
+export const CustomRadio = (props) => {
+  const { children, ...otherProps } = props;
+
+  return (
+    <Radio
+      {...otherProps}
+      classNames={{
+        base: cn(
+          "m-0 bg-content1  hover:bg-content2 items-center justify-between",
+          "flex-row w-full font-medium cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
+          "data-[selected=true]:border-primary"
+        ),
+        // label: "text-green-500 !w-full",
+        description: "text-neutral-4"
+      }}
+    >
+      {children}
+    </Radio>
+  );
+};

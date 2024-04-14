@@ -113,7 +113,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
         }
         toast.success("payment Successful, product ordered successfully");
         dispatch(setStep(3))
-        // navigate("/dashboard/my-orders");
+        navigate("/dashboard/cart");
         dispatch(resetCart());
     }   
     catch(error) {
