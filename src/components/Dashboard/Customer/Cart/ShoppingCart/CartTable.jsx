@@ -9,12 +9,16 @@ import toast from 'react-hot-toast'
 
 const CartTable = (
     {
+        index,
         product,
-        updateTotalMRP,
-        updateTotalDiscountedPrice
+        // updateTotalMRP,
+        updateTotalDiscountedPrice,
+        quantities,
+        updateQuantityAtIndex,
+        removeFromQuantity,
     }
 ) => {
-    const [quantity, setQuantity] = useState(1)
+    const [quantity, setQuantity] = useState(quantities[index])
     const { cart } = useSelector((state) => state.cart)
     const dispatch = useDispatch()
     const displayPrice = () => {
@@ -25,37 +29,40 @@ const CartTable = (
     useEffect(() => {
         setSubTotal(displayPrice() * quantity)
     }, [quantity])
-    
+
     useEffect(() => {
-        updateTotalMRP(product.price);
+        // updateTotalMRP(product.price,index);
         console.log("SUB TOTAL", subTotal);
         updateTotalDiscountedPrice(displayPrice());
-    },[])
+    }, [])
 
     const increment = () => {
         if (quantity <= 4) {
+            updateQuantityAtIndex(index, quantity + 1)
             setQuantity(quantity + 1);
-            updateTotalMRP(product.price);
+            // updateTotalMRP(product.price, index);
             updateTotalDiscountedPrice(displayPrice());
         }
-            
+
         else
             toast.error("You can't add more than 5 products")
     }
     const decrement = () => {
         if (quantity > 1) {
+            updateQuantityAtIndex(index, quantity - 1)
             setQuantity(quantity - 1);
-            updateTotalMRP(-(product.price));
+            // updateTotalMRP(-(product.price), index);
             updateTotalDiscountedPrice(-displayPrice());
         }
-            
+
         else
             toast.error("Minimum 1 quantity must be required")
     }
 
     const removeBtnHandler = () => {
+        // updateTotalMRP(-(product.price * quantity));
+        removeFromQuantity(index)
         dispatch(removeFromCart(product._id))
-        updateTotalMRP(-(product.price * quantity));
         updateTotalDiscountedPrice(-(displayPrice() * quantity));
     }
 

@@ -6,6 +6,7 @@ import Spinner from '../common/Spinner';
 import { fetchsubCategories } from '../../services/operations/subCategories';
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { MdStarOutline } from "react-icons/md";
+import { useParams } from 'react-router-dom';
 
 const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
     
@@ -15,51 +16,11 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
     const [loading, setLoading] = useState(false);
     const [categoryLoading, setCategoryLoading] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectSubCategory, setSelectSubCategory] = useState("");
+    const [isAllSelected, setIsAllSelected] = useState(false)
     
     const [isClear, setIsClear] = useState(false);
-
-
-    const handleSliderChange = (newValue) => {
-        setValue(newValue);
-        setFilterData(prevData => ({
-            ...prevData,
-            priceRange: newValue
-        }));
-    };
-
-
-    const handleSubCategoryClick = (subCategoryId, categoryId) => {
-        if (filterData.category === categoryId) {
-            setFilterData(prevData => ({
-                ...prevData,
-                subCategory: subCategoryId
-            }));
-        } else {
-            setFilterData(prevData => ({
-                ...prevData,
-                subCategory: subCategoryId,
-                category: ""
-            }));
-        }
-
-    }
-
-    const handleCategory = (categoryId) => {
-        setFilterData(prevData => ({
-            ...prevData,
-            category: categoryId,
-            subCategory: ""
-        }));
-    }
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFilterData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
-
+    const { categoryId, subCategoryId } = useParams()
 
     const getSubCategories = async (cid) => {
         setSubCategoryLoading(true);
@@ -77,6 +38,63 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
         console.log("CID:", cid);
         getSubCategories(cid);
     }
+
+    useEffect(() => {
+        if (categoryId && !subCategoryId) {
+            setIsAllSelected(true)
+        }
+        setSelectSubCategory(subCategoryId)
+        handleCategoryClick({cid: categoryId})
+    }, [categoryId, subCategoryId])
+
+
+    const handleSliderChange = (newValue) => {
+        setValue(newValue);
+        setFilterData(prevData => ({
+            ...prevData,
+            priceRange: newValue
+        }));
+    };
+
+
+    const handleSubCategoryClick = (subCategoryId, categoryId) => {
+        setSelectSubCategory(subCategoryId);
+        setIsAllSelected(false)
+        if (filterData.category === categoryId) {
+            setFilterData(prevData => ({
+                ...prevData,
+                subCategory: subCategoryId
+            }));
+        } else {
+            setFilterData(prevData => ({
+                ...prevData,
+                subCategory: subCategoryId,
+                category: ""
+            }));
+        }
+
+    }
+
+    const handleCategory = (categoryId) => {
+        setSelectSubCategory("")
+        setIsAllSelected(true)
+        setFilterData(prevData => ({
+            ...prevData,
+            category: categoryId,
+            subCategory: ""
+        }));
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFilterData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+
+
 
 
 
@@ -143,7 +161,7 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
             </div>
 
             {/* Category and SubCategory */}
-            <Accordion className='p-0'>
+            <Accordion className='p-0' defaultExpandedKeys={["1"]}>
                 {
                     categoryLoading ?
                         (<AccordionItem title="Category & SubCategory" aria-label='Category & SubCategory' classNames={classNames1}>
@@ -151,7 +169,7 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
                         </AccordionItem>) :
                         (
                             <AccordionItem key={1} aria-label='Category & SubCategory' title='Category & SubCategory' classNames={classNames1}>
-                                <Accordion variant='splitted' className='p-0'>
+                                <Accordion variant='splitted' className='p-0' defaultExpandedKeys={[`${categoryId}`]}>
                                     {
                                         categories.map((category) => (
                                             <AccordionItem onPress={() => handleCategoryClick({ cid: category._id })} key={category._id} aria-label={category.name} title={category.name}
@@ -164,13 +182,13 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
                                                         </div>) :
                                                         (
                                                             <div className='flex flex-col gap-2 font-medium'>
-                                                                <div className='hover:cursor-pointer  hover:font-semibold transition-all duration-200'
+                                                                <div className={`hover:cursor-pointer  hover:font-semibold transition-all duration-200 ${isAllSelected && "font-semibold underline text-medium"}`}
                                                                     onClick={() => handleCategory(category._id)}
                                                                 >All Items</div>
                                                                 {
                                                                     subCategory.map((item) => (
                                                                         <div onClick={() => handleSubCategoryClick(item._id, category._id)}
-                                                                            className='hover:cursor-pointer  hover:font-semibold transition-all duration-200'
+                                                                            className={` hover:cursor-pointer  hover:font-semibold transition-all duration-200 ${ selectSubCategory === item._id && "font-semibold underline text-medium"}`}
                                                                         >{item.name}</div>
                                                                     ))
                                                                 }
@@ -187,16 +205,16 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
             </Accordion>
             <div className="border-b-2"></div>
 
-
+            {/* TODO: Functionality is pending */}
             {/* Customer Ratings */}
             <Accordion className='p-0'>
                 <AccordionItem key={1} aria-label='Customer Ratings' title='Customer Ratings' classNames={classNames1}>
                     <div className="flex gap-2 items-center font-semibold ml-4 -mt-3">
-                        <input type="radio" name="star" id="4star" />
+                        <input type="radio" name="rating" id="4star" value={4} onChange={handleInputChange} />
                         <label htmlFor="4star" className='flex items-center font-medium text-[15px]'>4 <span><MdStarOutline /></span> and above</label>
                     </div>
                     <div className=" mt-2 flex gap-2 items-center font-semibold ml-4">
-                        <input type="radio" name="star" id="5star" />
+                        <input type="radio" name="rating" id="5star" value={5} onChange={handleInputChange} />
                         <label htmlFor="5star" className='flex items-center font-medium text-[15px] '>5 <span><MdStarOutline /></span>and above</label>
                     </div>
                 </AccordionItem>

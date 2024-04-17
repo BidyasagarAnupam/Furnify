@@ -57,7 +57,7 @@ const NavBar = () => {
                                     return (
                                         <li key={index}>
                                             {
-                                                link.title === "Products" ? (
+                                                link.title === "Shop" ? (
                                                     <a href={`${link?.path}`}>
                                                         <p className={`${location.hash === '#product' ? "text-secondary-yellow" : "text-richblack-25"}`}>
                                                             {link?.title}

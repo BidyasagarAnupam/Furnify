@@ -1,23 +1,74 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import Nocart from '../../../../../assets/icons/cartEmpty.svg'
 import CartTable from './CartTable';
 import IconBtn from '../../../../common/IconBtn';
-import { setStep } from '../../../../../slices/cartSlice';
+import { removeQuantity, setStep, updateQuantity } from '../../../../../slices/cartSlice';
 
 const ShoppingCart = ({ totalMRP, setTotalMRP, totalDiscountedPrice, setTotalDiscountedPrice }) => {
-  const { cart, totalItems, step } = useSelector((state) => state.cart)
+  const { cart, totalItems, step, quantities } = useSelector((state) => state.cart)
   console.log("CART", cart);
-  
+// TODO:
   const dispatch = useDispatch();
 
-  const updateTotalMRP = (price) => {
-    setTotalMRP((prevTotal) => prevTotal + price);
+  const updateTotalMRP = () => {
+    console.log("---- object ", quantities);
+    let total = 0;
+    cart.forEach((product, index) => {
+      // Calculate the total price of each product considering its quantity
+      console.log("----Product price", product.price, " quantity ", quantities[index]);
+      const totalPrice = product.price * quantities[index];
+      total += totalPrice;
+    });
+    console.log("----TOTAL->", total);
+    setTotalMRP(total);
   };
+
+  useEffect(() => {
+    updateTotalMRP();
+  },[])
 
   const updateTotalDiscountedPrice = (discountPrice) => {
     setTotalDiscountedPrice((prevTotal) => prevTotal + discountPrice);
   };
+
+
+  // Function to update quantity at a specific index
+  const updateQuantityAtIndex = (index, newValue) => {
+    // Dispatch action to update quantity
+    dispatch(updateQuantity({ index, newValue }));
+    // Call updateTotalMRP to recalculate total MRP
+    updateTotalMRP();
+  };
+
+  // Function to remove item from cart and quantities array
+  const removeFromQuantity = (index) => {
+    // Dispatch action to remove quantity
+    dispatch(removeQuantity(index));
+    // Call updateTotalMRP to recalculate total MRP
+    updateTotalMRP();
+  };
+
+  // Function to update quantity at a specific index
+  // const updateQuantityAtIndex = (index, newValue) => {
+  //   setQuantities(prevQuantities => {
+  //     const newQuantities = [...prevQuantities]; // Create a copy of the quantities array
+  //     newQuantities[index] = newValue; // Update value at specified index
+  //     return newQuantities; // Return the updated array
+  //   });
+  // };
+
+
+  // Function to remove item from cart and quantities array
+  // const removeFromQuantity = (index) => { 
+  //   setQuantities(prevQuantities => {
+  //     const newQuantities = [...prevQuantities]; // Create a copy of the quantities array
+  //     newQuantities.splice(index, 1); // Remove quantity at specified index
+  //     return newQuantities; // Return the updated quantities array
+  //   });
+  // };
+
+
 
   if (cart.length === 0) {
     return (
@@ -46,8 +97,12 @@ const ShoppingCart = ({ totalMRP, setTotalMRP, totalDiscountedPrice, setTotalDis
           cart.map((product, index) => (
             <CartTable
               key={index}
+              index={index}
+              quantities={quantities}
+              updateQuantityAtIndex={updateQuantityAtIndex}
+              removeFromQuantity={removeFromQuantity}
               product={product}
-              updateTotalMRP={updateTotalMRP}
+              // updateTotalMRP={updateTotalMRP}
               updateTotalDiscountedPrice={updateTotalDiscountedPrice}
             />
 
@@ -86,7 +141,7 @@ const ShoppingCart = ({ totalMRP, setTotalMRP, totalDiscountedPrice, setTotalDis
               <p className='text-lg font-medium'>₹{(totalDiscountedPrice + 500).toLocaleString('en-IN')}</p>
             </div>
             <div>
-              <IconBtn onclick={() => dispatch(setStep(step+1))} text="Checkout" customClasses="w-full" />
+              <IconBtn onclick={() => dispatch(setStep(step + 1))} text="Checkout" customClasses="w-full" />
             </div>
           </div>
         </div>

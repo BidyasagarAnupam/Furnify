@@ -8,12 +8,12 @@ export const NavbarLinks = [
   {
     id: 2,
     title: "Shop",
-    path: '/allProducts',
+    path: '/#product',
   },
   {
     id: 3,
     title: "Products",
-    path: "/#product",
+    path: "/allProducts",
   },
   {
     key: 4,

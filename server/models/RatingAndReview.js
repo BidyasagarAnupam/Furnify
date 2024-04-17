@@ -21,6 +21,14 @@ const ratingAndReviewSchema = new mongoose.Schema({
         ref: "Product",
         index: true,
     },
+    title: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now, 
+    }
 });
 
 module.exports = mongoose.model("RatingAndReview", ratingAndReviewSchema);

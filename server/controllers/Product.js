@@ -6,7 +6,7 @@ const { getFiltered } = require('../utils/getFilterProducts');
 const { deleteProduct } = require('../utils/deleteProduct');
 const User = require('../models/User');
 const SubCategory = require("../models/SubCategory");
-
+const Order = require("../models/Order");
 
 //Only for merchant pov
 exports.createProduct = async (req, res) => {
@@ -163,7 +163,10 @@ exports.getAllProducts = async (req, res) => {
                 weight: true,
                 ratingAndReviews: true,
             })
-            .populate("ratingAndReviews")
+            .populate({
+                path: "ratingAndReviews",
+                match: { rating: { $gte: query.rating } } // Filter reviews with rating greater than or equal to the provided value
+            })
             .exec();
         return res.status(200).json({
             success: true,
@@ -227,7 +230,23 @@ exports.getProductDetails = async (req, res) => {
             )
             .populate("category")
             .populate("subCategory")
-            .populate("ratingAndReviews")
+            .populate([
+                {
+                    path: "ratingAndReviews",
+                    populate: {
+                        path: "user",
+                        select: "firstName lastName email image",
+                    }
+                },
+                {
+                    path: "ratingAndReviews",
+                    populate: {
+                        path: "product",
+                        select: "name",
+                    }
+                }
+            ])
+
             .exec();
         console.log("Data is: ", getProductDetails);
 
@@ -424,6 +443,17 @@ exports.getMerchantProducts = async (req, res) => {
             message: "Failed to retrieve filtered products",
             error: error.message,
         })
+    }
+}
+
+// Get a list of Ordered Products for a given Merchant(Only for Merchant)
+exports.getOrderedProductsForMerchant = async (req, res) => {
+    try {
+        const merchantId = req.user.id;
+        const orderedItems = await Order.find();
+        
+    } catch (error) {
+        
     }
 }
 

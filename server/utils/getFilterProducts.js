@@ -40,7 +40,6 @@ exports.getFiltered = (
         filter.status = query.status;
     }
 
-    //TODO 
     // if (query.rating) {
 
     //     filter.rating = { $gte: query.rating }; // Filter products with rating greater than or equal to the provided value

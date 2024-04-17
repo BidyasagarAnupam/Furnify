@@ -6,7 +6,7 @@ const mongoose = require("mongoose")
 exports.createRating = async (req, res) => {
   try {
     const userId = req.user.id
-    const { rating, review, productId } = req.body
+    const { rating, review, productId, title } = req.body
 
     // Check if the user is enrolled in the course
 
@@ -41,6 +41,7 @@ exports.createRating = async (req, res) => {
       review,
       product: productId,
       user: userId,
+      title
     })
 
     // Add the rating and review to the course
@@ -115,8 +116,8 @@ exports.getAllRatingReview = async (req, res) => {
         select: "firstName lastName email image", // Specify the fields you want to populate from the "Profile" model
       })
       .populate({
-        path: "course",
-        select: "courseName", //Specify the fields you want to populate from the "Product" model
+        path: "product",
+        select: "name", //Specify the fields you want to populate from the "Product" model
       })
       .exec()
 

@@ -16,6 +16,7 @@ const CategoryCard = ({ category }) => {
             heading: category.name,
             subCategory: category.subCategory,
             categoryImage: category.image,
+            categoryId: category._id,
             closeIconHandler: () => setSubCategoryModal(null),
           })
         }

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import {
     Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
     Button,
-    Textarea
+    Textarea, Input
 } from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import ReactStars from 'react-stars';
@@ -50,6 +50,7 @@ const OrderCard = ({ order }) => {
     useEffect(() => {
         setValue("productReview", "")
         setValue("productRating", 0)
+        setValue("productTitle", "")
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -66,6 +67,7 @@ const OrderCard = ({ order }) => {
                 productId: order.product._id,
                 rating: data.productRating,
                 review: data.productReview,
+                title: data.productTitle
             },
             token
         )
@@ -219,8 +221,23 @@ const OrderCard = ({ order }) => {
                                                     fullIcon={<TiStarFullOutline />}
                                                 />
                                             </div>
+                                        </div>
 
-
+                                        <div>
+                                            <Input
+                                                isRequired
+                                                type="text"
+                                                label="Title"
+                                                labelPlacement='outside'
+                                                placeholder="Enter review title"
+                                                variant='bordered'
+                                                {...register("productTitle", { required: true })}
+                                            />
+                                            {errors.productTitle && (
+                                                <span className="ml-2 text-xs tracking-wide text-pink-200">
+                                                    Please Add the title
+                                                </span>
+                                            )}
                                         </div>
 
                                         <div>

@@ -22,6 +22,7 @@ import {
   ModalBody, ModalFooter, Button, useDisclosure,
 } from "@nextui-org/react";
 import RatingAndReview from '../components/ProductDetails/RatingAndReview';
+import Spinner from "../components/common/Spinner"
 
 
 const ProductDetails = () => {
@@ -93,6 +94,12 @@ const ProductDetails = () => {
     if (res) {
       setAddresses(res);
       setShowAddress(res[0])
+      if (res.length === 0) {
+        // toast.error("Add at least one address")
+        navigate('/dashboard/address')
+        return
+      }
+
       console.log("AFTER ADTER THE ALL ADDRESSES ARE, ", addresses)
     }
     setLoading(false);
@@ -116,9 +123,11 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchProductDetail = async (productId) => {
+      setLoading(true);
       const res = await fetchProductDetails(productId);
       console.log("Product details", res.data[0]);
       setProduct(res.data[0]);
+      setLoading(false);
     }
     fetchProductDetail(productId);
   }, [productId])
@@ -310,7 +319,9 @@ const ProductDetails = () => {
       </Modal>
       
       {/* Rating and Review Section */}
-      <RatingAndReview ratingAndReviews={ratingAndReviews} />
+      {
+        loading ? (<Spinner/>): (<RatingAndReview ratingAndReviews = { ratingAndReviews } />)
+      }
       
     </div>
   )

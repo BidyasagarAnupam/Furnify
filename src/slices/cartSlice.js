@@ -12,6 +12,9 @@ const initialState = {
         ? JSON.parse(localStorage.getItem('totalItems'))
         : 0,
     step: 1,
+    quantities: localStorage.getItem("quantities")
+        ? JSON.parse(localStorage.getItem("quantities"))
+        : Array.from({ length: localStorage.getItem('totalItems') || 0 }, () => 1),
 }
 
 const cartSlice = createSlice({
@@ -42,10 +45,15 @@ const cartSlice = createSlice({
             // Update the total quantity and price
             state.totalItems++
             state.total += (Math.round(product.price - (product.price * (product.discount / 100))))
+
+            // Update quantities array
+            state.quantities.push(1); // Assuming default quantity is 1 for newly added product
+
             // Update to localstorage
             localStorage.setItem("cart", JSON.stringify(state.cart))
             localStorage.setItem("total", JSON.stringify(state.total))
             localStorage.setItem("totalItems", JSON.stringify(state.totalItems))
+            localStorage.setItem("quantities", JSON.stringify(state.quantities)); // Update quantities in localStorage
             // show toast
             toast.success("Product added to cart")
         },
@@ -80,8 +88,21 @@ const cartSlice = createSlice({
             localStorage.removeItem("total")
             localStorage.removeItem("totalItems")
         },
+
+        updateQuantity(state, action) {
+            const { index, newValue } = action.payload;
+            state.quantities[index] = newValue;
+            console.log("From slice",state.quantities[index]);
+            localStorage.setItem("quantities", JSON.stringify(state.quantities))
+
+        },
+        removeQuantity(state, action) {
+            const index = action.payload;
+            state.quantities.splice(index, 1);
+            localStorage.setItem("quantities", JSON.stringify(state.quantities))
+        },
     }
 });
 
-export const { setTotalItems, addToCart, removeFromCart, resetCart, setStep } = cartSlice.actions;
+export const { setTotalItems, addToCart, removeFromCart, resetCart, setStep, updateQuantity, removeQuantity } = cartSlice.actions;
 export default cartSlice.reducer; 

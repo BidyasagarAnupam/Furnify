@@ -21,30 +21,22 @@ import EditProduct from './components/Dashboard/Merchant/EditProduct';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import { ACCOUNT_TYPE } from './utils/constants';
 import { useSelector } from 'react-redux';
-import AddCategory from './components/Dashboard/Admin/Category/AddCategory'
-import AllCategory from './components/Dashboard/Admin/Category/AllCategory'
-import EditCategory from './components/Dashboard/Admin/Category/EditCategory'
-import AddSubCategory from './components/Dashboard/Admin/SubCategory/AddSubCategory'
-import AllSubCategory from './components/Dashboard/Admin/SubCategory/AllSubCategory'
-import EditSubCategory from './components/Dashboard/Admin/SubCategory/EditSubCategory'
-import AddBrand from './components/Dashboard/Admin/Brand/AddBrand'
-import AllBrand from './components/Dashboard/Admin/Brand/AllBrand'
-import EditBrand from './components/Dashboard/Admin/Brand/EditBrand'
 import 'react-image-crop/dist/ReactCrop.css'
 import Error404 from './components/common/Error404';
 import AllProducts from './pages/AllProducts';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './components/Dashboard/Customer/Cart';
+import ContactUs from './pages/ContactUs';
 
 
 function App() {
   const { user } = useSelector((state) => state.profile)
   return (
-    <div className="overflow-hidden w-screen min-h-screen flex flex-col font-inter ">
+    <div className="overflow-hidden w-screen min-h-screen flex flex-col font-inter">
       <NavBar />
       <Routes>
-        <Route path="/" element={user?.accountType === "Merchant" ? <Navigate to="/dashboard/account" /> : <Home />} />
-        <Route path="/product/:id" element={user?.accountType === "Merchant" ? <Navigate to="/dashboard/account" /> : <ProductDetails />} />
+        <Route path="/" element={(user?.accountType === "Merchant" || user?.accountType === "Admin") ? <Navigate to="/dashboard/account" /> : <Home />} />
+        <Route path="/product/:id" element={(user?.accountType === "Merchant" || user?.accountType === "Admin") ? <Navigate to="/dashboard/account" /> : <ProductDetails />} />
         <Route
           path="signup"
           element={
@@ -97,14 +89,14 @@ function App() {
           {/* Route for all users */}
           <Route path="/dashboard/account" element={<Account />} />
           <Route path="/dashboard/settings" element={<Settings />} />
-          <Route path="/dashboard/address" element={<Address />} />
-
           {/* Route only for Customers */}
           {user?.accountType === ACCOUNT_TYPE.CUSTOMER && (
             <>
               <Route path="/dashboard/my-orders" element={<MyOrders />} />
               <Route path="/dashboard/wishlist" element={<Wishlist />} />
               <Route path="/dashboard/cart" element={<Cart />} />
+              <Route path="/dashboard/address" element={<Address />} />
+
             </>
           )}
 
@@ -127,21 +119,14 @@ function App() {
                 path="/dashboard/edit-product/:productId"
                 element={<EditProduct />}
               />
+              <Route path="/dashboard/address" element={<Address />} />
             </>
           )}
 
           {/* Route only for Admin */}
           {user?.accountType === ACCOUNT_TYPE.ADMIN && (
             <>
-              <Route path="/dashboard/addcategory" element={<AddCategory />} />
-              <Route path="/dashboard/mycategory" element={<AllCategory />} />
-              <Route path="/dashboard/editcategory/:categoryId" element={<EditCategory />} />
-              <Route path="/dashboard/addsubcategory" element={<AddSubCategory />} />
-              <Route path="/dashboard/mysubcategory" element={<AllSubCategory />} />
-              <Route path="/dashboard/editsubcategory/:subCategoryId" element={<EditSubCategory />} />
-              <Route path="/dashboard/addbrand" element={<AddBrand />} />
-              <Route path="/dashboard/allbrand" element={<AllBrand />} />
-              <Route path="/dashboard/editBrand/:brandId" element={<EditBrand />} />
+
 
             </>
           )}
@@ -149,8 +134,8 @@ function App() {
         </Route>
 
         <Route path='*' element={<Error404 />} />
-        <Route path='/allProducts' element={<AllProducts />} />
-
+        <Route path='/allProducts/:categoryId?/:subCategoryId?' element={<AllProducts />} />
+        <Route path='/contact' element={<ContactUs />} />
       </Routes>
 
     </div>

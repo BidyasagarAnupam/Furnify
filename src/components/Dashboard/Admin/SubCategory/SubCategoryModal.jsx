@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { RxCross1 } from "react-icons/rx";
 import SubCategoryCard from './SubCategoryCard';
+import { useNavigate } from 'react-router-dom';
 
 export default function SubCategoryModal({ modalData }) {
-    modalData.subCategory.map(() => {
-        console.log("Chal raha hai")
-    })
+    const navigate = useNavigate();
+
     useEffect(() => {
         // Add a class to the HTML element to prevent scrolling
         const htmlElement = document.querySelector('html');
@@ -37,13 +37,13 @@ export default function SubCategoryModal({ modalData }) {
                     </div>
                 </div>
                 <div className='grid grid-cols-3 gap-10 w-11/12 mx-auto px-6 py-10'>
-                    <div className='flex flex-col gap-3 items-center'>
+                    <div className='flex flex-col gap-3 items-center' onClick={() => navigate(`/allProducts/${modalData.categoryId}`)}>
                         <img loading='lazy' src={modalData.categoryImage} alt="All items" className='rounded-md h-[125px]' />
                         <p>All Items</p>
                     </div>
                     {
                         modalData.subCategory.map((item) => {
-                            return <SubCategoryCard key={item._id} subCategory={item} />
+                            return <SubCategoryCard key={item._id} subCategory={item} categoryId={modalData.categoryId} />
                         })
                     }
                 </div>
