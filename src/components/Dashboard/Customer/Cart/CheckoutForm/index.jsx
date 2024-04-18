@@ -25,12 +25,12 @@ const CheckoutForm = ({ totalMRP, totalDiscountedPrice }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [index, setIndex] = useState(0)
   const dispatch = useDispatch();
-  const { cart, totalItems, step } = useSelector((state) => state.cart)
+  const { cart, totalItems, step, quantities } = useSelector((state) => state.cart)
   const navigate = useNavigate()
 
   const handleBuyProduct = () => {
     const products = cart.map((product) => product._id)
-    buyProduct(token, products, totalDiscountedPrice, showAddress._id, user, navigate, dispatch)
+    buyProduct(token, products, quantities, totalDiscountedPrice, showAddress._id, user, navigate, dispatch)
   }
 
   useEffect(() => {

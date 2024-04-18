@@ -27,6 +27,7 @@ import AllProducts from './pages/AllProducts';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './components/Dashboard/Customer/Cart';
 import ContactUs from './pages/ContactUs';
+import AdminDashboard from './components/Dashboard/Admin/AdminDashboard';
 
 
 function App() {
@@ -126,16 +127,16 @@ function App() {
           {/* Route only for Admin */}
           {user?.accountType === ACCOUNT_TYPE.ADMIN && (
             <>
-
-
+              <Route path="/dashboard/adminDashboard" element={<AdminDashboard />} />
             </>
           )}
 
         </Route>
 
+        <Route path='/allProducts/:categoryId?/:subCategoryId?' element={(user?.accountType === "Merchant" || user?.accountType === "Admin") ? <Navigate to="/dashboard/account" /> : <AllProducts />} />
+        <Route path='/contact' element={(user?.accountType === "Admin") ? <Navigate to="/dashboard/account" /> : <ContactUs />} />
+
         <Route path='*' element={<Error404 />} />
-        <Route path='/allProducts/:categoryId?/:subCategoryId?' element={<AllProducts />} />
-        <Route path='/contact' element={<ContactUs />} />
       </Routes>
 
     </div>

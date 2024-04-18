@@ -24,51 +24,36 @@ const ShoppingCart = ({ totalMRP, setTotalMRP, totalDiscountedPrice, setTotalDis
     setTotalMRP(total);
   };
 
-  useEffect(() => {
-    updateTotalMRP();
-  },[])
-
-  const updateTotalDiscountedPrice = (discountPrice) => {
-    setTotalDiscountedPrice((prevTotal) => prevTotal + discountPrice);
+  const updateTotalDiscountedPrice = () => {
+    let total = 0;
+    cart.forEach((product, index) => {
+      const discountedPrice = (Math.round(product.price - (product.price * (product.discount / 100))));
+      // Calculate the total discounted price of each product considering its quantity
+      const totalDiscountedPrice = discountedPrice * quantities[index];
+      total += totalDiscountedPrice;
+    });
+    setTotalDiscountedPrice(total);
   };
 
+  
+  useEffect(() => {
+    updateTotalMRP();
+    updateTotalDiscountedPrice();
+  }, [quantities])
 
   // Function to update quantity at a specific index
   const updateQuantityAtIndex = (index, newValue) => {
     // Dispatch action to update quantity
     dispatch(updateQuantity({ index, newValue }));
-    // Call updateTotalMRP to recalculate total MRP
-    updateTotalMRP();
+
   };
 
   // Function to remove item from cart and quantities array
   const removeFromQuantity = (index) => {
     // Dispatch action to remove quantity
     dispatch(removeQuantity(index));
-    // Call updateTotalMRP to recalculate total MRP
-    updateTotalMRP();
+
   };
-
-  // Function to update quantity at a specific index
-  // const updateQuantityAtIndex = (index, newValue) => {
-  //   setQuantities(prevQuantities => {
-  //     const newQuantities = [...prevQuantities]; // Create a copy of the quantities array
-  //     newQuantities[index] = newValue; // Update value at specified index
-  //     return newQuantities; // Return the updated array
-  //   });
-  // };
-
-
-  // Function to remove item from cart and quantities array
-  // const removeFromQuantity = (index) => { 
-  //   setQuantities(prevQuantities => {
-  //     const newQuantities = [...prevQuantities]; // Create a copy of the quantities array
-  //     newQuantities.splice(index, 1); // Remove quantity at specified index
-  //     return newQuantities; // Return the updated quantities array
-  //   });
-  // };
-
-
 
   if (cart.length === 0) {
     return (
@@ -102,8 +87,6 @@ const ShoppingCart = ({ totalMRP, setTotalMRP, totalDiscountedPrice, setTotalDis
               updateQuantityAtIndex={updateQuantityAtIndex}
               removeFromQuantity={removeFromQuantity}
               product={product}
-              // updateTotalMRP={updateTotalMRP}
-              updateTotalDiscountedPrice={updateTotalDiscountedPrice}
             />
 
           ))

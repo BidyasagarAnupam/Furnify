@@ -11,8 +11,6 @@ const CartTable = (
     {
         index,
         product,
-        // updateTotalMRP,
-        updateTotalDiscountedPrice,
         quantities,
         updateQuantityAtIndex,
         removeFromQuantity,
@@ -30,18 +28,10 @@ const CartTable = (
         setSubTotal(displayPrice() * quantity)
     }, [quantity])
 
-    useEffect(() => {
-        // updateTotalMRP(product.price,index);
-        console.log("SUB TOTAL", subTotal);
-        updateTotalDiscountedPrice(displayPrice());
-    }, [])
-
     const increment = () => {
         if (quantity <= 4) {
             updateQuantityAtIndex(index, quantity + 1)
             setQuantity(quantity + 1);
-            // updateTotalMRP(product.price, index);
-            updateTotalDiscountedPrice(displayPrice());
         }
 
         else
@@ -51,19 +41,14 @@ const CartTable = (
         if (quantity > 1) {
             updateQuantityAtIndex(index, quantity - 1)
             setQuantity(quantity - 1);
-            // updateTotalMRP(-(product.price), index);
-            updateTotalDiscountedPrice(-displayPrice());
         }
-
         else
             toast.error("Minimum 1 quantity must be required")
     }
 
     const removeBtnHandler = () => {
-        // updateTotalMRP(-(product.price * quantity));
         removeFromQuantity(index)
         dispatch(removeFromCart(product._id))
-        updateTotalDiscountedPrice(-(displayPrice() * quantity));
     }
 
     return (

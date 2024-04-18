@@ -48,7 +48,7 @@ const ProductDetails = () => {
   const handleBuyProduct = (onClose) => {
     onClose();
     console.log("SHOWADDRESS: ", showAddress._id);
-    buyProduct(token, [productId], discountedPrice, showAddress._id, user, navigate, dispatch)
+    buyProduct(token, [productId],[1], discountedPrice, showAddress._id, user, navigate, dispatch)
   }
 
   const addProductHandler = async (productId) => {

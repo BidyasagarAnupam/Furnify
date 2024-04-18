@@ -16,10 +16,10 @@ function Dashboard() {
     }
 
     return (
-        <div className="  flex min-h-[calc(100vh-5rem)] bg-[#FAFAFB]">
+        <div className="  flex min-h-[calc(100vh-2rem)] bg-[#F9F9FC]">
             <Sidebar />
-            <div className="h-[calc(100vh-5rem)] flex-1 overflow-auto">
-                <div className="mx-auto w-11/12  py-10">
+            <div className="h-[calc(100vh-2rem)] flex-1 overflow-auto">
+                <div className="mx-auto w-11/12  py-10 ">
                     <Outlet />
                 </div>
             </div>

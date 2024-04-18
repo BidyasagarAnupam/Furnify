@@ -42,11 +42,9 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex h-[calc(70vh-3.5rem)] 
+      <div className="flex  
       min-w-[220px] flex-col 
-      neomorphic
-      lg:mt-20
-      lg:ml-6
+      bg-white
       relative
        py-10">
         {/* image */}

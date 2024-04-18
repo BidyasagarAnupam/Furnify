@@ -56,10 +56,18 @@ module.exports = {
           '900': '#155564',
           '950': '#073845',
         },
+        'dashboard': {
+          'black': '#0F1016',
+          'grey': '#777980'
+        },
 
       },
       backgroundImage: {
-        'hero-section': "url('assets/Hero-section.png')"
+        'hero-section': "url('assets/Hero-section.png')",
+        'revenueImg': "url('assets/icons/Ornament_Total_Revenue.svg')",
+        'orderImg': "url('assets/icons/Ornament_Total_Order.svg')",
+        'productImg': "url('assets/icons/Ornament_Total_Products.svg')",
+        'customerImg': "url('assets/icons/Ornament_Total_Customer.svg')"
       },
       maxWidth: {
         maxContent: "1260px",

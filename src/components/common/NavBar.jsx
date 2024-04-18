@@ -37,7 +37,7 @@ const NavBar = () => {
                     <ul className='flex gap-x-6 text-richblack-25'>
                         {
                             NavbarLinks.map((link, index) => {
-                                if (user?.accountType === "Merchant") {
+                                if (user?.accountType === "Merchant" || user?.accountType === "Admin") {
                                     if (user?.accountType !== link.type) return null;
                                     else {
                                         return (

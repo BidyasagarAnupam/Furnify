@@ -23,6 +23,15 @@ const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["Confirmed", "Shipped", "Out for Delivery", "Delivered"]
+    },
+    quantity: {
+        type: String,
+        required: true,
+    },
+    merchant: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
     }
 });
 

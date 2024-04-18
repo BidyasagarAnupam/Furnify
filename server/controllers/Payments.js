@@ -70,10 +70,11 @@ exports.verifyPayment = async (req, res) => {
     const products = req.body?.products;
     const userId = req.user.id;
     const addressId = req.body?.addressId;
+    const quantities = req.body?.quantities;
 
     if (!razorpay_order_id ||
         !razorpay_payment_id ||
-        !razorpay_signature || !products || !userId) {
+        !razorpay_signature || !products || !userId || !quantities) {
         return res.status(200).json({ success: false, message: "Payment Failed" });
     }
 
@@ -85,7 +86,7 @@ exports.verifyPayment = async (req, res) => {
 
     if (expectedSignature === razorpay_signature) {
         //enroll karwao student ko
-        await registerCustomer(products, addressId, userId, res);
+        await registerCustomer(products, quantities, addressId, userId, res);
         //return res
         return res.status(200).json({ success: true, message: "Payment Verified", orderId: razorpay_order_id });
     }
@@ -94,15 +95,16 @@ exports.verifyPayment = async (req, res) => {
 }
 
 
-const registerCustomer = async (products, addressId, userId, res) => {
+const registerCustomer = async (products, quantities, addressId, userId, res) => {
 
-    if (!products || !userId) {
+    if (!products || !userId || !quantities) {
         return res.status(400).json({ success: false, message: "Please Provide data for Products or UserId" });
     }
 
+    let index = 0;
     for (const productId of products) {
         try {
-            //find the product and enroll the student in it
+            //find the product and add the customer in it
             const orderedProduct = await Product.findOneAndUpdate(
                 { _id: productId },
                 { $push: { users: userId } },
@@ -113,21 +115,16 @@ const registerCustomer = async (products, addressId, userId, res) => {
                 return res.status(500).json({ success: false, message: "Product not Found" });
             }
 
-            // const productProgress = await ProductProgress.create({
-            //     productId: productId,
-            //     userId: userId,
-            //     completedVideos: [],
-            // })
-
-
-            // console.log("ProductProgress", productProgress);
+            const merchant = orderedProduct.merchant;
 
             // create a new order
             const order = await Order.create({
                 user: userId,
                 product: productId,
                 address : addressId,
-                status: "Confirmed"
+                status: "Confirmed",
+                quantity: quantities[index++],
+                merchant
             })
 
             //find the customer and add the product to their list of orderedProducts

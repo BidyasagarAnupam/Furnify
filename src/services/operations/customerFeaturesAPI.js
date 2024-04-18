@@ -23,7 +23,7 @@ function loadScript(src) {
 }
 
 
-export async function buyProduct(token, products, totalDiscountedPrice,addressId, userDetails, navigate, dispatch) {
+export async function buyProduct(token, products, quantities, totalDiscountedPrice,addressId, userDetails, navigate, dispatch) {
     const toastId = toast.loading("Loading...");
     try{
         //load the script
@@ -65,7 +65,7 @@ export async function buyProduct(token, products, totalDiscountedPrice,addressId
                 //send successful wala mail
                 sendPaymentSuccessEmail(response, orderResponse.data.message.amount,token );
                 //verifyPayment
-                verifyPayment({ ...response, products, addressId }, token, navigate, dispatch);
+                verifyPayment({ ...response, products, quantities, addressId }, token, navigate, dispatch);
             }
         }
         //miss hogya tha 

@@ -38,5 +38,17 @@ export const NavbarLinks = [
     title: "Contact Us",
     path: "/contact",
   },
+  {
+    key: 8,
+    title: "Account",
+    path: "/dashboard/account",
+    type: ACCOUNT_TYPE.ADMIN,
+  },
+  {
+    key: 9,
+    title: "Dashboard",
+    path: "/dashboard/adminDashboard",
+    type: ACCOUNT_TYPE.ADMIN,
+  },
 ];
 
