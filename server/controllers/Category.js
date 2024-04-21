@@ -70,7 +70,7 @@ exports.updateCategory = async(req,res) =>{
                 thumbnail,
                 process.env.FOLDER_NAME
               )
-            category.thumbnail = categoryImage.secure_url
+            category.image = categoryImage.secure_url
         }
 
         if(updates.name){

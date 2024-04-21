@@ -63,4 +63,11 @@ export const sidebarLinks = [
     type: ACCOUNT_TYPE.CUSTOMER,
     icon: "FaShoppingCart",
   },
+  {
+    id:11,
+    name: "Address",
+    path: "/dashboard/address",
+    icon: "FaHome",
+    type: ACCOUNT_TYPE.MERCHANT,
+  },
 ];

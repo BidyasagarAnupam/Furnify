@@ -4,7 +4,7 @@ import { apiConnector } from "../apiconnector"
 import { ordersEndpoints } from "../apis"
 import { setLoading } from "../../slices/authSlice"
 
-const { GET_ALL_ORDERS_API, UPDATE_STATUS_API } = ordersEndpoints
+const { GET_ALL_ORDERS_API, UPDATE_STATUS_API, GET_ALL_ORDER_MERCHANT_API } = ordersEndpoints
 
 export async function fetchOrders(token) {
         let result = [];
@@ -33,14 +33,44 @@ export async function fetchOrders(token) {
 
         return result;
 
+}
+    
+export async function fetchMerchantOrders(token) {
+    let result = [];
+
+    try {
+        const res = await apiConnector
+            (
+                "POST",
+                GET_ALL_ORDER_MERCHANT_API, "", {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+            })
+
+        if (!res?.data?.success) {
+            throw new Error(res.data.message)
+        }
+
+        result = res?.data?.data;
+        console.log("RESPONSE OF GET_CATEGORIES_API.......", res);
+
+
+    } catch (error) {
+        console.log("GET_ALL_ORDERS_API ERROR............", error);
+        toast.error(error.message);
     }
+
+    return result;
+
+}
     
 
-export function updateOrder(token, orderId, status){
+export function updateOrder(token, orderId, status) {
+    let res;
     return async () => {
-
+        const toastId = toast.loading("Loading...")
         try {
-            const res = await apiConnector("PUT", UPDATE_STATUS_API, { orderId, status }, {
+            res = await apiConnector("PUT", UPDATE_STATUS_API, { orderId, status }, {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
             })
@@ -52,11 +82,12 @@ export function updateOrder(token, orderId, status){
             console.log("RESPONSE OF GET_CATEGORIES_API.......", res);
             toast.success("Order updated successfully")
             
-
+            
         } catch (error) {
             console.log("UPDATE_STATUS_API ERROR............", error);
             toast.error(error.message);
         }
-
+        toast.dismiss(toastId)
+        return res
     }
 }

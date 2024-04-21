@@ -142,7 +142,7 @@ const RatingAndReview = ({ ratingAndReviews }) => {
                                 </div>
 
                                 <div className='flex flex-col gap-2 items-start'>
-                                    <p className='text-neutral-4 text-sm'>Reviewed in India on 14 April 2024</p>
+                                    <p className='text-neutral-4 text-sm'>Reviewed in India</p>
                                     <p className='text-xs text-red-700 font-semibold'>Verified Purchase</p>
                                 </div>
 

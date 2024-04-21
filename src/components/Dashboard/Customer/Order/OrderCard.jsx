@@ -134,11 +134,18 @@ const OrderCard = ({ order }) => {
                 <div className='px-4 py-3 flex justify-between items-center bg-[#f5f5f5]'>
                     {/* Left Section */}
                     <div onClick={() => navigate(`/product/${order.product._id}`)} className='flex gap-4 w-fit items-center cursor-pointer'>
-                        <img src={order.product.image} alt="OrderPicture" className='w-[120px] h-[100px] rounded-md ' />
+                        <img src={order.product.image} alt="OrderPicture" className='w-[120px] h-[100px] object-cover rounded-md ' />
                         <p className='text-sm font-medium hover:underline hover:text-blue-800'>{order.product.name}</p>
                     </div>
                     {/* TODO: ADD slider style for order status */}
-                    <div className='text-green-500 font-semibold text-medium'>
+                    <div className={`w-fit mx-auto px-5 py-2 text-sm
+                                     rounded-lg
+                                     ${order.status === 'Confirmed' && "bg-[#FFF0EA] text-[#F86624]"}
+                                     ${order.status === 'Shipped' && "bg-[#EAF8FF] text-[#2BB2FE]"}
+                                     ${order.status === 'Out for Delivery' && "bg-[#FEF4CF] text-[#BB960B]"}
+                                     ${order.status === 'Delivered' && "bg-[#E9FAF7] text-[#1A9882]"}
+                                     ${order.status === 'Cancelled' && "bg-[#FBD8DB] text-[#EB3D4D]"}
+                                     `}>
                         {`Your Order has been ${order.status}`}
                     </div>
                     {/* Right Section */}

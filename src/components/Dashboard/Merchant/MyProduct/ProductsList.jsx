@@ -7,6 +7,8 @@ import { deleteProduct } from '../../../../services/operations/productDeatilsAPI
 import ConfirmationModal from '../../../common/ConfirmationModal';
 import { setEditProduct } from '../../../../slices/productSlice';
 import { useNavigate } from 'react-router-dom';
+import noProductFound from "../../../../assets/Images/noproductFound.jpeg"
+
 
 const ProductsList = ({ productList, isDeleted, setIsDeleted }) => {
   const [hoveredProduct, setHoveredProduct] = useState(null);
@@ -48,6 +50,15 @@ const ProductsList = ({ productList, isDeleted, setIsDeleted }) => {
       btn1Handler: () => onPressDelete(productId),
       btn2Handler: () => setConfirmationModal(null),
     })
+  }
+
+  if (productList?.length === 0) {
+    return (
+      <div className='w-full flex flex-col items-center justify-center gap-4 overflow-y-hidden'>
+        <img src={noProductFound} alt="NoProduct" className='w-[400px]' />
+        <p className='text-3xl text-neutral-5 font-semibold'>No Product found</p>
+      </div>
+    )
   }
 
   return (

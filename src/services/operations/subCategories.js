@@ -87,9 +87,9 @@ export const createSubCategory = async (data, token) => {
 
 export const deleteSubCategory = async (subId, token) => {
     const toastId = toast.loading("Loading...")
-
+    let response;
     try {
-        const response = await apiConnector("DELETE", DELETE_SUBCATEGORIES_API, {subId}, {
+        response = await apiConnector("DELETE", DELETE_SUBCATEGORIES_API, {subId}, {
             Authorization: `Bearer ${token}`,
         })
 
@@ -104,4 +104,5 @@ export const deleteSubCategory = async (subId, token) => {
         toast.error(error.message)
     }
     toast.dismiss(toastId)
+    return response
 }

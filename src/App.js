@@ -28,7 +28,7 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './components/Dashboard/Customer/Cart';
 import ContactUs from './pages/ContactUs';
 import AdminDashboard from './components/Dashboard/Admin/AdminDashboard';
-
+import AddSubCategory from './components/Dashboard/Admin/SubCategory/AddSubCategory';
 
 function App() {
   const { user } = useSelector((state) => state.profile)
@@ -128,6 +128,8 @@ function App() {
           {user?.accountType === ACCOUNT_TYPE.ADMIN && (
             <>
               <Route path="/dashboard/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/dashboard/adminDashboard/addsubCategory/:cId" element={<AddSubCategory />} />
+              <Route path="/dashboard/adminDashboard/editsubCategory/:isEdit" element={<AddSubCategory />} />
             </>
           )}
 

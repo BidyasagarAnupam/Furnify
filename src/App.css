@@ -171,3 +171,59 @@ html {
    }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-item {
+  list-style: none;
+}
+
+.page-link {
+  padding: 8px 12px;
+  margin: 0 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.page-link:hover {
+  background-color: #f4f4f4;
+}
+
+.page-link:focus {
+  outline: none;
+}
+
+.page-link[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.bg-blue-500 {
+  background-color: #4299e1;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #2b6cb0;
+}
+
+.text-white {
+  color: #fff;
+}

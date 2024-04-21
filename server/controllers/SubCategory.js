@@ -6,8 +6,10 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 exports.createSubCategory = async(req,res)=>{
     try{
         //fetch data
+        console.log("REQ.BODY", req.body);
+        console.log("req.files", req.files);
         const {name,cid}= req.body;
-        const subCategoryImage = req.files.subCategoryImage;
+        const subCategoryImage = req.files.image;
         //validation
         if(!name || !cid || !subCategoryImage){
             return res.status(403).json({
@@ -33,7 +35,7 @@ exports.createSubCategory = async(req,res)=>{
             1000
         )
 
-        const subCategoryDetails = await SubCategory.create({name, image: image.secure_url})
+        const subCategoryDetails = await SubCategory.create({name, image: image.secure_url, category: cid})
         
         await Category.findByIdAndUpdate(cid, {
             $push: {
@@ -58,17 +60,12 @@ exports.createSubCategory = async(req,res)=>{
 
 exports.updateSubCategory = async(req,res) =>{
     try {
-        const {name, subId} = req.body;
+        const { name, subId } = req.body;
+        
 
-        if(!name || !subId){
-            return res.status(403).json({
-                success: false,
-                message:"All fields are required",
-            });
-        }
+        const subCategory = await SubCategory.findOne({name})
 
-        const subCategory = await SubCategory.find({name})
-
+        // console.log("subCategory", subCategory);
         // if subCategory is already present with that name than dont create it.
         if(subCategory) {
             return res.status(400).json({
@@ -76,14 +73,33 @@ exports.updateSubCategory = async(req,res) =>{
                 message:"This sub category is already present",
             })
         }
-        // update the subCategory with its new name
-    const updateSubCategoryDetails = await SubCategory.findByIdAndUpdate(subId,
-        {name});
+
+
+        const updateSubCategory = await SubCategory.findById(subId)
+
+        if (req?.files?.image) {
+            console.log("IMAGE", req.files);
+            const subCategoryImage = req.files.image;
+            const image = await uploadImageToCloudinary(
+                subCategoryImage,
+                process.env.FOLDER_NAME,
+                1000,
+                1000
+            )
+            updateSubCategory.image = image.secure_url
+        }
+        
+        if (name) {
+            updateSubCategory.name = name;
+        }
+        
+        
+        updateSubCategory.save();
 
         return res.status(200).json({
             success: true,
             message: "subCategory updated successfully",
-            data: updateSubCategoryDetails
+            data: updateSubCategory
         });
     } catch (error) {
         return res.status(500).json({
@@ -101,7 +117,7 @@ exports.deleteSubCategory = async (req, res) => {
         if(!subId){
             return res.status(403).json({
                 success: false,
-                message:"Sub Category id id not present",
+                message:"Sub Category id not present",
             });
         }
 
@@ -121,7 +137,12 @@ exports.deleteSubCategory = async (req, res) => {
         })
 
         // Delete the SubCategory
-        await SubCategory.findByIdAndDelete(subId);        
+        await SubCategory.findByIdAndDelete(subId); 
+        
+        return res.status(200).json({
+            success: true,
+            message: "subCategory updated successfully",
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,

@@ -48,7 +48,7 @@ const Home = () => {
       </div>
 
       {/* Section 2 */}
-      <div className='w-11/12 mt-32 flex flex-col mx-auto'>
+      <div className='w-11/12 mt-20 flex flex-col mx-auto'>
         <div className=' flex w-full justify-between h-[500px] p-11'>
           <div className='flex items-center justify-center w-1/2'>
             <img src={bgImg1} alt="" className='h-[90%] rounded-md' />
@@ -93,17 +93,17 @@ const Home = () => {
       </div>
 
       {/* Section 3: New Launches */}
-      <div className="flex flex-col bg-neutral-2 mt-5">
-        <p className="flex px-5 my-5 items-start font-bold text-4xl text-neutral-4 overflow-hidden">
+      <div className="flex flex-col">
+        <p className="flex px-10 my-5 items-start font-bold text-4xl text-neutral-4 overflow-hidden">
           New Launches
-        </p>
-        <div>
+        </p> 
+        <div className='h-[360px]'>
           <RenderNewLaunches />
         </div>
       </div>
 
       {/* Section 4 */}
-      <div className='w-11/12 mt-10 flex flex-col mx-auto'>
+      <div className='w-11/12 flex flex-col mx-auto'>
         <div className=' flex flex-row-reverse w-full justify-between h-[500px] p-11'>
           <div className='flex items-center justify-center w-1/2'>
             <img src={bgImg2} alt="" className='h-[90%] rounded-md' />
@@ -120,7 +120,7 @@ const Home = () => {
       </div>
 
       {/* Section 4: Shop by Category*/}
-      <div id={'product'} className='mt-14 mx-auto '>
+      <div id={'product'} className=' mx-auto mt-3 '>
         <p className='
         text-center text-[2rem] font-semibold
         '>

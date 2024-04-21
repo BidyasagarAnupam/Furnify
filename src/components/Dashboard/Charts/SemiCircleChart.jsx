@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const SemiCircleChart = () => {
-    const [series] = useState([76]);
+    const [series] = useState([79]);
     const [options] = useState({
         chart: {
             type: 'radialBar',
@@ -13,29 +13,27 @@ const SemiCircleChart = () => {
         },
         plotOptions: {
             radialBar: {
-                startAngle: -90,
-                endAngle: 90,
+                startAngle: -100,
+                endAngle: 100,
                 hollow: {
                     margin: 0,
                     size: '80%',
                     background: '#fff',
-                    image: undefined,
-                    imageOffsetX: 0,
-                    imageOffsetY: 0,
-                    position: 'front',
                 },
                 track: {
                     background: '#E0E2E7',
-                    strokeWidth: '67%',
+                    strokeWidth: '60%',
                     margin: 0, // margin is in pixels
                 },
 
                 dataLabels: {
                     show: true,
+                    textAnchor: 'middle',
                     value: {
                         offsetY: -50,
                         fontSize: '35px'
-                    }
+                    },
+                    
                 }
             }
         },
@@ -45,6 +43,7 @@ const SemiCircleChart = () => {
         stroke: {
             lineCap: 'round'
         },
+        labels: [''],
     });
 
     return (

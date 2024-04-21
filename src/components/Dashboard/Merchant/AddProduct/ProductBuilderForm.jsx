@@ -137,6 +137,7 @@ const ProductBuilderForm = () => {
                     formData.append("subCategory", data.subCategory)
                 }
 
+                console.log("FORM DATA PRODUCT", formData);
                 setLoading(true)
                 const result = await editProductDetails(formData, token)
                 setLoading(false)

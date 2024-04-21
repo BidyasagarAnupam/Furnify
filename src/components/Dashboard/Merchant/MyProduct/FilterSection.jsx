@@ -7,8 +7,6 @@ import { TbZoomReset } from "react-icons/tb";
 const FilterSection = ({ setQuery, all, publishedCount }) => {
 
   const [isAll, setIsAll] = useState(true)
-  const [isPublished, setIsPublished] = useState(false)
-  const [isUnPublished, setIsUnPublished] = useState(false);
   const [filterModal, setFilterModal] = useState(false)
 
   return (
@@ -22,7 +20,7 @@ const FilterSection = ({ setQuery, all, publishedCount }) => {
             `}
           >{`All (${all})`}
           </div>
-          <div
+          {/* <div
             className={`${isPublished ? "bg-primary text-white" : " text-primary border"}
             py-1 px-4 rounded-full
             `}
@@ -31,7 +29,7 @@ const FilterSection = ({ setQuery, all, publishedCount }) => {
             className={`${isUnPublished ? "bg-primary text-white" : " text-primary border"}
             py-1 px-4 rounded-full
             `}
-          >{`Unpublished (${all - publishedCount})`}</div>
+          >{`Unpublished (${all - publishedCount})`}</div> */}
         </div>
 
         {/* Right Section */}

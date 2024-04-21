@@ -13,7 +13,7 @@ const MyProducts = () => {
   const navigate = useNavigate();
   const [searchProduct, setSearchProduct] = useState('');
   const [productList, setProductList] = useState([]);
-  const [publishedCount, setPublishedCount] = useState(0)
+  // const [publishedCount, setPublishedCount] = useState(0)
   const [query, setQuery] = useState({
   })
   const { token } = useSelector((state) => state.auth)
@@ -37,11 +37,9 @@ const MyProducts = () => {
         // count published products
         res.forEach((product) => {
           console.log("status", product.status);
-          if (product.status) {
-            setPublishedCount(publishedCount + 1)
-          }
+          
         })
-        console.log("count", publishedCount);
+        
       }
     }
     fetchProducts()
@@ -93,7 +91,7 @@ const MyProducts = () => {
       <div>
         {/* Search  */}
       </div>
-      <FilterSection setQuery={setQuery} all={productList.length} publishedCount={publishedCount} />
+      <FilterSection setQuery={setQuery} all={productList.length} />
 
       {/* All Products */}
       <ProductsList productList={productList} setIsDeleted={setIsDeleted} isDeleted={isDeleted} />

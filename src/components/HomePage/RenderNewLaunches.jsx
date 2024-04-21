@@ -26,7 +26,7 @@ const RenderNewLaunches = () => {
         getNewProduct();
     }, [])
     return (
-        <>
+        <div className='h-full'>
             <Swiper
                 slidesPerView={5}
                 spaceBetween={10}
@@ -36,7 +36,7 @@ const RenderNewLaunches = () => {
                 keyboard={true}
                 freeMode={true}
                 modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-                className="w-full"
+                className="w-full h-full"
             >
                 {
                     newProduct.map((product, index) => (
@@ -46,7 +46,7 @@ const RenderNewLaunches = () => {
                     ))
                 }
             </Swiper>
-        </>
+        </div>
     )
 }
 

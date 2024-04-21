@@ -49,7 +49,7 @@ export const getNewProducts = async () => {
   return result
 }
 
-export const fetchProductDetails = async (productId) => {
+export const fetchProductDetails = async (productId, navigate) => {
   const toastId = toast.loading("Loading...")
   //   dispatch(setLoading(true));
   let result = null
@@ -59,13 +59,16 @@ export const fetchProductDetails = async (productId) => {
     })
     console.log("GET_PRODUCT_DETAILS_API API RESPONSE............", response)
 
-    if (!response.data.success) {
-      throw new Error(response.data.message)
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message)
     }
-    result = response.data
+    result = response?.data
   } catch (error) {
     console.log("GET_PRODUCT_DETAILS_API API ERROR............", error)
     toast.error("Couldn't get product details")
+    navigate('/allProducts')
+    toast.dismiss(toastId)
+    return
     // toast.error(error.response.data.message);
   }
   toast.dismiss(toastId)

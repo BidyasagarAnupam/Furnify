@@ -97,8 +97,9 @@ export const settingsEndpoints = {
 
 // ORDERS ENDPOINTS
 export const ordersEndpoints = {
-   GET_ALL_ORDERS_API : BASE_URL + "/order/my-orders",
-   UPDATE_STATUS_API: BASE_URL + "/order/update-order"
+  GET_ALL_ORDERS_API: BASE_URL + "/order/my-orders",
+  UPDATE_STATUS_API: BASE_URL + "/order/update-order",
+  GET_ALL_ORDER_MERCHANT_API: BASE_URL + "/order/merchant-orders"
 }
 
 // RATING & REVIEWS API

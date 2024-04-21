@@ -30,7 +30,7 @@ exports.getAllOrders = async(req,res) => {
     }
 }
 
-exports.updateStatus =  async(req,re) => {
+exports.updateStatus =  async(req,res) => {
     const {orderId, status} = req.body;
 
     if(!orderId || !status) {
@@ -57,4 +57,34 @@ exports.updateStatus =  async(req,re) => {
         message: "Order updated successfully",
         data: order
      })
+}
+
+exports.getAllMerchantOrders = async (req, res) => {
+    try {
+        const id = req.user.id;
+        const allOrders = await Order.find({ merchant: id }).populate('user')
+            .populate('product')
+            .populate('address')
+            .exec()
+
+        if (!allOrders) {
+            return res.status(400).json({
+                success: false,
+                message: "Something went wrong while fetching the order"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Orders fetched successfully",
+            data: allOrders
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            err: error.message,
+            message: "Error in retrieving Orders"
+        })
+    }
 }

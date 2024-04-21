@@ -219,6 +219,16 @@ exports.getProductDetails = async (req, res) => {
     try {
         const { productId } = req.body;
 
+        const product = await Product.findById(productId)
+
+        if (!product) {
+            return res.status(400).json({
+                success: false,
+                message: `Could not find the product with id ${productId}`,
+                data: {}
+            })
+        }
+
         const getProductDetails = await Product.find({ _id: productId })
             .populate(
                 {
@@ -282,7 +292,8 @@ exports.editProduct = async (req, res) => {
         console.log("UPDATES________", updates);
 
         const product = await Product.findById(productId);
-
+        console.log("PRODUCT", product.category);
+        const cId = product.category
         if (!product) {
             return res.status(404).json({
                 success: false,
@@ -291,66 +302,73 @@ exports.editProduct = async (req, res) => {
         }
 
         // If category is changed
-        if (!(updates.category === product.category)) {
-            // Remove product id from old category
-            await Category.findByIdAndUpdate(
-                {
-                    _id: product.category
-                },
-                {
-                    $pull: {
-                        products: productId,
-                    }
-                },
-                { new: true }
-            )
-            // Push product id from new category
-            await Category.findByIdAndUpdate(
-                {
-                    _id: updates.category
-                },
-                {
-                    $push: {
-                        products: productId,
-                    }
-                },
-                { new: true }
-            )
+        if (updates.category) {
+            if (!(updates.category === product.category)) {
+                // Remove product id from old category
+                await Category.findByIdAndUpdate(
+                    {
+                        _id: product.category
+                    },
+                    {
+                        $pull: {
+                            products: productId,
+                        }
+                    },
+                    { new: true }
+                )
+                // Push product id from new category
+                await Category.findByIdAndUpdate(
+                    {
+                        _id: updates.category
+                    },
+                    {
+                        $push: {
+                            products: productId,
+                        }
+                    },
+                    { new: true }
+                )
+            }
         }
+        
 
         // If subcategory is changed
-        if (!(updates.subCategory === product.subCategory)) {
-            // Remove product id from old subcategory
-            await SubCategory.findByIdAndUpdate(
-                {
-                    _id: product.subCategory
-                },
-                {
-                    $pull: {
-                        products: productId,
-                    }
-                },
-                { new: true }
-            )
+        if (updates.subCategory) {
+            if (!(updates.subCategory === product.subCategory)) {
+                // Remove product id from old subcategory
+                await SubCategory.findByIdAndUpdate(
+                    {
+                        _id: product.subCategory.toString()
+                    },
+                    {
+                        $pull: {
+                            products: productId,
+                        }
+                    },
+                    { new: true }
+                )
 
-            // Push product id from new subcategory
-            await SubCategory.findByIdAndUpdate(
-                {
-                    _id: updates.subCategory
-                },
-                {
-                    $push: {
-                        products: productId,
-                    }
-                },
-                { new: true }
-            )
+                // Push product id from new subcategory
+                await SubCategory.findByIdAndUpdate(
+                    {
+                        _id: updates.subCategory
+                    },
+                    {
+                        $push: {
+                            products: productId,
+                        }
+                    },
+                    { new: true }
+                )
+            }
         }
+        
 
         // If Thumbnail Image is found, update it
         if (req.files) {
             console.log("thumbnail update")
             const thumbnail = req.files.thumbnailImage
+            console.log("Thumbnail-----", thumbnail);
             const thumbnailImage = await uploadImageToCloudinary(
                 thumbnail,
                 process.env.FOLDER_NAME

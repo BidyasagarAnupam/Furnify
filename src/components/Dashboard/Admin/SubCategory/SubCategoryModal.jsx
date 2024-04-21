@@ -37,7 +37,7 @@ export default function SubCategoryModal({ modalData }) {
                     </div>
                 </div>
                 <div className='grid grid-cols-3 gap-10 w-11/12 mx-auto px-6 py-10'>
-                    <div className='flex flex-col gap-3 items-center' onClick={() => navigate(`/allProducts/${modalData.categoryId}`)}>
+                    <div className='flex cursor-pointer flex-col gap-3 items-center' onClick={() => navigate(`/allProducts/${modalData.categoryId}`)}>
                         <img loading='lazy' src={modalData.categoryImage} alt="All items" className='rounded-md h-[125px]' />
                         <p>All Items</p>
                     </div>

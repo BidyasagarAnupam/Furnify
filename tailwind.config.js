@@ -16,6 +16,7 @@ module.exports = {
       colors: {
         white: "#fff",
         primary: "#000000",
+        success:"#883DCF",
         transparent: "#ffffff00",
         secondary: {
           red: "#ED2939",
@@ -58,7 +59,8 @@ module.exports = {
         },
         'dashboard': {
           'black': '#0F1016',
-          'grey': '#777980'
+          'grey': '#777980',
+          'grey-2': '#667085'
         },
 
       },

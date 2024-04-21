@@ -124,9 +124,9 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProductDetail = async (productId) => {
       setLoading(true);
-      const res = await fetchProductDetails(productId);
-      console.log("Product details", res.data[0]);
-      setProduct(res.data[0]);
+      const res = await fetchProductDetails(productId, navigate);
+      console.log("Product details", res?.data[0]);
+      setProduct(res?.data[0]);
       setLoading(false);
     }
     fetchProductDetail(productId);
