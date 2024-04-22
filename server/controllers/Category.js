@@ -8,7 +8,7 @@ exports.createCategory = async(req,res)=>{
     try{
         //fetch data
         const {name} = req.body;
-        const categoryImage = req.files.categoryImage;
+        const categoryImage = req?.files?.image;
         //validation
         if(!name || !categoryImage){
             return res.status(403).json({
@@ -64,8 +64,8 @@ exports.updateCategory = async(req,res) =>{
             })
         }
 
-        if(req.files){
-            const thumbnail = req.files.categoryImage
+        if (req?.files?.image){
+            const thumbnail = req?.files?.image
             const categoryImage = await uploadImageToCloudinary(
                 thumbnail,
                 process.env.FOLDER_NAME
@@ -117,6 +117,12 @@ exports.deleteCategory = async (req, res) => {
 
         // category deleted successfully
         await Category.findByIdAndDelete(cid);
+
+        return res.status(200).json({
+            success: true,
+            message: "Category updated successfully",
+        });
+
     } catch (error) {
         return res.status(500).json({
             success: false,

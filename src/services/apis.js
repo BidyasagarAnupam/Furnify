@@ -23,7 +23,7 @@ export const addressEndpoints = {
   GET_FULL_ADDRESS_DETAILS_API: BASE_URL + "/profile/getFullAddressDetails",
 }
 
-//TODO: STUDENTS ENDPOINTS
+// STUDENTS ENDPOINTS
 export const studentEndpoints = {
   COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
   COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
@@ -41,7 +41,7 @@ export const productsEndpoints = {
   DELETE_PRODUCT_API: BASE_URL + "/product/deleteProduct",
 }
 
-//TODO: RATINGS AND REVIEWS
+// RATINGS AND REVIEWS
 export const ratingsEndpoints = {
   REVIEWS_DETAILS_API: BASE_URL + "/product/getReviews",
 }
@@ -62,18 +62,6 @@ export const subCategoriesEndpoints = {
   CREATE_SUBCATEGORIES_API: BASE_URL + "/product/createSubCategory",
 }
 
-// BRAND ENDPOINTS
-export const brandEndpoints = {
-  GET_BRAND_API: BASE_URL + "/product/getAllBrands",
-  UPDATE_BRAND_API: BASE_URL + "/product/updateBrand",
-  DELETE_BRAND_API: BASE_URL + "/product/deleteBrand",
-  CREATE_BRAND_API: BASE_URL + "/product/createBrand",
-}
-
-// CATALOG PAGE DATA
-// export const catalogData = {
-//   CATALOGPAGEDATA_API: BASE_URL + "/course/getCategoryPageDetails",
-// }
 
 // WISHLIST ENDPOINTS
 export const wishListEndpoints = {

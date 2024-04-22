@@ -12,8 +12,7 @@ const Address = () => {
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth)
 
-  // TODO:
-  const [resetFunction, setResetFunction] = useState();
+  
 
   useEffect(() => {
     console.log("IN USE EFFECT THE isSaved", isSaved)

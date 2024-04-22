@@ -24,7 +24,6 @@ const MyProducts = () => {
   }
 
   // TODO: Add search functionalty (Enter and Button Click)
-  // TODO: Count of published and ubpublished products
   // TODO: Sort Button Functionality Remaining
   // TODO: Problem in reset button 
 

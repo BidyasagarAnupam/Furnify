@@ -36,11 +36,6 @@ exports.deleteProduct = async (productId) => {
         await RatingAndReview.findByIdAndDelete(rating);
     }
 
-    // Delete from Brand
-    // const brandId = product.brand
-    // await Brand.findByIdAndUpdate(brandId, {
-    //     $pull: { products: productId }
-    // })
 
     // Delete the course
     await Product.findByIdAndDelete(productId);

@@ -82,11 +82,11 @@ export const createCategory = async(data, token) =>{
     return result
 }
 
-export const deleteCategory = async(data, token) =>{
+export const deleteCategory = async(cid, token) =>{
     const toastId = toast.loading("Loading...")
     
     try {
-        const response = await apiConnector("DELETE", DELETE_CATEGORIES_API, data, {
+        const response = await apiConnector("DELETE", DELETE_CATEGORIES_API, {cid}, {
             Authorization: `Bearer ${token}`,
         })
 

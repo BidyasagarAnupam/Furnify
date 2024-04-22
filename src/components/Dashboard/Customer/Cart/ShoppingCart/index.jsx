@@ -8,7 +8,6 @@ import { removeQuantity, setStep, updateQuantity } from '../../../../../slices/c
 const ShoppingCart = ({ totalMRP, setTotalMRP, totalDiscountedPrice, setTotalDiscountedPrice }) => {
   const { cart, totalItems, step, quantities } = useSelector((state) => state.cart)
   console.log("CART", cart);
-// TODO:
   const dispatch = useDispatch();
 
   const updateTotalMRP = () => {

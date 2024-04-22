@@ -11,7 +11,6 @@ export default function DeleteAccount() {
 
   async function handleDeleteAccount() {
     try {
-      // TODO:
       dispatch(deleteProfile(token, navigate))
       console.log("Deleted");
     } catch (error) {

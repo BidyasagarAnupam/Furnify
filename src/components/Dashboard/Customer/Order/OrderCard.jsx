@@ -137,7 +137,6 @@ const OrderCard = ({ order }) => {
                         <img src={order.product.image} alt="OrderPicture" className='w-[120px] h-[100px] object-cover rounded-md ' />
                         <p className='text-sm font-medium hover:underline hover:text-blue-800'>{order.product.name}</p>
                     </div>
-                    {/* TODO: ADD slider style for order status */}
                     <div className={`w-fit mx-auto px-5 py-2 text-sm
                                      rounded-lg
                                      ${order.status === 'Confirmed' && "bg-[#FFF0EA] text-[#F86624]"}

@@ -56,8 +56,6 @@ exports.updateProfile = async (req, res) => {
 }
 
 // delete Account
-// TODO Explore -> how can we schedule this operation
-// TODO Expolre Cron Job(✅)
 exports.deleteAccount = async (req, res) => {
     try {
         // get user id
@@ -151,7 +149,6 @@ exports.getAllUserDetails = async (req, res) => {
     }
 }
 
-// TODO
 exports.updateDisplayPicture = async (req, res) => {
     try {
         console.log("Backend calling updateDisplayPicture");

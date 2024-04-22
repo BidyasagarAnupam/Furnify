@@ -204,8 +204,6 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
                 }
             </Accordion>
             <div className="border-b-2"></div>
-
-            {/* TODO: Functionality is pending */}
             {/* Customer Ratings */}
             <Accordion className='p-0'>
                 <AccordionItem key={1} aria-label='Customer Ratings' title='Customer Ratings' classNames={classNames1}>

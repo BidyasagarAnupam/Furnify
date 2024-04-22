@@ -28,7 +28,6 @@ const EditProfile = () => {
     const submitProfileForm = async (data) => {
         // console.log("Form Data - ", data)
         try {
-            // TODO
             dispatch(updateProfile(token, data))
             console.log("Updated value : ", data);
         } catch (error) {

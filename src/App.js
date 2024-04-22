@@ -128,8 +128,8 @@ function App() {
           {user?.accountType === ACCOUNT_TYPE.ADMIN && (
             <>
               <Route path="/dashboard/adminDashboard" element={<AdminDashboard />} />
-              <Route path="/dashboard/adminDashboard/addsubCategory/:cId" element={<AddSubCategory />} />
-              <Route path="/dashboard/adminDashboard/editsubCategory/:isEdit" element={<AddSubCategory />} />
+              <Route path="/dashboard/adminDashboard/edit/:check/:isEdit" element={<AddSubCategory />} />
+              <Route path="/dashboard/adminDashboard/add/:type/:cId?" element={<AddSubCategory />} />
             </>
           )}
 

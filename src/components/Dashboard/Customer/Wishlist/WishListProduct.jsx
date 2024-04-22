@@ -90,7 +90,6 @@ const WishListProduct = ({ allWishList, wishlistUpdated, setWishlistUpdated }) =
                           </div>
                           <div className='flex flex-col gap-2'>
                             <p className='font-bold'>{product.name}</p>
-                            {/* TODO: We have to slice a description if that description is long */}
                             <p>{product.description}</p>
                             <div className='flex gap-x-2 items-center mt-1'>
                               {/* Price */}

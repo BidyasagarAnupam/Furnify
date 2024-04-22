@@ -31,13 +31,6 @@ const {
     getSubCategory
 } = require("../controllers/SubCategory");
 
-// Brand Controllers Import
-const {
-    createBrand,
-    updateBrand,
-    deleteBrand,
-    getAllBrands
-} = require("../controllers/Brand");
 
 // Rating and review Controllers
 const {
@@ -81,21 +74,7 @@ router.delete("/deleteSubCategory", auth, isAdmin, deleteSubCategory)
 // Get All SubCategory is access by any one
 router.get("/getSubCategory", getSubCategory)
 
-// ********************************************************************************************************
-//                                      Brand routes
-//  ********************************************************************************************************
 
-// Brand can Only be Created by Admin
-router.post("/createBrand", auth, isAdmin, createBrand)
-
-// Brand can Only be Updated by Admin
-router.post("/updateBrand", auth, isAdmin, updateBrand)
-
-// Brand can Only be Delete by Admin
-router.post("/deleteBrand", auth, isAdmin, deleteBrand)
-
-// Get All Brand is access by any one
-router.post("/getAllBrands", getAllBrands)
 
 // ********************************************************************************************************
 //                                      Rating & Reviews routes

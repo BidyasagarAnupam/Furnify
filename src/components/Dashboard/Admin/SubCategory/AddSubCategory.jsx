@@ -9,23 +9,45 @@ import Upload from '../../Merchant/AddProduct/Upload';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@nextui-org/react';
 import { createSubCategory, editsubCategory } from '../../../../services/operations/subCategories';
-import { setSubCategory } from '../../../../slices/categorySlice'
+import { setCategory, setSubCategory } from '../../../../slices/categorySlice'
 import toast from 'react-hot-toast';
 import IconBtn from '../../../common/IconBtn'
 import { MdOutlineAddToPhotos } from 'react-icons/md';
+import { createCategory, editCategory } from '../../../../services/operations/categoriesAPI';
 const AddSubCategory = () => {
-    const { subCategory } = useSelector((state) => state.category)
+    const { subCategory, category } = useSelector((state) => state.category)
     const { token } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { cId } = useParams()
+    const { cId, type, check, isEdit } = useParams()
     const [loading, setLoading] = useState(false)
-    const editSubc = useParams().isEdit;
+
+    // Hum konse page main hain
+    let isEditPage = false, isEditCategory = false, isAddCategory = false;
+    console.log("TYPE", type)
+    console.log("CHECK", check)
+
+    // If type is 
+    if(check) {
+        isEditPage = true;
+        if (check === 'editCategory') {
+            isEditCategory = true;
+        } else {
+            isEditCategory = false;
+        }
+    } else {
+        // Hum Add wale page main hai
+        isEditPage = false;
+        if (type === 'addCategory') {
+            isAddCategory = true;
+        } else {
+            isAddCategory = false;
+        }
+    }
+    const editSubc = isEdit;
     const editSubcategory = (editSubc === 'true')
-    console.log("editSubcategory", editSubcategory);
-    useEffect(() => {
-        console.log("subCategory", subCategory);
-    }, [subCategory])
+
+    let whatItIs = isEditPage ? (isEditCategory ? "Edit Category" : "Edit Subcategory") : (isAddCategory ? "Add Category" : "Add Subcategory")
 
     const {
         register,
@@ -37,39 +59,55 @@ const AddSubCategory = () => {
     } = useForm();
 
     useEffect(() => {
-        if (editSubcategory) {
-            console.log("Chala");
-            setValue("name", subCategory.name)
-            setValue("image", subCategory.image)
+        if (whatItIs === 'Edit Subcategory') {
+            console.log("Chala edit subcategory");
+            console.log("SUCATEGORY", subCategory)
+            setValue("name", subCategory?.name)
+            setValue("image", subCategory?.image)
+        } else if (whatItIs === 'Edit Category') {
+            console.log("Chala edit category");
+            setValue("name", category?.name)
+            setValue("image", category?.image)
         }
     }, [])
 
     const isFormUpdated = () => {
+
         const currentValues = getValues()
-        if (
-            currentValues.name !== subCategory.name ||
-            currentValues.image !== subCategory.image) {
-            return true;
+        if (whatItIs === 'Edit Subcategory') {
+            if (
+                currentValues?.name !== subCategory?.name ||
+                currentValues?.image !== subCategory?.image) {
+                return true;
+            }
+        } else if (whatItIs === 'Edit Category') {
+            if (
+                currentValues?.name !== category?.name ||
+                currentValues?.image !== category?.image) {
+                return true;
+            }
         }
+        
         return false;
     }
 
     const onSubmit = async (data) => {
-        if (editSubcategory) {
+
+        // For Edit subcategory
+        if (whatItIs === 'Edit Subcategory') {
+            // Then we check if the form is updated or not
             if (isFormUpdated) {
                 const currentValues = getValues()
-                console.log("currentValues", currentValues);
-                console.log("subCategory", subCategory);
                 const formData = new FormData()
 
                 formData.append("subId", subCategory._id)
                 data.subId = subCategory._id
                 console.log("DATA is", data);
-                if (currentValues.name !== subCategory.name) {
-                    formData.append("name", data.name)
+                if (currentValues?.name !== subCategory?.name) {
+                    formData.append("name", data?.name)
                 }
-                if (currentValues.image !== subCategory.image) {
-                    formData.append("image", data.image)
+                if (currentValues?.image !== subCategory?.image) {
+                    formData.append("image", data?.image)
                 }
                 setLoading(true)
                 const result = await editsubCategory(formData, token)
@@ -78,29 +116,71 @@ const AddSubCategory = () => {
                     dispatch(setSubCategory(result))
                     navigate('/dashboard/adminDashboard')
                 }
+                // Form is not updated
+            } else {
+                toast.error("No changes made to the form")
+            }
+            return;
+            // For Edit Category
+        } else if (whatItIs === 'Edit Category') {
+            if (isFormUpdated) {
+                const currentValues = getValues()
+                console.log("currentValues", currentValues);
+                console.log("Category", category);
+                const formData = new FormData()
+
+                formData.append("cid", category._id)
+                console.log("DATA is", data);
+                if (currentValues?.name !== category?.name) {
+                    formData.append("name", data?.name)
+                }
+                if (currentValues?.image !== category?.image) {
+                    formData.append("image", data?.image)
+                }
+                setLoading(true)
+                const result = await editCategory(formData, token)
+                setLoading(false)
+                if (result) {
+                    dispatch(setCategory(result))
+                    navigate('/dashboard/adminDashboard')
+                }
 
             } else {
                 toast.error("No changes made to the form")
-
             }
             return;
         }
+
+
+        
+
         data.cid = cId
-        console.log("DATA", data);
+        // console.log("DATA", data);
         const formData = new FormData()
-        formData.append("name", data.name)
-        formData.append("image", data.image)
+        formData.append("name", data?.name)
+        formData.append("image", data?.image)
         formData.append("cid", cId)
 
         console.log("FROM DATA", formData);
         setLoading(true)
-        const result = await createSubCategory(data, token)
-       
-        console.log("SubCategory created", result);
-        if (result) {
-            dispatch(setSubCategory(result))
-            navigate('/dashboard/adminDashboard')
-        } 
+
+        // Add Subcategory
+        if (whatItIs === 'Add Subcategory') {
+            const result = await createSubCategory(data, token)
+            console.log("SubCategory created", result);
+            if (result) {
+                dispatch(setSubCategory(result))
+                navigate('/dashboard/adminDashboard')
+            } 
+        } else if (whatItIs === 'Add Category'){
+            const result = await createCategory(data, token)
+            console.log("Category created", result);
+            if (result) {
+                dispatch(setCategory(result))
+                navigate('/dashboard/adminDashboard')
+            } 
+        }
+        
         setLoading(false)
     }
 
@@ -109,7 +189,7 @@ const AddSubCategory = () => {
         <div className='w-full flex flex-col gap-10'>
             <div className='w-full flex justify-between'>
                 <div className='flex flex-col gap-1'>
-                    <div className='text-2xl font-semibold text-neutral-5'>Add SubCategory</div>
+                    <div className='text-2xl font-semibold text-neutral-5'>{whatItIs}</div>
                     <div className='flex flex-row items-center text-[#883DCF] font-medium gap-1'>
                         <span className='hover:underline'>
                             <NavLink to={'/dashboard/adminDashboard'}>Dashboard</NavLink>
@@ -120,21 +200,10 @@ const AddSubCategory = () => {
                         </span>
                         <span><IoMdArrowDropright className='text-lg text-neutral-4' /></span>
                         <span className='text-neutral-4'>
-                            <NavLink to={'/dashboard/adminDashboard/addSubCategory'}>Add SubCategory</NavLink>
+                            <p>{whatItIs}</p>
                         </span>
                     </div>
                 </div>
-
-                {/* <div className='flex items-center gap-6'>
-                    <div className='flex gap-1 items-center p-3 border-1 border-[#858D9D] text-[#858D9D] rounded-lg'>
-                        <RxCross2 className='text-xl' />
-                        <button className='text-sm'>Cancel</button>
-                    </div>
-                    <div className='flex gap-1 items-center p-3 text-white rounded-lg bg-[#883DCF]'>
-                        <FiPlus className='text-xl' />
-                        <button className='text-sm'>Add SubCategory</button>
-                    </div>
-                </div> */}
 
             </div>
 
@@ -146,12 +215,19 @@ const AddSubCategory = () => {
                         {/* <p>Photo</p> */}
                         <Upload
                             name="image"
-                            label="SubCategory Image"
+                            label={`${whatItIs === "Add Category" || whatItIs === "Edit Category" ? "Category Image" : "SubCategory Image"}`}
                             register={register}
                             setValue={setValue}
                             errors={errors}
                             color='text-[#883DCF]'
-                            editData={editSubcategory ? subCategory?.image : null}
+                            editData={
+                                whatItIs === "Edit Category"
+                                    ? category?.image
+                                    : whatItIs === "Edit Subcategory"
+                                        ? subCategory?.image
+                                        : null
+                            }
+                            // editSubcategory ? subCategory?.image : null
                         />
 
                     </div>
@@ -161,15 +237,21 @@ const AddSubCategory = () => {
                             isRequired
                             type="text"
                             label="Name"
-                            defaultValue={subCategory?.name}
+                            defaultValue={
+                                whatItIs === "Edit Category"
+                                    ? category?.name
+                                    : whatItIs === "Edit Subcategory"
+                                        ? subCategory?.name
+                                        : null
+                            }
                             variant='bordered'
                             labelPlacement='outside'
                             {...register("name", { required: true })}
                             placeholder="Enter Subcategory Name"
                         />
-                        {errors.name && (
+                        {errors?.name && (
                             <span className="ml-2 text-xs tracking-wide text-secondary-red">
-                                Product Name is required
+                                Name is required
                             </span>
                         )}
 
@@ -184,7 +266,7 @@ const AddSubCategory = () => {
                             <IconBtn
                                 disabled={loading}
                                 type="submit"
-                                text={!editSubcategory ? "Add Product" : "Save Changes"}
+                                text={whatItIs === "Edit Category" || whatItIs === "Edit SubCategory" ? "Save Changes" : whatItIs}
                                 color='bg-[#327590]'
                             >
                                 <MdOutlineAddToPhotos className='text-lg' />

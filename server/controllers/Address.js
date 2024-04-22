@@ -2,19 +2,6 @@ const Address = require('../models/Address');
 const User = require('../models/User');
 const Profile = require('../models/Profile');
 
-//TODO: DO IN FRONTEND Function to check the zipCode is valid or not
-// const zipCodeCheck = async (zipCode) => {
-//     // Fetach API
-//     const responce = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
-//     const data = await responce.json();
-
-//     if (data[0].Status === "Error") {
-//         return res.status(400).json({
-//             success: false,
-//             message: "ZIP code is not valid"
-//         });
-//     }
-// }
 
 // Create a new Address
 exports.createAddress = async (req, res) => {
@@ -37,8 +24,6 @@ exports.createAddress = async (req, res) => {
         let userDetails = await User.findById(id)
         const profileId = userDetails.additionalDetails;
         const profileDetails = await Profile.findById(profileId);
-
-        // TODO: Delete the null addesss
 
         // create the new address
         const newAddressDetails = {

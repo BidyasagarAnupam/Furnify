@@ -17,6 +17,8 @@ export default function Upload({
     viewData = null,
     editData = null,
 }) {
+
+    console.log("EDIT DATA FROM UPLOAD", editData)
     const { product } = useSelector((state) => state.product)
     const [selectedFile, setSelectedFile] = useState(null)
     const [previewSource, setPreviewSource] = useState(
