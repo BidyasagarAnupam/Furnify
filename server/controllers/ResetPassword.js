@@ -31,7 +31,7 @@ exports.resetPasswordToken = async (req, res) => {
         console.log("DETAILS", updatedDetails);
 
         // create url
-        const url = `http://localhost:3000/update-password/${token}`;
+        const url = `https://furnify-frontend.vercel.app/update-password/${token}`;
 
         // send mail containing url
         await mailSender(email, "Password Reset Link",
