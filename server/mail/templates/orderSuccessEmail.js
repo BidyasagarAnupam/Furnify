@@ -73,7 +73,7 @@ exports.orderSuccessEmail = (productName, name) => {
             <div class="body">
                 <p>Dear ${name},</p>
                 <p>You have successfully ordered the product <span class="highlight">"${productName}"</span></p>
-                <a class="cta" href="https://studynotion-edtech-project.vercel.app/dashboard">Go to Dashboard</a>
+                <a class="cta" href="https://furnify-frontend.vercel.app/dashboard">Go to Dashboard</a>
             </div>
             <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
 					href="mailto:teamdebugger404@gmail.com">teamdebugger404@gmail.com</a>. We are here to help!</div>
