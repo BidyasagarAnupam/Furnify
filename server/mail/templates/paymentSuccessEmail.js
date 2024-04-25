@@ -68,7 +68,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
       <body>
           <div class="container">
               <a href="#"><img class="logo"
-                    src="https://i.ibb.co/2jhFmzN/Logo-color.png" alt="Furnify Logo"></a>
+                    src="https://i.ibb.co/MPVTCkk/logo-color.png" alt="Furnify Logo"></a>
               <div class="message">Product Payment Confirmation</div>
               <div class="body">
                   <p>Dear ${name},</p>

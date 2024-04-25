@@ -68,7 +68,7 @@ exports.orderSuccessEmail = (productName, name) => {
     <body>
         <div class="container">
             <a href="#"><img class="logo"
-					src="https://i.ibb.co/2jhFmzN/Logo-color.png" alt="Furnify Logo"></a>
+					src="https://i.ibb.co/MPVTCkk/logo-color.png" alt="Furnify Logo"></a>
             <div class="message">Order Confirmation</div>
             <div class="body">
                 <p>Dear ${name},</p>
