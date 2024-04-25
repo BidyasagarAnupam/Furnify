@@ -26,14 +26,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin:"https://furnify-frontend.vercel.app/",
+		origin:"https://furnify-frontend.vercel.app",
 		credentials:true,
 	})
 )
 app.use((req, res, next) => {
 	res.setHeader(
 		"Access-Control-Allow-Origin",
-		"https://furnify-frontend.vercel.app/"
+		"https://furnify-frontend.vercel.app"
 	);
 	res.setHeader(
 		"Access-Control-Allow-Methods",
