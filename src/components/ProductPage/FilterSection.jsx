@@ -208,12 +208,12 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
             <Accordion className='p-0'>
                 <AccordionItem key={1} aria-label='Customer Ratings' title='Customer Ratings' classNames={classNames1}>
                     <div className="flex gap-2 items-center font-semibold ml-4 -mt-3">
-                        <input type="radio" name="rating" id="4star" value={4} onChange={handleInputChange} />
-                        <label htmlFor="4star" className='flex items-center font-medium text-[15px]'>4 <span><MdStarOutline /></span> and above</label>
+                        <input type="radio" name="rating" id="4star" value={3} onChange={(e) => handleInputChange(e)} />
+                        <label htmlFor="4star" className='flex items-center font-medium text-[15px]'>3 <span><MdStarOutline /></span> and above</label>
                     </div>
                     <div className=" mt-2 flex gap-2 items-center font-semibold ml-4">
-                        <input type="radio" name="rating" id="5star" value={5} onChange={handleInputChange} />
-                        <label htmlFor="5star" className='flex items-center font-medium text-[15px] '>5 <span><MdStarOutline /></span>and above</label>
+                        <input type="radio" name="rating" id="5star" value={4} onChange={(e) => handleInputChange(e)} />
+                        <label htmlFor="5star" className='flex items-center font-medium text-[15px] '>4 <span><MdStarOutline /></span>and above</label>
                     </div>
                 </AccordionItem>
             </Accordion>

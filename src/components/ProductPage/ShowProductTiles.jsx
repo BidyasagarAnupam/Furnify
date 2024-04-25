@@ -11,7 +11,7 @@ const ShowProductTiles = ({ products }) => {
         <p className='text-3xl text-neutral-5 font-semibold'>No Product found</p>
     </div>
     ): (
-      <div className = 'grid grid-cols-4'>
+      <div className = 'grid mx-3 my-3 grid-cols-2 lg:grid-cols-4 gap-2 gap-y-10'>
           {
              products.map((product) => (
         <ProductCard product={product} />

@@ -9,7 +9,7 @@ import bgImg2 from '../assets/Images/bgImg2.png'
 import RenderCategory from '../components/HomePage/RenderCategory'
 import RenderNewLaunches from '../components/HomePage/RenderNewLaunches'
 import { RiCheckboxCircleFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const Home = () => {
   const navigate = useNavigate()
@@ -22,8 +22,8 @@ const Home = () => {
           We have 5000+ Reviews and customers trust on our furniture and Qualilty products.
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, impedit!
         </p>
-        <button onClick={() => navigate("/allProducts")} className=' text-neutral-3 px-20 py-3 bg-primary rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 mt-12 mr-16 font-semibold
-        "'>Shop Now</button>
+        <Link to={'/allProducts'} className=' text-neutral-3 px-20 py-3 bg-primary rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 mt-12 mr-16 font-semibold
+        "'>Shop By Category</Link>
 
         {/* <div className='w-full h-10 bg-gradient-to-b from-secondary-brown to-neutral-3 absolute bottom-0'></div> */}
 
@@ -120,7 +120,7 @@ const Home = () => {
       </div>
 
       {/* Section 4: Shop by Category*/}
-      <div id={'product'} className=' mx-auto mt-3 '>
+      <div id='product' className=' mx-auto mt-3 '>
         <p className='
         text-center text-[2rem] font-semibold
         '>

@@ -145,8 +145,12 @@ exports.createProduct = async (req, res) => {
 exports.getAllProducts = async (req, res) => {
     try {
         const query = req.body;
-        console.log("Filter: ", req.body);
         const filter = getFiltered(query);
+
+        const rating = query.rating === null ? 0 : query.rating;
+        console.log("Filter: ", rating);
+
+
 
         const allProducts = await Product.find(
             {
@@ -165,7 +169,7 @@ exports.getAllProducts = async (req, res) => {
             })
             .populate({
                 path: "ratingAndReviews",
-                match: { rating: { $gte: query.rating } } // Filter reviews with rating greater than or equal to the provided value
+                match: { rating: { $gte: rating } } // Filter reviews with rating greater than or equal to the provided value
             })
             .exec();
         return res.status(200).json({

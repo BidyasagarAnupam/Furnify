@@ -5,11 +5,11 @@ export const NavbarLinks = [
     title: "Home",
     path: "/",
   },
-  {
-    id: 2,
-    title: "Shop",
-    path: '/#product',
-  },
+  // {
+  //   id: 2,
+  //   title: "Shop",
+  //   path: '/#product',
+  // },
   {
     id: 3,
     title: "Products",

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom'
 import ReactStars from 'react-stars';
 import { TiStarFullOutline } from 'react-icons/ti';
+import GetAvgRating from '../../utils/avgRating';
 const ProductCard = ({ product }) => {
 
   const [isLiked, setIsLiked] = useState(false);
@@ -63,6 +64,9 @@ const ProductCard = ({ product }) => {
   displayPrice = displayPrice.toLocaleString('en-IN')
   price = price.toLocaleString('en-IN')
   const navigate = useNavigate();
+  const rating = product.ratingAndReviews;
+  console.log("RATING", product);
+  let avg = GetAvgRating(rating)
   return (
 
     // <div className="
@@ -124,7 +128,9 @@ const ProductCard = ({ product }) => {
 
     // </div>
 
-    <div className='relative bg-white ml-10 flex flex-col items-start justify-between w-[250px] h-fit rounded-lg '>
+    <div
+      onClick={() => navigate(`/product/${product._id}`)}
+      className='relative bg-white cursor-pointer ml-10 flex flex-col items-start justify-between w-[250px] h-fit rounded-lg '>
       <div className='w-full '>
         <img src={product.image} alt="" className="w-full h-[220px] rounded-lg object-cover" />
       </div>
@@ -135,13 +141,13 @@ const ProductCard = ({ product }) => {
             className='flex text-xs'
             count={5}
             edit={false}
-            value={4}
+            value={avg}
             size={20}
             color2="#ffa534"
             emptyIcon={<TiStarFullOutline />}
             fullIcon={<TiStarFullOutline />}
           />
-          <p className='font-semibold'>4.5</p>
+          <p className='font-semibold'>{avg }</p>
         </div>
         <div className='flex justify-between items-center mt-1'>
           {/* Price */}
