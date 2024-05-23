@@ -29,6 +29,7 @@ import Cart from './components/Dashboard/Customer/Cart';
 import ContactUs from './pages/ContactUs';
 import AdminDashboard from './components/Dashboard/Admin/AdminDashboard';
 import AddSubCategory from './components/Dashboard/Admin/SubCategory/AddSubCategory';
+import Footer from './components/common/Footer';
 
 function App() {
   const { user } = useSelector((state) => state.profile)
@@ -140,7 +141,7 @@ function App() {
 
         <Route path='*' element={<Error404 />} />
       </Routes>
-
+      <Footer/>
     </div>
   );
 }
