@@ -48,8 +48,8 @@ const Footer = () => {
             <div className='flex flex-col gap-2'>
               <p>NIT Jamshedpur</p>
               <p className='flex gap-1 items-center justify-center'><MdEmail className='text-[#FF8316]'/> teamdebugger404@gmail.com</p>
-              <p className='flex gap-1 items-center justify-center'><FaPhone className='text-[#FF8316]' />+91 981xxxxx38</p>
-              <div className='flex gap-4 justify-center'>
+              <p className='flex gap-1 items-center justify-center md:justify-start'><FaPhone className='text-[#FF8316]' />+91 981xxxxx38</p>
+              <div className='flex gap-4 md:justify-start justify-center'>
                 {/* icons */}
                 <FaFacebookSquare className='text-4xl cursor-pointer'/>
                 <FaInstagramSquare className='text-4xl cursor-pointer'/>
