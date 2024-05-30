@@ -75,11 +75,16 @@ html {
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: white !important;
+  color: black !important;
   transform: scale(0.8);
-  background-color: #5e8583;
+  /* background-color: #5e8583; */
   padding: 30px;
   border-radius: 30px;
+}
+
+.swiper-wrapper {
+  width: 90%!important;
+  margin: 0 auto;
 }
 
 .swiper-button-next {

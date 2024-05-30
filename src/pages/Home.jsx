@@ -1,5 +1,4 @@
 import React from 'react'
-import Banner from "../assets/Images/Banner.png"
 import one from "../assets/icons/one.svg"
 import two from "../assets/icons/two.svg"
 import three from "../assets/icons/three.svg"
@@ -9,11 +8,10 @@ import bgImg2 from '../assets/Images/bgImg2.png'
 import RenderCategory from '../components/HomePage/RenderCategory'
 import RenderNewLaunches from '../components/HomePage/RenderNewLaunches'
 import { RiCheckboxCircleFill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import RenderRatingReviews from '../components/HomePage/RenderRatingReviews'
 
 const Home = () => {
-  const navigate = useNavigate()
   return (
     <div>
       {/* Section 1 */}

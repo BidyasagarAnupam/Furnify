@@ -4,6 +4,7 @@ import { getAllProducts } from '../services/operations/productDeatilsAPI';
 import ShowProductTiles from '../components/ProductPage/ShowProductTiles';
 import Spinner from '../components/common/Spinner';
 import { useParams } from 'react-router-dom';
+import ProductCardSkeleton from '../components/common/skeleton/ProductCardSkeleton';
 
 
 const AllProducts = () => {
@@ -49,9 +50,15 @@ const AllProducts = () => {
       <div className=' w-5/6 h-screen overflow-y-auto bg-white'>
         {
           loading ?
-            (<div className=' w-full h-full flex justify-center items-center'>
-              <Spinner />
-            </div>)
+            (
+              <div className='grid mx-3 my-3 grid-cols-2 lg:grid-cols-4 gap-2 gap-y-10'>
+                {
+                  Array.from({ length: 8 }).map((_, index) => (
+                    <ProductCardSkeleton key={index} />
+                  ))
+                }
+              </div>
+            )
             :
             <ShowProductTiles products={products} />
         }

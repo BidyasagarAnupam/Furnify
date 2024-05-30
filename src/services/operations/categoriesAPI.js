@@ -11,7 +11,7 @@ const {
 } = categoriesEndpoints
 
 export const fetchCategories = async() =>{
-    const toastId = toast.loading("Loading...");
+    // const toastId = toast.loading("Loading...");
     let result = [];
 
     try {
@@ -30,7 +30,7 @@ export const fetchCategories = async() =>{
         toast.error(error.message);
     }
 
-    toast.dismiss(toastId);
+    // toast.dismiss(toastId);
     return result;
 }
 

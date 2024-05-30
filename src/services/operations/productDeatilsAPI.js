@@ -33,7 +33,7 @@ export const getAllProducts = async (query) => {
 }
 
 export const getNewProducts = async () => {
-  const toastId = toast.loading("Loading...")
+  // const toastId = toast.loading("Loading...")
   let result = []
   try {
     const response = await apiConnector("GET", GET_NEW_PRODUCTS_API)
@@ -45,7 +45,7 @@ export const getNewProducts = async () => {
     console.log("GET_NEW_PRODUCTS_API API ERROR............", error)
     toast.error(error.message)
   }
-  toast.dismiss(toastId)
+  // toast.dismiss(toastId)
   return result
 }
 

@@ -29,7 +29,7 @@ export const createRating = async (data, token) => {
 }
 
 export const getAllRatingReviews  = async() => {
-    const toastId = toast.loading("Loading...")
+    // const toastId = toast.loading("Loading...")
     let result = [];
     try {
         const response = await apiConnector(
@@ -48,7 +48,7 @@ export const getAllRatingReviews  = async() => {
         console.log("REVIEWS_DETAILS_API ERROR............", error)
         toast.error(error.message)
     }
-    toast.dismiss(toastId)
+    // toast.dismiss(toastId)
     return result;
 }
 
