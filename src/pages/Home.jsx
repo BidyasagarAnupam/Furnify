@@ -10,6 +10,7 @@ import RenderCategory from '../components/HomePage/RenderCategory'
 import RenderNewLaunches from '../components/HomePage/RenderNewLaunches'
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom"
+import RenderRatingReviews from '../components/HomePage/RenderRatingReviews'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -132,8 +133,19 @@ const Home = () => {
 
       </div>
 
+      {/* Section5 - Rating and Review Section */}
+      <div className='flex flex-col mt-10'>
+        {/* Heading section */}
+        <div className='flex flex-col text-center'>
+          <p className='text-[2rem] font-semibold'>Their Words, Our Pride</p>
+          <p className='text-lg text-neutral-4'>Happy Words of our Happy Customers</p>
+        </div>
+        <div className='w-full mx-auto h-[300px] mt-10'>
+          <RenderRatingReviews/>
+        </div>
+      </div>
 
-    </div >
+    </div>
   )
 }
 

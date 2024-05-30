@@ -67,45 +67,6 @@ exports.createRating = async (req, res) => {
   }
 }
 
-// // Get the average rating for a product
-// exports.getAverageRating = async (req, res) => {
-//   try {
-//     const productId = req.body.productId
-
-//     // Calculate the average rating using the MongoDB aggregation pipeline
-//     const result = await RatingAndReview.aggregate([
-//       {
-//         $match: {
-//           course: new mongoose.Types.ObjectId(productId), // Convert productId to ObjectId
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: null,
-//           averageRating: { $avg: "$rating" },
-//         },
-//       },
-//     ])
-
-//     if (result.length > 0) {
-//       return res.status(200).json({
-//         success: true,
-//         averageRating: result[0].averageRating,
-//       })
-//     }
-
-//     // If no ratings are found, return 0 as the default rating
-//     return res.status(200).json({ success: true, averageRating: 0 })
-//   } catch (error) {
-//     console.error(error)
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to retrieve the rating for the course",
-//       error: error.message,
-//     })
-//   }
-// }
-
 // Get all rating and reviews
 exports.getAllRatingReview = async (req, res) => {
   try {
