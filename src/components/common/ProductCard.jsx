@@ -69,72 +69,15 @@ const ProductCard = ({ product }) => {
   let avg = GetAvgRating(rating)
   return (
 
-    // <div className="
-    //   mt-5 ml-5
-    //   neomorphic
-    //   w-64
-    //   mb-5
-    //   rounded-md flex-none bg-white relative
-    //   hover:cursor-pointer
-    //   transition-all
-    //   ease-in-out
-    //   duration-200
-    //   hover:scale-105
-    //   hover:shadow-[0_3px_10px_rgb(0,0,0,0.2)]
-    //   "
-    //   onClick={() => navigate(`/product/${product._id}`)}
-    // >
-    //   <div className='h-[250px]'>
-    //     <img src={product.image} alt="" className="h-full w-full object-cover rounded-t-[10px]" />
-    //   </div>
-
-    //   <div className='p-3'>
-    //     <p className='text-[15px]'>{`${product.name} (${product.weight.substring(0, 30)}...`}</p>
-
-        // <div className='flex justify-between items-center mt-3'>
-        //   {/* Price */}
-        //   <div className='flex gap-2 items-center'>
-        //     <p className='text-xl font-semibold'>
-        //       {`₹${displayPrice}`}
-        //     </p>
-        //     <p className='text-sm line-through text-neutral-9'>
-        //       {
-        //         `₹${price}`
-        //       }
-        //     </p>
-        //   </div>
-        //   {/* discount */}
-        //   <div>
-        //     <p className='text-secondary-red'>
-        //       {`${discount}% off`}
-        //     </p>
-        //   </div>
-        // </div>
-    //   </div>
-
-    //   <button className='absolute rounded-full 
-    //   right-3 bottom-32 h-9 w-9 bg-white
-    //   flex items-center justify-center
-    //   '
-    //     // to avoid the functionality of parent 
-    //     onClick={(e) => { e.stopPropagation(); }}
-    //   >
-    //     {
-    //       isLiked ? <FcLike fontSize="1.5rem" onClick={() => removeProductHandler(product._id)} /> : <FcLikePlaceholder fontSize="1.5rem" onClick={() => addProductHandler(product._id)} />
-    //     }
-
-    //   </button>
-
-
-    // </div>
-
     <div
       onClick={() => navigate(`/product/${product._id}`)}
-      className='relative bg-white cursor-pointer ml-10 flex flex-col items-start justify-between w-[250px] h-fit rounded-lg '>
+      className='relative bg-white cursor-pointer ml-10 flex flex-col items-start justify-between w-[250px] h-fit rounded-lg
+      
+       '>
       <div className='w-full '>
         <img src={product.image} alt="" className="w-full h-[220px] rounded-lg object-cover" />
       </div>
-      <div className='mt-3 flex flex-col gap-1 w-full'>
+      <div className='mt-3 p-2 flex flex-col gap-1 w-full'>
         <p className='text-medium font-semibold '>{`${product.name}`}</p>
         <div className='flex items-center gap-2'>
           <ReactStars

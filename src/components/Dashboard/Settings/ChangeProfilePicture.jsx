@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateDisplayPicture } from "../../../services/operations/SettingsAPI"
 import IconBtn from "../../common/IconBtn"
 import Modal from "../Modal"
+import { Card, CardBody, Button } from "@nextui-org/react";
+
 
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
@@ -57,18 +59,9 @@ export default function ChangeProfilePicture() {
     reader.readAsDataURL(file);
     setImageModal(true);
 
-    // console.log(file)
-    // if (file) {
-    //   console.log("FILE IS ", file);
-    //   setImageModal(true);
-    //   setImageFile(file)
-    //   previewFile(file)
-    // }
   }
 
   const updateAvatar = (imgSrc) => {
-    // setPreviewSource(imgSr)
-    // avatar.current = imgSrc;
     const reader = new FileReader()
     reader.readAsDataURL(imgSrc)
 
@@ -105,43 +98,50 @@ export default function ChangeProfilePicture() {
   }, [imageFile])
   return (
     <>
-      <div className="flex items-center justify-between rounded-md neomorphic p-8 px-12">
-        <div className="flex items-center gap-x-4">
-          <img
-            src={previewSource || user?.image}
-            alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
-          />
-          <div className="space-y-2">
-            <p>Change Profile Picture</p>
-            <div className="flex flex-row gap-3">
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                accept="image/png, image/gif, image/jpeg"
+      <Card>
+        <CardBody>
+          <div className="flex items-center justify-between rounded-md p-8 px-12">
+            <div className="flex items-center gap-x-4">
+              <img
+                src={previewSource || user?.image}
+                alt={`profile-${user?.firstName}`}
+                className="aspect-square w-[78px] rounded-full object-cover"
               />
-              <button
-                onClick={handleClick}
-                disabled={loading}
-                className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-primary"
-              >
-                Select
-              </button>
-              <IconBtn
-                text={loading ? "Uploading..." : "Upload"}
-                onclick={handleFileUpload}
-                loading={loading}
-              >
-                {!loading && (
-                  <FiUpload className="text-xl" />
-                )}
-              </IconBtn>
+              <div className="space-y-2">
+                <p>Change Profile Picture</p>
+                <div className="flex flex-row gap-3">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept="image/png, image/gif, image/jpeg"
+                  />
+                  <Button
+                    color="primary"
+                    variant="bordered"
+                    onClick={handleClick}
+                    disabled={loading}
+                  >
+                    Select
+                  </Button>
+                  <Button
+                    color="primary"
+                    onclick={handleFileUpload}
+                    disabled={loading}
+                  >
+                    {loading ? "Uploading..." : "Upload"}
+                    {!loading && (
+                      <FiUpload className="text-xl" />
+                    )}
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardBody>
+      </Card>
+
       {imageModal && <Modal updateAvatar={updateAvatar}
         closeModal={() => setImageModal(false)} imgSrc={imgSrc} />}
     </>

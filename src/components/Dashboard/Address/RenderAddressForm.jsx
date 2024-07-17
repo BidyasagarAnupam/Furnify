@@ -8,9 +8,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { get, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import Address from '.'
+import { Button } from "@nextui-org/react";
 
 
-const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
+const RenderAddressForm = ({ setIsSaved, onClose }) => {
     const {
         register,
         handleSubmit,
@@ -86,7 +87,6 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
             console.log("ADDRESS IS : ", address);
             // To show the Address form
             fetchZipCodeDetails(address.zipCode)
-            setShowForm(true);
             setValue("address", address.address)
             setValue("city", address.city)
             // setValue("state", address.state)
@@ -161,7 +161,6 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
                 if (result) {
                     dispatch(setAddress(result))
                     //To hide the form
-                    setShowForm(false);
                     setIsSaved(true)
 
                     dispatch(setEditAddress(false));
@@ -169,7 +168,7 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
             } else {
                 toast.error("No changes made to the form")
             }
-
+            onClose()
             return
         }
 
@@ -187,22 +186,24 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
         const result = await addAddress(formData, token)
         if (result) {
             dispatch(setAddress(result))
-            setShowForm(false);
+            
             setIsSaved(true);
         }
+        onClose()
         setLoading(false)
     }
 
     const handleCancelBtn = () => {
+        onClose();
         reset();
-        setShowForm(false);
+        
         setIsSaved(false);
         dispatch(setEditAddress(false));
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="my-10 flex flex-col gap-y-6 neomorphic p-8 px-12">
+            <div className=" flex flex-col gap-y-6 px-12">
 
                 {/* section for name and contact number */}
                 <div className="flex w-11/12 justify-between">
@@ -473,8 +474,12 @@ const RenderAddressForm = ({ setShowForm, setIsSaved }) => {
             </div>
 
             <div className="flex justify-end gap-x-2">
-                <button type="submit">Save</button>
-                <button onClick={handleCancelBtn} >Cancel</button>
+                <Button color="danger" variant="light" onPress={handleCancelBtn}>
+                    Cancel
+                </Button>
+                <Button color="primary" type='submit' >
+                    Save
+                </Button>
             </div>
 
         </form>

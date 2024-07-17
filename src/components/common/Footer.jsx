@@ -9,7 +9,7 @@ import paypalLogo from '../../assets/Images/paypal-logo.png'
 
 const Footer = () => {
   return (
-    <footer className='relative mt-6 w-full bg-[#313C4E]'>
+    <footer className='relative mt-6 w-full bg-[#29795A]'>
       <div className='w-full px-5 py-4  lg:w-11/12 md:py-9 md:px-10 lg:px-24 mx-auto text-white'>
         <div className='flex flex-col gap-4 flex-wrap  md:flex-row md:justify-around lg:justify-between items-center mb-10'>
         {/* News letter */}

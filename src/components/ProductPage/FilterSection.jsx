@@ -129,7 +129,7 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
 
     return (
         <div className='relative'>
-            <div className='flex flex-row justify-between items-center border-b-2 pb-2 sticky top-0 bg-white z-50'>
+            <div className='flex flex-row justify-between border-b-2 border-background pb-2 sticky top-0 bg-white z-50'>
                 <div className="flex gap-x-2 items-center">
                     <LuSettings2 className='font-bold text-xl' />
                     <span className='text-xl font-bold'>Filter</span>
@@ -143,7 +143,7 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
 
 
             </div>
-            <div className='mt-3 flex flex-col gap-2 border-b-2 pb-2'>
+            <div className='mt-3 flex flex-col gap-2 border-b-2 border-background pb-2'>
                 <p className='font-semibold px-1'>Price Range</p>
                 <Slider
                     size='sm'
@@ -203,7 +203,7 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
                         )
                 }
             </Accordion>
-            <div className="border-b-2"></div>
+            <div className="border-b-2 border-background"></div>
             {/* Customer Ratings */}
             <Accordion className='p-0'>
                 <AccordionItem key={1} aria-label='Customer Ratings' title='Customer Ratings' classNames={classNames1}>
@@ -217,6 +217,7 @@ const FilterSection = ({ value, setValue, filterData, setFilterData }) => {
                     </div>
                 </AccordionItem>
             </Accordion>
+            <div className="border-b-2 border-background"></div>
             {/* Discount */}
             <Accordion className='p-0'>
                 <AccordionItem key={1} aria-label='Discount' title='Discount' classNames={classNames1}>

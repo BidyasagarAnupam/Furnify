@@ -128,7 +128,10 @@ const ProductBuilderForm = () => {
                     formData.append("discount", data.discount)
                 }
                 if (currentValues.image !== product.image) {
-                    formData.append("image", data.image)
+                    // formData.append("image", data.image)
+                    data.image.forEach((file, index) => {
+                        formData.append(`image${index}`, file);
+                    });
                 }
                 if (currentValues.category !== product.category._id) {
                     formData.append("category", data.category)
@@ -158,11 +161,15 @@ const ProductBuilderForm = () => {
         formData.append("status", data.status)
         formData.append("price", data.price)
         formData.append("discount", data.discount)
-        formData.append("image", data.image)
+        // formData.append("image", JSON.stringify(data.image))
         formData.append("category", data.category)
         formData.append("subCategory", data.subCategory)
+        // Append each file individually
+        data.image.forEach((file, index) => {
+            formData.append(`image${index}`, file);
+        });
         setLoading(true)
-        console.log("Form data is: ", formData);
+        console.log("Form data is: ", data);
         const result = await addProductDetails(formData, token)
         if (result) {
             dispatch(setProduct(result))
@@ -295,7 +302,7 @@ const ProductBuilderForm = () => {
                     </div>
                 </div>
                 <div className='w-2/5 flex flex-col gap-1 rounded-xl bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] py-5 px-5'>
-                    <h1 className='text-lg font-semibold'>Product Media</h1>
+                    <h1 className='text-lg font-semibold'>Product Media (You can upload max 4 images) </h1>
                     <Upload
                         name="image"
                         label="Product Image"

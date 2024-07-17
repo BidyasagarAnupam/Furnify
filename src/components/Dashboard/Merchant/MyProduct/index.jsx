@@ -30,7 +30,7 @@ const MyProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const res = await fetchMerchantProducts(query, token)
-      // console.log("All Products of Merchant ", res);
+      console.log("All Products of Merchant ", res);
       if (res) {
         setProductList(res);
         // count published products

@@ -7,6 +7,8 @@ const { deleteProduct } = require('../utils/deleteProduct');
 const User = require('../models/User');
 const SubCategory = require("../models/SubCategory");
 const Order = require("../models/Order");
+// import pLimit from 'p-limit';
+const pLimit = require('p-limit');
 
 //Only for merchant pov
 exports.createProduct = async (req, res) => {
@@ -25,7 +27,12 @@ exports.createProduct = async (req, res) => {
             status,
         } = req.body;
         //fetch thumbnail
-        const thumbnail = await req.files.image;
+        const thumbnail = req.files;
+       
+
+        const limit = pLimit(4);
+
+        console.log("Thumbnail", thumbnail);
         //validation
         if (
             !name ||
@@ -73,7 +80,19 @@ exports.createProduct = async (req, res) => {
         }
 
         //upload image to cloudinary
-        const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        let thumbnailImage = [];
+        const imagesToUpload = Object.values(thumbnail).map((image) => {
+            // console.log("IMAGE->>>", typeof(image));
+            return limit(async () => {
+                const uploadImage = await uploadImageToCloudinary(image, process.env.FOLDER_NAME); // Assuming tempFilePath is used for uploading
+                thumbnailImage.push(uploadImage.secure_url);
+            });
+        });
+
+        let upload = await Promise.all(imagesToUpload);
+        console.log("Thumbnail image", thumbnailImage);
+
+        // const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
 
         //create an entry for new product
         const newProduct = await Product.create({
@@ -84,7 +103,7 @@ exports.createProduct = async (req, res) => {
             category: category,
             subCategory: subCategory,
             discount,
-            image: thumbnailImage.secure_url,
+            image: thumbnailImage,
             merchant: merchantDetails._id,
             status
         })
@@ -292,6 +311,7 @@ exports.editProduct = async (req, res) => {
         const { productId } = req.body;
         //updates contains an object which contains updated details from frontend
         const updates = req.body;
+        
 
         console.log("UPDATES________", updates);
 
@@ -370,14 +390,22 @@ exports.editProduct = async (req, res) => {
 
         // If Thumbnail Image is found, update it
         if (req.files) {
+            const limit = pLimit(4);
             console.log("thumbnail update")
-            const thumbnail = req.files.thumbnailImage
+            const thumbnail = req.files
             console.log("Thumbnail-----", thumbnail);
-            const thumbnailImage = await uploadImageToCloudinary(
-                thumbnail,
-                process.env.FOLDER_NAME
-            )
-            product.image = thumbnailImage.secure_url
+            let thumbnailImage = [];
+            const imagesToUpload = Object.values(thumbnail).map((image) => {
+                // console.log("IMAGE->>>", typeof(image));
+                return limit(async () => {
+                    const uploadImage = await uploadImageToCloudinary(image, process.env.FOLDER_NAME); // Assuming tempFilePath is used for uploading
+                    thumbnailImage.push(uploadImage.secure_url);
+                });
+            });
+
+            let upload = await Promise.all(imagesToUpload);
+            console.log("Thumbnail image", thumbnailImage);
+            product.image = thumbnailImage
         }
 
         // Update only the fields that are present in the request body
@@ -483,6 +511,8 @@ exports.getOrderedProductsForMerchant = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
     try {
         const { productId } = req.body
+
+        console.log("Product id", productId);
 
         await deleteProduct(productId);
 

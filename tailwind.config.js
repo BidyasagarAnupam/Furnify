@@ -18,6 +18,8 @@ module.exports = {
         primary: "#000000",
         success:"#883DCF",
         transparent: "#ffffff00",
+        background: '#fdf1e2',
+        darkBackground: "#fadcb7",
         secondary: {
           red: "#ED2939",
           yellow: "#FFAB00",
@@ -65,7 +67,7 @@ module.exports = {
 
       },
       backgroundImage: {
-        'hero-section': "url('assets/Hero-section.png')",
+        'hero-section': "url('assets/bgimage.jpeg')",
         'revenueImg': "url('assets/icons/Ornament_Total_Revenue.svg')",
         'orderImg': "url('assets/icons/Ornament_Total_Order.svg')",
         'productImg': "url('assets/icons/Ornament_Total_Products.svg')",

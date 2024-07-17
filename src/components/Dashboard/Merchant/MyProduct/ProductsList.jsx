@@ -33,6 +33,7 @@ const ProductsList = ({ productList, isDeleted, setIsDeleted }) => {
   }
 
   const onPressDelete = async (productId) => {
+    console.log("IDHAR AAYA KI NEHIN?");
     setLoading(true);
     await deleteProduct(productId, token);
     setLoading(false);
@@ -87,7 +88,7 @@ const ProductsList = ({ productList, isDeleted, setIsDeleted }) => {
                 <Tr className="w-full h-[100px] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] ">
                   <Td>
                     <div className='flex gap-x-2 items-center'>
-                      <img src={product?.image} alt="ProductImg"
+                      <img src={product?.image[0]} alt="ProductImg"
                         className="w-[100px] h-[80px] object-cover rounded-md" />
                       <p className='font-semibold'>{product?.name}</p>
                     </div>

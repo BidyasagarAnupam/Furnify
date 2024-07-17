@@ -15,13 +15,13 @@ const Home = () => {
   return (
     <div>
       {/* Section 1 */}
-      <div className='w-full h-[780px] bg-hero-section bg-no-repeat bg-cover flex flex-col justify-center items-center relative'>
-        <div className='text-[3.5rem] w-1/2 text-neutral-3 font-semibold text-center leading-[4rem] -mt-36'>Furniture that everyone Loves</div>
-        <p className='w-1/2 text-center text-neutral-9 text-lg mt-10 tracking-wide'>
+      <div className='w-full h-[1000px] bg-hero-section bg-no-repeat bg-cover flex flex-col justify-center items-center relative'>
+        <div className='text-[3.5rem] w-1/2 text-white font-semibold text-center leading-[4rem] -mt-36'>Furniture that everyone Loves</div>
+        <p className='w-1/2 text-center text-white text-lg mt-10 tracking-wide'>
           We have 5000+ Reviews and customers trust on our furniture and Qualilty products.
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, impedit!
         </p>
-        <Link to={'/allProducts'} className=' text-neutral-3 px-20 py-3 bg-primary rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-20 mt-12 mr-16 font-semibold
+        <Link to={'/allProducts'} className=' text-neutral-3 px-20 py-3 bg-yellow-500 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg  mt-12 mr-16 font-semibold
         "'>Shop By Category</Link>
 
         {/* <div className='w-full h-10 bg-gradient-to-b from-secondary-brown to-neutral-3 absolute bottom-0'></div> */}

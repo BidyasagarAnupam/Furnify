@@ -16,7 +16,7 @@ function Dashboard() {
     }
 
     return (
-        <div className="  flex min-h-[calc(100vh-2rem)] bg-[#F9F9FC]">
+        <div className="  flex min-h-[calc(100vh-2rem)] bg-[#f9f9fc]">
             <Sidebar />
             <div className="h-[calc(100vh-2rem)] flex-1 overflow-auto">
                 <div className="mx-auto w-11/12  py-10 ">

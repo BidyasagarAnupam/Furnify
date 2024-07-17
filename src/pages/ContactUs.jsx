@@ -10,7 +10,7 @@ import ContactSection from '../components/ContactUs/ContactSection'
 const ContactUs = () => {
     const navigate = useNavigate();
     return (
-        <div className='w-full bg-[#F5F5F5]'>
+        <div className='w-full  bg-background'>
             <div className='mt-6 w-10/12 flex flex-col mx-auto gap-11'>
                 <div className='flex flex-col items-start gap-8 w-[50%] '>
                     <div className='flex flex-row items-center text-[#3F00FF] font-medium '>

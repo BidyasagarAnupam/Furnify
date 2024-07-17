@@ -22,10 +22,10 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
-    image: {
+    image: [{
         type: String,
         required: true,
-    },
+    }],
     weight: {
         type: String,
         required: true,

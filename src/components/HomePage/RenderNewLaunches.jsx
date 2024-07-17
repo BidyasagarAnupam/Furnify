@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 
 
 // import required modules
-import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
+import { Navigation, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
 import ProductCardSkeleton from '../common/skeleton/ProductCardSkeleton';
 
 const RenderNewLaunches = () => {
@@ -57,10 +57,10 @@ const RenderNewLaunches = () => {
                         disableOnInteraction: false,
                         pauseOnMouseEnter: true,
                     }}
-                    pagination={{
-                        clickable: true,
-                    }}
-                    modules={[Autoplay, Navigation, Pagination, Mousewheel, Keyboard]}
+                    // pagination={{
+                    //     clickable: true,
+                    // }}
+                    modules={[Autoplay, Navigation, Mousewheel, Keyboard]}
                     className="w-full h-full"
                 >
                     {

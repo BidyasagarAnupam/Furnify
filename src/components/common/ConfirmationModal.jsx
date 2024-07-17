@@ -1,4 +1,5 @@
 import IconBtn from "./IconBtn"
+import { Button } from "@nextui-org/react"
 
 export default function ConfirmationModal({ modalData }) {
     return (
@@ -12,15 +13,18 @@ export default function ConfirmationModal({ modalData }) {
                 </p>
                 <div className="flex items-center gap-x-4">
                     <IconBtn
-                        onclick={modalData?.btn1Handler}
                         text={modalData?.btn1Text}
+                        onclick={ modalData?.btn1Handler}
                     />
-                    <button
-                        className="cursor-pointer rounded-md bg-richblack-200 py-[8px] px-[20px] font-semibold text-richblack-900"
-                        onClick={modalData?.btn2Handler}
+                        
+                   
+                    <Button
+                        color="primary"
+                        variant="bordered"
+                        onClick={ modalData?.btn2Handler}
                     >
                         {modalData?.btn2Text}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

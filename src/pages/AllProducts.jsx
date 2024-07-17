@@ -43,11 +43,11 @@ const AllProducts = () => {
  
 
   return (
-    <div className='w-full bg-neutral-10 flex'>
+    <div className='w-full bg-white flex'>
       <div className='w-1/6  h-[100vh] overflow-y-auto px-2 overflow-x-hidden '>
         <FilterSection value={value} setValue={setValue} filterData={filterData} setFilterData={setFilterData} />
       </div>
-      <div className=' w-5/6 h-screen overflow-y-auto bg-white'>
+      <div className=' w-5/6 h-screen overflow-y-auto bg-background'>
         {
           loading ?
             (

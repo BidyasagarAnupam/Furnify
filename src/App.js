@@ -34,7 +34,7 @@ import Footer from './components/common/Footer';
 function App() {
   const { user } = useSelector((state) => state.profile)
   return (
-    <div className="overflow-hidden w-screen min-h-screen flex flex-col font-inter">
+    <div className="overflow-hidden bg-background w-screen min-h-screen flex flex-col font-inter">
       <NavBar />
       <Routes>
         <Route path="/" element={(user?.accountType === "Merchant" || user?.accountType === "Admin") ? <Navigate to="/dashboard/account" /> : <Home />} />
