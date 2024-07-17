@@ -153,7 +153,7 @@ const ManageOrder = ({ orders, loading, setIsStatusChanged, isStatusChanged }) =
                     </tr>
                 </thead>
                 <tbody>
-                    {currentOrders.map((order) => (
+                    {orders.product && currentOrders.map((order) => (
                         <tr key={order._id}>
                             <td className="py-4 px-2 w-1/4 text-center border-b ">
                                 <div className='flex gap-2 items-center '>

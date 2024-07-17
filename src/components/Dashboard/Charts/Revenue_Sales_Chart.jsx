@@ -17,9 +17,13 @@ const RevenueSalesChart = ({ orders, loading }) => {
                     const orderDate = new Date(order.orderedAt);
                     return orderDate.getMonth() === monthIndex;
                 });
-                const monthlyRevenue = filteredOrders.reduce((total, order) => {
-                    return total + (Math.round(order.product.price - (order.product.price * (order.product.discount / 100)))) * order.quantity;
-                }, 0);
+                let monthlyRevenue;
+                if (orders.product) {
+                    monthlyRevenue = filteredOrders.reduce((total, order) => {
+                        return total + (Math.round(order.product.price - (order.product.price * (order.product.discount / 100)))) * order.quantity;
+                    }, 0);
+                }
+
                 const monthlySales = filteredOrders.length;
                 return { month: monthIndex + 1, revenue: monthlyRevenue, sales: monthlySales };
             });
@@ -27,7 +31,7 @@ const RevenueSalesChart = ({ orders, loading }) => {
             console.log('Monthly Stats:', monthlyStats);
         }
     }, [orders]);
-    
+
 
     if (loading) {
         return (

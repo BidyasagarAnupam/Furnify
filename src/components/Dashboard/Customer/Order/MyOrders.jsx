@@ -35,7 +35,7 @@ const MyOrders = () => {
       <div className='w-full flex flex-col gap-8 mt-10'>
         {
           orders.map((order) => (
-            <OrderCard key={order._id} order = {order} />
+             order.product && <OrderCard key={order._id} order = {order} />
           ))
         }
       </div>

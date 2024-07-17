@@ -40,9 +40,13 @@ const Merchant = () => {
     getAllOrdersList();
   }, [isStatusChanged]);
 
-  const totalRevenue = orders.reduce((total, order) => {
-    return total + (Math.round(order.product.price - (order.product.price * (order.product.discount / 100)))) * order.quantity;
+  let totalRevenue = 0;
+  if (orders.product) {
+    totalRevenue = orders.reduce((total, order) => {
+    return total + (Math.round(order?.product?.price - (order?.product?.price * (order?.product?.discount / 100)))) * order?.quantity;
   }, 0);
+  }
+  
 
   return (
     <div className='w-full'>
