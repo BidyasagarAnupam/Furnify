@@ -27,6 +27,7 @@ import Spinner from "../components/common/Spinner"
 
 const ProductDetails = () => {
   const [isLiked, setIsLiked] = useState(false);
+  const [mainImage, setMainImage] = useState('');
   const productId = useParams().id;
   const [product, setProduct] = useState({});
   const { token } = useSelector((state) => state.auth);
@@ -42,7 +43,6 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [index, setIndex] = useState(0)
-  const { cart, step } = useSelector((state) => state.cart)
 
   let discountedPrice = (Math.round(product.price - (product.price * (product.discount / 100))));
   const handleBuyProduct = (onClose) => {
@@ -127,6 +127,7 @@ const ProductDetails = () => {
       const res = await fetchProductDetails(productId, navigate);
       console.log("Product details", res?.data[0]);
       setProduct(res?.data[0]);
+      setMainImage(res?.data[0]?.image);
       setLoading(false);
     }
     fetchProductDetail(productId);
@@ -139,7 +140,8 @@ const ProductDetails = () => {
     name,
     price,
     ratingAndReviews,
-    weight
+    weight,
+    secondaryImages = [],
   } = product
 
   const handleAddToCart = () => {
@@ -167,7 +169,11 @@ const ProductDetails = () => {
   let inPrice = price
   let displayPrice = Math.round(inPrice - (inPrice * (discount / 100)));
   displayPrice = displayPrice.toLocaleString('en-IN')
-  // inPrice = inPrice.toLocaleString('en-IN')
+
+  const handleThumbnailClick = (image) => {
+    setMainImage(image);
+  };
+
   return (
     <div>
       {/* Header */}
@@ -195,22 +201,34 @@ const ProductDetails = () => {
       </div>
 
       {/* Main section */}
-      <div className='flex gap-3 my-8 w-full'>
-        {/* Image Section */}
-        <div className='relative w-2/5 bg-slate-600 mx-6'>
-          <button className='absolute top-3 r-1 rounded-full 
-            right-3 bottom-32 h-9 w-9 bg-white
-            flex items-center justify-center
-            '>
-                  {
-                    isLiked ? <FcLike fontSize="1.5rem" onClick={() => removeProductHandler(product._id)} /> : <FcLikePlaceholder fontSize="1.5rem" onClick={() => addProductHandler(product._id)} />
-                  }
+      <div className='flex gap-3 my-8 w-11/12 mx-auto'>
 
-          </button>
-          <img src={image} alt=""  />
+        <div className='flex gap-4 w-1/2'>
+          {/* Thumbnails Section */}
+          <div className="flex flex-col gap-2 w-3/12 h-full justify-evenly">
+            {[image, ...secondaryImages].map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={`Thumbnail ${idx}`}
+                className={`w-full h-auto cursor-pointer rounded-md ${mainImage === img ? 'border-3 border-blue-500' : 'border'}
+                shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]`}
+                onClick={() => handleThumbnailClick(img)}
+              />
+            ))}
+          </div>
+
+          {/* Main Image Section */}
+          <div className="relative w-full mx-6">
+            <button className="absolute top-3 right-3 bottom-32 h-9 w-9 bg-white flex items-center justify-center rounded-full">
+              {isLiked ? <FcLike fontSize="1.5rem" onClick={() => removeProductHandler(product._id)} /> : <FcLikePlaceholder fontSize="1.5rem" onClick={() => addProductHandler(product._id)} />}
+            </button>
+            <img src={mainImage} alt="Main Product" className="w-full h-full shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]" />
+          </div>
         </div>
+
         {/* details */}
-        <div className='flex flex-col gap-y-6 justify-start w-3/5 mr-10'>
+        <div className='flex flex-col gap-y-6 justify-start w-1/2 mr-10'>
           {/* name */}
           <p className='text-3xl font-semibold '>{name}</p>
           <div className='flex items-center gap-1 '>

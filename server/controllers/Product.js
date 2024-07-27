@@ -8,6 +8,7 @@ const User = require('../models/User');
 const SubCategory = require("../models/SubCategory");
 const Order = require("../models/Order");
 // import pLimit from 'p-limit';
+
 const pLimit = require('p-limit');
 
 //Only for merchant pov
@@ -26,13 +27,27 @@ exports.createProduct = async (req, res) => {
             discount,
             status,
         } = req.body;
+
         //fetch thumbnail
-        const thumbnail = req.files;
-       
+        const limit = pLimit(3);
+        const thumbnail = await req.files.image;
+        const secondaryImages = [];
 
-        const limit = pLimit(4);
+        // Extract the keys of req.files
+        const keys = Object.keys(req.files);
 
-        console.log("Thumbnail", thumbnail);
+        // Iterate through the keys
+        keys.forEach(key => {
+            // Check if the key contains "secondaryimage"
+            if (key.startsWith('secondaryimage')) {
+                // Push the corresponding file data into the array
+                secondaryImages.push(req.files[key]);
+            }
+        });
+
+        console.log("SecondaryImages", secondaryImages);
+
+        
         //validation
         if (
             !name ||
@@ -80,19 +95,19 @@ exports.createProduct = async (req, res) => {
         }
 
         //upload image to cloudinary
-        let thumbnailImage = [];
-        const imagesToUpload = Object.values(thumbnail).map((image) => {
-            // console.log("IMAGE->>>", typeof(image));
+        const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+
+        let secondaryImagesLink = [];
+        const imagesToUpload = Object.values(secondaryImages).map((image) => {
             return limit(async () => {
                 const uploadImage = await uploadImageToCloudinary(image, process.env.FOLDER_NAME); // Assuming tempFilePath is used for uploading
-                thumbnailImage.push(uploadImage.secure_url);
+                secondaryImagesLink.push(uploadImage.secure_url);
             });
         });
 
-        let upload = await Promise.all(imagesToUpload);
-        console.log("Thumbnail image", thumbnailImage);
+        await Promise.all(imagesToUpload);
 
-        // const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        console.log("SecondaryImageLink-->", secondaryImagesLink);
 
         //create an entry for new product
         const newProduct = await Product.create({
@@ -103,7 +118,8 @@ exports.createProduct = async (req, res) => {
             category: category,
             subCategory: subCategory,
             discount,
-            image: thumbnailImage,
+            image: thumbnailImage.secure_url,
+            secondaryImages: secondaryImagesLink,
             merchant: merchantDetails._id,
             status
         })
@@ -158,6 +174,7 @@ exports.createProduct = async (req, res) => {
         });
     }
 }
+
 
 
 // get all Products(Only for Customers)
@@ -311,7 +328,6 @@ exports.editProduct = async (req, res) => {
         const { productId } = req.body;
         //updates contains an object which contains updated details from frontend
         const updates = req.body;
-        
 
         console.log("UPDATES________", updates);
 
@@ -354,7 +370,7 @@ exports.editProduct = async (req, res) => {
                 )
             }
         }
-        
+
 
         // If subcategory is changed
         if (updates.subCategory) {
@@ -386,26 +402,45 @@ exports.editProduct = async (req, res) => {
                 )
             }
         }
-        
+
 
         // If Thumbnail Image is found, update it
         if (req.files) {
-            const limit = pLimit(4);
-            console.log("thumbnail update")
-            const thumbnail = req.files
-            console.log("Thumbnail-----", thumbnail);
-            let thumbnailImage = [];
-            const imagesToUpload = Object.values(thumbnail).map((image) => {
-                // console.log("IMAGE->>>", typeof(image));
+            console.log("REQUEST KI FILE EDIT K ANDR: ", req.files);
+            const limit = pLimit(3);
+            const thumbnail = await req.files.image;
+            const secondaryImages = [];
+
+            // Extract the keys of req.files
+            const keys = Object.keys(req.files);
+
+            // Iterate through the keys
+            keys.forEach(key => {
+                // Check if the key contains "secondaryimage"
+                if (key.startsWith('secondaryimage')) {
+                    // Push the corresponding file data into the array
+                    secondaryImages.push(req.files[key]);
+                }
+            });
+
+            console.log("SecondaryImages", secondaryImages);
+
+            const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+
+            let secondaryImagesLink = [];
+            const imagesToUpload = Object.values(secondaryImages).map((image) => {
                 return limit(async () => {
                     const uploadImage = await uploadImageToCloudinary(image, process.env.FOLDER_NAME); // Assuming tempFilePath is used for uploading
-                    thumbnailImage.push(uploadImage.secure_url);
+                    secondaryImagesLink.push(uploadImage.secure_url);
                 });
             });
 
-            let upload = await Promise.all(imagesToUpload);
-            console.log("Thumbnail image", thumbnailImage);
-            product.image = thumbnailImage
+            await Promise.all(imagesToUpload);
+
+            console.log("SecondaryImageLink-->", secondaryImagesLink);
+
+            product.image = thumbnailImage.secure_url;
+            product.secondaryImages = secondaryImagesLink;
         }
 
         // Update only the fields that are present in the request body

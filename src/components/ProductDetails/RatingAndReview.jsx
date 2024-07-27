@@ -40,7 +40,7 @@ const RatingAndReview = ({ ratingAndReviews }) => {
 
     return (
         <div className='lg:mt-24 mb-16'>
-            <div className='mx-auto w-11/12 bg-white'>
+            <div className='mx-auto w-11/12'>
                 {/* Heading Section */}
                 <div className='flex flex-col gap-1 '>
                     <h1 className='text-4xl font-semibold'>Customers love us!</h1>
@@ -120,7 +120,7 @@ const RatingAndReview = ({ ratingAndReviews }) => {
                 <div className='flex flex-col gap-6 w-full mt-8'>
                     {ratingAndReviews && ratingAndReviews.length > 0 ? (
                         ratingAndReviews.map((item, index) => (
-                            <div key={index} className='flex flex-col gap-2 items-start px-4 py-5 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-md'>
+                            <div key={index} className='flex flex-col gap-2 items-start px-4 py-5 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-md bg-white'>
                                 
                                 <div className='flex items-center gap-3'>
                                     <img src={item?.user?.image} alt="User" className='w-[40px] h-[40px] rounded-full object-contain ' />

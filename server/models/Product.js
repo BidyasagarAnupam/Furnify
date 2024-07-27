@@ -22,7 +22,11 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
-    image: [{
+    image: {
+        type: String,
+        required: true,
+    },
+    secondaryImages:[{
         type: String,
         required: true,
     }],

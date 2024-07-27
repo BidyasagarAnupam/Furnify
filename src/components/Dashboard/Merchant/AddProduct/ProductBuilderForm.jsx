@@ -76,6 +76,7 @@ const ProductBuilderForm = () => {
             setValue("price", product.price)
             setValue("discount", product.discount)
             setValue("image", product.image)
+            setValue("secondaryImages", product.secondaryImages)
             setValue("category", product.category._id)
             setSelectedCategory(product.category._id)
             setValue("subCategory", product.subCategory._id)
@@ -94,7 +95,8 @@ const ProductBuilderForm = () => {
             currentValues.discount !== product.discount ||
             currentValues.image !== product.image ||
             currentValues.category !== product.category._id ||
-            currentValues.subCategory !== product.subCategory._id
+            currentValues.subCategory !== product.subCategory._id ||
+            currentValues.secondaryImages !== product.secondaryImages
         ) {
             return true
         }
@@ -106,6 +108,7 @@ const ProductBuilderForm = () => {
 
             if (isFormUpdated) {
                 const currentValues = getValues()
+                console.log("Current Values: ", currentValues);
                 const formData = new FormData()
 
                 formData.append("productId", product._id)
@@ -128,10 +131,12 @@ const ProductBuilderForm = () => {
                     formData.append("discount", data.discount)
                 }
                 if (currentValues.image !== product.image) {
-                    // formData.append("image", data.image)
-                    data.image.forEach((file, index) => {
-                        formData.append(`image${index}`, file);
-                    });
+                    formData.append("image", data.image)
+                }
+                if (currentValues.secondaryImages !== product.secondaryImages) {
+                    data.secondaryImages.forEach((file, index) => {
+                        formData.append(`secondaryimage${index}`, file)
+                    })
                 }
                 if (currentValues.category !== product.category._id) {
                     formData.append("category", data.category)
@@ -161,15 +166,14 @@ const ProductBuilderForm = () => {
         formData.append("status", data.status)
         formData.append("price", data.price)
         formData.append("discount", data.discount)
-        // formData.append("image", JSON.stringify(data.image))
+        formData.append("image", data.image)
+        data.secondaryImages.forEach((file, index) => {
+            formData.append(`secondaryimage${index}`, file)
+        })
         formData.append("category", data.category)
         formData.append("subCategory", data.subCategory)
-        // Append each file individually
-        data.image.forEach((file, index) => {
-            formData.append(`image${index}`, file);
-        });
         setLoading(true)
-        console.log("Form data is: ", data);
+        console.log("Form data is: ", formData);
         const result = await addProductDetails(formData, token)
         if (result) {
             dispatch(setProduct(result))
@@ -302,7 +306,7 @@ const ProductBuilderForm = () => {
                     </div>
                 </div>
                 <div className='w-2/5 flex flex-col gap-1 rounded-xl bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] py-5 px-5'>
-                    <h1 className='text-lg font-semibold'>Product Media (You can upload max 4 images) </h1>
+                    <h1 className='text-lg font-semibold'>Product Media</h1>
                     <Upload
                         name="image"
                         label="Product Image"
@@ -310,6 +314,7 @@ const ProductBuilderForm = () => {
                         setValue={setValue}
                         errors={errors}
                         editData={editProduct ? product?.image : null}
+                        editSecondaryData={editProduct ? product?.secondaryImages : null}
                     />
 
                 </div>

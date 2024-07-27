@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaFacebookSquare, FaInstagramSquare, FaTwitterSquare, FaYoutubeSquare } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaPhone } from "react-icons/fa6";
@@ -6,8 +6,16 @@ import visaLogo from '../../assets/Images/Visa-Logo.png'
 import mastercardLogo from '../../assets/Images/mastercard-loog.webp'
 import americanEXpressLogo from '../../assets/Images/american-express.svg'
 import paypalLogo from '../../assets/Images/paypal-logo.png'
+import toast from 'react-hot-toast';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+
+  const handleSubscribe = () =>{
+    toast.success("Thank you for subscribing us😊");
+    setEmail('');
+  }
+
   return (
     <footer className='relative mt-6 w-full bg-[#29795A]'>
       <div className='w-full px-5 py-4  lg:w-11/12 md:py-9 md:px-10 lg:px-24 mx-auto text-white'>
@@ -19,8 +27,9 @@ const Footer = () => {
               Suscribe to our newsletter and get the latest updates and promotions
             </p>
             <div className='flex flex-col gap-2'>
-              <input type="text" placeholder='Email' className='md:w-2/3 py-3 px-2 rounded-sm text-black'/>
-              <button className='md:w-2/3 py-3 px-2 bg-[#FF8316] rounded-sm'>Suscribe</button>
+              <input type="text" placeholder='Email' className='md:w-2/3 py-3 px-2 rounded-sm text-black' value={email}
+                onChange={(e) => setEmail(e.target.value)} />
+              <button onClick={() => handleSubscribe()} className='md:w-2/3 py-3 px-2 bg-[#FF8316] rounded-sm'>Subscribe</button>
             </div>
           </div>
           <div className='w-full text-center md:text-left md:w-fit flex flex-col gap-3 md:gap-8'>
