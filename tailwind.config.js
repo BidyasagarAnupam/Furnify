@@ -18,7 +18,7 @@ module.exports = {
         primary: "#000000",
         success:"#883DCF",
         transparent: "#ffffff00",
-        background: '#fdf1e2',
+        background: '#fff',
         darkBackground: "#fadcb7",
         secondary: {
           red: "#ED2939",
