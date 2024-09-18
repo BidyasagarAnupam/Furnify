@@ -41,11 +41,9 @@ const Merchant = () => {
   }, [isStatusChanged]);
 
   let totalRevenue = 0;
-  if (orders.product) {
     totalRevenue = orders.reduce((total, order) => {
     return total + (Math.round(order?.product?.price - (order?.product?.price * (order?.product?.discount / 100)))) * order?.quantity;
   }, 0);
-  }
   
 
   return (
@@ -63,7 +61,7 @@ const Merchant = () => {
             <img src={squareIconRev} alt="SquareIcon" />
             <p className='text-white opacity-75'>Total Revenue</p>
             <div className='flex gap-2 items-center'>
-              <p className='text-white text-2xl'>₹{totalRevenue}</p>
+              <p className='text-white text-2xl'>₹{totalRevenue.toLocaleString()}</p>
               <p className='bg-white text-white bg-opacity-15 px-2 py-1 rounded-lg text-xs'>+10%</p>
             </div>
           </div>

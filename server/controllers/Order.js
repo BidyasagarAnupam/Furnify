@@ -62,10 +62,12 @@ exports.updateStatus =  async(req,res) => {
 exports.getAllMerchantOrders = async (req, res) => {
     try {
         const id = req.user.id;
-        const allOrders = await Order.find({ merchant: id }).populate('user')
+        let allOrders = await Order.find({ merchant: id }).populate('user')
             .populate('product')
             .populate('address')
             .exec()
+        
+        allOrders = allOrders.filter(order => order.product !== null);
 
         if (!allOrders) {
             return res.status(400).json({

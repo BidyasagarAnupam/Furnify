@@ -114,6 +114,8 @@ const ManageOrder = ({ orders, loading, setIsStatusChanged, isStatusChanged }) =
         )
     }
 
+    console.log("AABHI orders", orders);
+
     return (
         <div>
             {/* Header */}
@@ -153,7 +155,7 @@ const ManageOrder = ({ orders, loading, setIsStatusChanged, isStatusChanged }) =
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.product && currentOrders.map((order) => (
+                    {currentOrders.map((order) => (
                         <tr key={order._id}>
                             <td className="py-4 px-2 w-1/4 text-center border-b ">
                                 <div className='flex gap-2 items-center '>
@@ -173,16 +175,13 @@ const ManageOrder = ({ orders, loading, setIsStatusChanged, isStatusChanged }) =
                             <td className="py-4 px-4 text-center border-b ">₹{((Math.round(order.product.price - (order.product.price * (order.product.discount / 100)))) * order.quantity).toLocaleString('en-In')}</td>
                             <td className="  border-b ">
                                 <p className=
-                                    {`w-fit mx-auto px-3 py-1 text-sm
-                                     rounded-lg
+                                    {`w-fit mx-auto px-3 py-1 text-sm rounded-lg
                                      ${order.status === 'Confirmed' && "bg-[#FFF0EA] text-[#F86624]"}
                                      ${order.status === 'Shipped' && "bg-[#EAF8FF] text-[#2BB2FE]"}
                                      ${order.status === 'Out for Delivery' && "bg-[#FEF4CF] text-[#BB960B]"}
                                      ${order.status === 'Delivered' && "bg-[#E9FAF7] text-[#1A9882]"}
                                      ${order.status === 'Cancelled' && "bg-[#FBD8DB] text-[#EB3D4D]"}
-                                     
-                                     
-                                     `}>
+`}>
                                     {order?.status}
                                 </p>
                             </td>
