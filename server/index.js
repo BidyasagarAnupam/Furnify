@@ -26,16 +26,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin:"https://furnify-frontend.vercel.app",
-		// origin:"http://localhost:3000",
+		origin: process.env.FRONTEND_URL,
 		credentials:true,
 	})
 )
 app.use((req, res, next) => {
 	res.setHeader(
 		"Access-Control-Allow-Origin",
-		"https://furnify-frontend.vercel.app"
-		// "http://localhost:3000"
+		process.env.FRONTEND_URL
 	);
 	res.setHeader(
 		"Access-Control-Allow-Methods",
