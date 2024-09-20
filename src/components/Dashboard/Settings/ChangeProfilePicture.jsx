@@ -127,7 +127,7 @@ export default function ChangeProfilePicture() {
                   </Button>
                   <Button
                     color="primary"
-                    onclick={handleFileUpload}
+                    onClick={handleFileUpload}
                     disabled={loading}
                   >
                     {loading ? "Uploading..." : "Upload"}
