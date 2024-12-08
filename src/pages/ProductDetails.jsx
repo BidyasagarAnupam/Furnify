@@ -87,22 +87,42 @@ const ProductDetails = () => {
     }
   }
 
-  const handleSelectAddress = async () =>{
-    onOpen();
-    setLoading(true);
-    const res = await getAllAddresses(token);
-    if (res) {
-      setAddresses(res);
-      setShowAddress(res[0])
-      if (res.length === 0) {
-        // toast.error("Add at least one address")
-        navigate('/dashboard/address')
-        return
-      }
-
-      console.log("AFTER ADTER THE ALL ADDRESSES ARE, ", addresses)
+  const handleSelectAddress = async () => {
+    
+    if (user && user?.accountType === ACCOUNT_TYPE.MERCHANT) {
+      toast.error("You are a Merchant, you cant buy a product");
+      return;
     }
-    setLoading(false);
+
+    if (token) {
+      onOpen();
+      setLoading(true);
+      const res = await getAllAddresses(token);
+      if (res) {
+        setAddresses(res);
+        setShowAddress(res[0])
+        if (res.length === 0) {
+          // toast.error("Add at least one address")
+          navigate('/dashboard/address')
+          return
+        }
+
+        console.log("AFTER ADTER THE ALL ADDRESSES ARE, ", addresses)
+      }
+      setLoading(false);
+      return;
+    }
+
+    setConfirmationModal({
+      text1: "you are not logged in",
+      text2: "Please login to add to cart",
+      btn1Text: "Login",
+      btn2Text: "cancel",
+      btn1Handler: () => navigate("/login"),
+      btn2Handler: () => setConfirmationModal(null),
+    })
+
+    
   }
 
   useEffect(() => {
