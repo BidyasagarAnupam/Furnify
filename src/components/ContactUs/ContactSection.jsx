@@ -66,7 +66,7 @@ const ContactSection = () => {
                     </div>
                     <div className='flex gap-4 items-center'>
                         <FaLocationDot />
-                        <p>Hostel K, NIT Jamshedpur <br /> Adityapur, Jharkhand - 831014</p>
+                        <p>NIT Jamshedpur <br /> Adityapur, Jharkhand - 831014</p>
                     </div>
                 </div>
                 <div className='flex flex-row gap-5 h-[20%] items-center'>
